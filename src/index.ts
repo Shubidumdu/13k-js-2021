@@ -15,12 +15,18 @@ class Player {
   x: number;
   y: number;
   color: string;
+  rotation: number;
 
   constructor() {
     this.x = 50;
     this.y = 50;
     this.color = 'red';
+    this.rotation = 0;
   }
+
+  rotate = () => {
+    this.rotation = 0.04;
+  };
 
   draw = () => {
     ctx.beginPath();
