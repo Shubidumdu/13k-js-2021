@@ -11,6 +11,28 @@ canvas.style.background = 'black';
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+class Player {
+  x: number;
+  y: number;
+  color: string;
+
+  constructor() {
+    this.x = 50;
+    this.y = 50;
+    this.color = 'red';
+  }
+
+  draw = () => {
+    ctx.beginPath();
+    ctx.fillRect(this.x, this.y, 50, 50);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  };
+}
+
+const player = new Player();
+
 const drawTitle = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -27,18 +49,26 @@ const drawTitle = () => {
   );
 };
 
-const loop = () => {
+const loop = (time: any) => {
+  console.log(time);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (state === 0) drawTitle();
+  if (state === 1) {
+    player.draw();
+  }
   requestAnimationFrame(loop);
 };
 
-loop();
+loop(0);
 
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
-window.addEventListener('keydown', () => {
-  state = 1;
+window.addEventListener('keydown', (e) => {
+  if (state === 0) state = 1;
+  if (e.key === 'ArrowRight') player.x += 10;
+  if (e.key === 'ArrowLeft') player.x -= 10;
+  if (e.key === 'ArrowUp') player.y -= 10;
+  if (e.key === 'ArrowDown') player.y += 10;
 });
