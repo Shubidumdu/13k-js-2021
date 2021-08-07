@@ -1,5 +1,8 @@
 import './index.scss';
 
+// 0 => MENU, 1 => ON_GAME
+let state = 0;
+
 const canvas: HTMLCanvasElement = document.getElementById(
   'canvas',
 ) as HTMLCanvasElement;
@@ -8,7 +11,34 @@ canvas.style.background = 'black';
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+const drawTitle = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+  ctx.font = '48px sans-serif';
+  ctx.strokeStyle = '#fff';
+  ctx.strokeText('Title', canvas.width / 2, canvas.height / 2 - 150);
+  ctx.font = '24px sans-serif';
+  ctx.strokeText(
+    'Press any button to start',
+    canvas.width / 2,
+    canvas.height / 2 + 150,
+  );
+};
+
+const loop = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (state === 0) drawTitle();
+  requestAnimationFrame(loop);
+};
+
+loop();
+
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+});
+window.addEventListener('keydown', () => {
+  state = 1;
 });
