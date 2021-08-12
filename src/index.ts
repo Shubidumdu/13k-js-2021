@@ -30,7 +30,7 @@ class Player {
 
   draw = () => {
     ctx.beginPath();
-    ctx.fillRect(this.x, this.y, 50, 50);
+    ctx.fillRect(-25, -25, 50, 50);
     ctx.closePath();
     ctx.fillStyle = this.color;
     ctx.fill();
@@ -55,11 +55,20 @@ const drawTitle = () => {
   );
 };
 
-const loop = (time: any) => {
-  console.log(time);
+let rad = 0;
+
+const loop = (time: number) => {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (state === 0) drawTitle();
   if (state === 1) {
+    rad += 0.1;
+    ctx.setTransform(1, 0, 0, 1, 75, 75);
+    ctx.rotate(rad);
+    player.draw();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = '#fff';
+    ctx.setTransform(1, 0, 0, 1, 200, 75);
     player.draw();
   }
   requestAnimationFrame(loop);
@@ -71,10 +80,12 @@ window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
+
 window.addEventListener('keydown', (e) => {
   if (state === 0) state = 1;
   if (e.key === 'ArrowRight') player.x += 10;
   if (e.key === 'ArrowLeft') player.x -= 10;
   if (e.key === 'ArrowUp') player.y -= 10;
   if (e.key === 'ArrowDown') player.y += 10;
+  if (e.key === ' ') player.rotate();
 });
