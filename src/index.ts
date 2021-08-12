@@ -74,7 +74,7 @@ const loop = (time: number) => {
   requestAnimationFrame(loop);
 };
 
-loop(0);
+requestAnimationFrame(loop);
 
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
