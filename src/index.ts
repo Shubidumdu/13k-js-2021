@@ -1,91 +1,19 @@
+import { resetCanvas } from './canvas';
 import './index.scss';
+import { drawTitle } from './scene/title';
 
-// 0 => MENU, 1 => ON_GAME
-let state = 0;
-
-const canvas: HTMLCanvasElement = document.getElementById(
-  'canvas',
-) as HTMLCanvasElement;
-const ctx = canvas.getContext('2d');
-canvas.style.background = 'black';
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-class Player {
-  x: number;
-  y: number;
-  color: string;
-  rotation: number;
-
-  constructor() {
-    this.x = 50;
-    this.y = 50;
-    this.color = 'red';
-    this.rotation = 0;
-  }
-
-  rotate = () => {
-    this.rotation = 0.04;
-  };
-
-  draw = () => {
-    ctx.beginPath();
-    ctx.fillRect(-25, -25, 50, 50);
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  };
-}
-
-const player = new Player();
-
-const drawTitle = () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  ctx.textBaseline = 'middle';
-  ctx.textAlign = 'center';
-  ctx.font = '48px sans-serif';
-  ctx.strokeStyle = '#fff';
-  ctx.strokeText('Title', canvas.width / 2, canvas.height / 2 - 150);
-  ctx.font = '24px sans-serif';
-  ctx.strokeText(
-    'Press any button to start',
-    canvas.width / 2,
-    canvas.height / 2 + 150,
-  );
+// 0 => TITLE
+// 1 => ON_GAME
+let state = {
+  sceneType: 0,
 };
 
-let rad = 0;
-
 const loop = (time: number) => {
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (state === 0) drawTitle();
-  if (state === 1) {
-    rad += 0.1;
-    ctx.setTransform(1, 0, 0, 1, 75, 75);
-    ctx.rotate(rad);
-    player.draw();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.fillStyle = '#fff';
-    ctx.setTransform(1, 0, 0, 1, 200, 75);
-    player.draw();
+  resetCanvas();
+  if (state.sceneType === 0) {
+    drawTitle();
   }
   requestAnimationFrame(loop);
 };
 
 requestAnimationFrame(loop);
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-
-window.addEventListener('keydown', (e) => {
-  if (state === 0) state = 1;
-  if (e.key === 'ArrowRight') player.x += 10;
-  if (e.key === 'ArrowLeft') player.x -= 10;
-  if (e.key === 'ArrowUp') player.y -= 10;
-  if (e.key === 'ArrowDown') player.y += 10;
-  if (e.key === ' ') player.rotate();
-});
