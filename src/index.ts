@@ -1,5 +1,6 @@
 import { resetCanvas } from './canvas';
 import './index.scss';
+import { drawGame } from './scene/game';
 import { drawTitle } from './scene/title';
 
 // 0 => TITLE
@@ -11,7 +12,8 @@ let state = {
 const loop = (time: number) => {
   resetCanvas();
   if (state.sceneType === 0) {
-    drawTitle();
+    // drawTitle();
+    drawGame();
   }
   requestAnimationFrame(loop);
 };
