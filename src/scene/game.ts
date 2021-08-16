@@ -54,6 +54,30 @@ const drawPlayer = (x: number, y: number) => {
     context.fill();
   });
   draw(() => {
+    context.setTransform(
+      1,
+      0,
+      0,
+      1,
+      canvas.width / 2 - 110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      canvas.height / 2 + Math.sin(time / 20),
+    );
+    context.rotate(degreeToRadian(190 + Math.sin(time / 20)));
+    context.fillStyle = '#aaf';
+    context.fillRect(-5, 0, 10, 80);
+    context.setTransform(
+      1,
+      0,
+      0,
+      1,
+      canvas.width / 2 - 110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      canvas.height / 2 + Math.sin(time / 20),
+    );
+    context.rotate(degreeToRadian(190 + Math.sin(time / 20)));
+    context.fillStyle = '#000';
+    context.fillRect(-5, 0, 10, 20);
+  });
+  draw(() => {
     // arms
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(
