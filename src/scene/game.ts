@@ -3,25 +3,24 @@ import { degreeToRadian } from '../utils';
 
 const TILE_WIDTH = 120;
 const TILE_HEIGHT = 40;
-let time = 0;
 const state = {
   x: 0,
   y: 0,
+  attack: false,
 };
 
-export const drawGame = () => {
-  time += 1;
+export const drawGame = (time: number) => {
   drawMap(4, canvas.width / 2 + 40, canvas.height / 2, TILE_WIDTH, TILE_HEIGHT);
-  drawPlayer(state.x, state.y);
+  drawPlayer(state.x, state.y, time);
 };
 
-const drawPlayer = (x: number, y: number) => {
+const drawPlayer = (x: number, y: number, time: number) => {
   draw(() => {
     // BODY
     context.setTransform(1, 0, 0, 2, canvas.width / 2, canvas.height / 2);
     context.arc(
       -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -10 + (y * TILE_HEIGHT) / 2 + Math.sin(time / 20),
+      -10 + (y * TILE_HEIGHT) / 2 + Math.sin(time / 240),
       20,
       0,
       degreeToRadian(360),
@@ -36,14 +35,14 @@ const drawPlayer = (x: number, y: number) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.arc(
       -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -40 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -40 + y * TILE_HEIGHT + Math.sin(time / 240),
       3,
       0,
       degreeToRadian(360),
     );
     context.arc(
       -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -40 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -40 + y * TILE_HEIGHT + Math.sin(time / 240),
       3,
       0,
       degreeToRadian(360),
@@ -54,15 +53,19 @@ const drawPlayer = (x: number, y: number) => {
     context.fill();
   });
   draw(() => {
+    // WEAPON
     context.setTransform(
       1,
       0,
       0,
       1,
       canvas.width / 2 - 110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      canvas.height / 2 + Math.sin(time / 20),
+      canvas.height / 2 +
+        Math.sin(time / 240) +
+        y * TILE_HEIGHT +
+        Math.sin(time / 240),
     );
-    context.rotate(degreeToRadian(190 + Math.sin(time / 20)));
+    context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
     context.fillStyle = '#aaf';
     context.fillRect(-5, 0, 10, 80);
     context.setTransform(
@@ -71,9 +74,12 @@ const drawPlayer = (x: number, y: number) => {
       0,
       1,
       canvas.width / 2 - 110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      canvas.height / 2 + Math.sin(time / 20),
+      canvas.height / 2 +
+        Math.sin(time / 240) +
+        y * TILE_HEIGHT +
+        Math.sin(time / 240),
     );
-    context.rotate(degreeToRadian(190 + Math.sin(time / 20)));
+    context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
     context.fillStyle = '#000';
     context.fillRect(-5, 0, 10, 20);
   });
@@ -82,23 +88,23 @@ const drawPlayer = (x: number, y: number) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(
       -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -30 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -30 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
       -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      0 + y * TILE_HEIGHT + Math.sin(time / 20),
+      0 + y * TILE_HEIGHT + Math.sin(time / 240),
       -110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -10 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -10 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.moveTo(
       -122 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -30 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -30 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
       -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      0 + y * TILE_HEIGHT + Math.sin(time / 20),
+      0 + y * TILE_HEIGHT + Math.sin(time / 240),
       -110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -10 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -10 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.strokeStyle = '#000';
     context.stroke();
@@ -108,21 +114,21 @@ const drawPlayer = (x: number, y: number) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(
       -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -0 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -0 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -145 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 20),
-      0 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -145 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 240),
+      0 + y * TILE_HEIGHT + Math.sin(time / 240),
       -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       25 + y * TILE_HEIGHT,
     );
     context.moveTo(
       -124 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -0 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -0 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 20),
-      0 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 240),
+      0 + y * TILE_HEIGHT + Math.sin(time / 240),
       -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       20 + y * TILE_HEIGHT,
     );
@@ -133,23 +139,23 @@ const drawPlayer = (x: number, y: number) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(
       -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -50 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -50 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 20),
-      -100 + y * TILE_HEIGHT + Math.sin(time / 20),
-      -160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 20),
-      -80 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
+      -100 + y * TILE_HEIGHT + Math.sin(time / 240),
+      -160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
+      -80 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.moveTo(
       -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -50 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -50 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -100 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 20),
-      -100 + y * TILE_HEIGHT + Math.sin(time / 20),
-      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 20),
-      -80 + y * TILE_HEIGHT + Math.sin(time / 20),
+      -100 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
+      -100 + y * TILE_HEIGHT + Math.sin(time / 240),
+      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
+      -80 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.stroke();
   });
@@ -186,4 +192,8 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') state.x -= 1;
   if (e.key === 'ArrowUp') state.y -= 1;
   if (e.key === 'ArrowDown') state.y += 1;
+  if (e.key === ' ') {
+    console.log('');
+    state.attack = !state.attack;
+  }
 });
