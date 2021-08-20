@@ -3,6 +3,7 @@ import { degreeToRadian } from '../utils';
 
 const TILE_WIDTH = 120;
 const TILE_HEIGHT = 40;
+const TILE_SIZE = 4;
 
 const ATTACK_TIME = 200;
 
@@ -13,7 +14,13 @@ const state = {
 };
 
 export const drawGame = (time: number) => {
-  drawMap(4, canvas.width / 2, canvas.height / 2, TILE_WIDTH, TILE_HEIGHT);
+  drawMap(
+    TILE_SIZE,
+    canvas.width / 2,
+    canvas.height / 2,
+    TILE_WIDTH,
+    TILE_HEIGHT,
+  );
   drawPlayer(state.x, state.y, time);
 };
 
@@ -125,7 +132,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
       );
     }
     context.fillStyle = '#aaf';
-    context.fillRect(-5, 0, 10, 80);
+    context.fillRect(-5, 0, 10, 120);
     context.setTransform(
       1,
       0,
@@ -405,9 +412,21 @@ const drawMap = (
 };
 
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight') state.x += 1;
-  if (e.key === 'ArrowLeft') state.x -= 1;
-  if (e.key === 'ArrowUp') state.y -= 1;
-  if (e.key === 'ArrowDown') state.y += 1;
+  if (e.key === 'ArrowRight') {
+    if (state.x === TILE_SIZE - 1) return;
+    state.x += 1;
+  }
+  if (e.key === 'ArrowLeft') {
+    if (state.x === 0) return;
+    state.x -= 1;
+  }
+  if (e.key === 'ArrowUp') {
+    if (state.y === 0) return;
+    state.y -= 1;
+  }
+  if (e.key === 'ArrowDown') {
+    if (state.y === TILE_SIZE - 1) return;
+    state.y += 1;
+  }
   if (e.key === ' ') state.attack = performance.now();
 });
