@@ -19,7 +19,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
     // BODY
     context.setTransform(1, 0, 0, 2, canvas.width / 2, canvas.height / 2);
     context.arc(
-      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -10 + (y * TILE_HEIGHT) / 2 + Math.sin(time / 240),
       20,
       0,
@@ -34,14 +34,14 @@ const drawPlayer = (x: number, y: number, time: number) => {
     // EYES
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.arc(
-      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -40 + y * TILE_HEIGHT + Math.sin(time / 240),
       3,
       0,
       degreeToRadian(360),
     );
     context.arc(
-      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -40 + y * TILE_HEIGHT + Math.sin(time / 240),
       3,
       0,
@@ -59,7 +59,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
       0,
       0,
       1,
-      canvas.width / 2 - 110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       canvas.height / 2 +
         Math.sin(time / 240) +
         y * TILE_HEIGHT +
@@ -73,7 +73,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
       0,
       0,
       1,
-      canvas.width / 2 - 110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       canvas.height / 2 +
         Math.sin(time / 240) +
         y * TILE_HEIGHT +
@@ -87,23 +87,23 @@ const drawPlayer = (x: number, y: number, time: number) => {
     // arms
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(
-      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -30 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       0 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -10 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.moveTo(
-      -122 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -142 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -30 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       0 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -110 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -10 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.strokeStyle = '#000';
@@ -113,23 +113,23 @@ const drawPlayer = (x: number, y: number, time: number) => {
     // legs
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(
-      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -0 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -145 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 240),
+      -165 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 240),
       0 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       25 + y * TILE_HEIGHT,
     );
     context.moveTo(
-      -124 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -144 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -0 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 240),
+      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 240),
       0 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       20 + y * TILE_HEIGHT,
     );
     context.stroke();
@@ -138,23 +138,23 @@ const drawPlayer = (x: number, y: number, time: number) => {
     // feelers
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(
+      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      -50 + y * TILE_HEIGHT + Math.sin(time / 240),
+    );
+    context.quadraticCurveTo(
+      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
+      -100 + y * TILE_HEIGHT + Math.sin(time / 240),
+      -180 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
+      -80 + y * TILE_HEIGHT + Math.sin(time / 240),
+    );
+    context.moveTo(
       -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
       -50 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.quadraticCurveTo(
-      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
+      -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
       -100 + y * TILE_HEIGHT + Math.sin(time / 240),
       -160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
-      -80 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.moveTo(
-      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -50 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.quadraticCurveTo(
-      -100 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
-      -100 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
       -80 + y * TILE_HEIGHT + Math.sin(time / 240),
     );
     context.stroke();
@@ -169,7 +169,14 @@ const drawMap = (
   tileHeight: number,
 ) => {
   draw(() => {
-    context.setTransform(1, 0, -0.5, 1, 0, 0);
+    context.setTransform(
+      1,
+      0,
+      -0.5,
+      1,
+      x - (tileWidth * size) / 2 + tileWidth / size,
+      y,
+    );
     context.strokeStyle = '#0f0';
     context.shadowColor = '#fff';
     context.shadowOffsetX = 8;
@@ -177,8 +184,8 @@ const drawMap = (
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
         context.strokeRect(
-          x + tileWidth * j,
-          y + tileHeight * i,
+          tileWidth * j,
+          tileHeight * i,
           tileWidth,
           tileHeight,
         );
