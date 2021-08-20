@@ -1,5 +1,6 @@
 import { canvas, context, draw } from '../canvas';
 import { degreeToRadian } from '../utils';
+import zzfx from '../zzfx';
 
 const TILE_WIDTH = 120;
 const TILE_HEIGHT = 40;
@@ -431,6 +432,29 @@ window.addEventListener('keydown', (e) => {
   if (e.key === ' ') {
     const now = performance.now();
     if (now - state.attack < ATTACK_TIME) return;
+    zzfx(
+      ...[
+        ,
+        ,
+        334,
+        ,
+        0.08,
+        0.09,
+        2,
+        1.52,
+        -7.8,
+        2.1,
+        ,
+        ,
+        0.02,
+        0.2,
+        -28,
+        ,
+        ,
+        0.65,
+        0.1,
+      ],
+    ); // Hit 78
     state.attack = performance.now();
   }
 });
