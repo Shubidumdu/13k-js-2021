@@ -1,5 +1,5 @@
 import { draw } from '../canvas';
-import { FONT } from '../font';
+import { getFont } from '../font';
 import { degreeToRadian } from '../utils';
 
 const drawRoach = () => {
@@ -61,7 +61,7 @@ export const drawTitle = () => {
   draw((context, canvas) => {
     context.textBaseline = 'middle';
     context.textAlign = 'center';
-    context.font = FONT;
+    context.font = getFont();
     context.fillStyle = '#fff';
     context.shadowOffsetX = 3;
     context.shadowOffsetY = 3;

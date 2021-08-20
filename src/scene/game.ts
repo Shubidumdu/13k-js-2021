@@ -6,7 +6,8 @@ const TILE_HEIGHT = 40;
 const state = {
   x: 0,
   y: 0,
-  attack: 0,
+  attack: false,
+  attackTime: 0,
 };
 
 export const drawGame = (time: number) => {
@@ -15,6 +16,10 @@ export const drawGame = (time: number) => {
 };
 
 const drawPlayer = (x: number, y: number, time: number) => {
+  if (state.attack) {
+    state.attackTime = time;
+    state.attack = false;
+  }
   draw(() => {
     // BODY
     context.setTransform(1, 0, 0, 2, canvas.width / 2, canvas.height / 2);
@@ -54,34 +59,69 @@ const drawPlayer = (x: number, y: number, time: number) => {
   });
   draw(() => {
     // WEAPON
-    context.setTransform(
-      1,
-      0,
-      0,
-      1,
-      canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      canvas.height / 2 +
-        Math.sin(time / 240) +
-        y * TILE_HEIGHT +
-        Math.sin(time / 240),
-    );
-    context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
-    context.fillStyle = '#aaf';
-    context.fillRect(-5, 0, 10, 80);
-    context.setTransform(
-      1,
-      0,
-      0,
-      1,
-      canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      canvas.height / 2 +
-        Math.sin(time / 240) +
-        y * TILE_HEIGHT +
-        Math.sin(time / 240),
-    );
-    context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
-    context.fillStyle = '#000';
-    context.fillRect(-5, 0, 10, 20);
+    if (state.attackTime) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+        canvas.height / 2 +
+          Math.sin(time / 240) +
+          y * TILE_HEIGHT +
+          Math.sin(time / 240),
+      );
+      context.rotate(
+        degreeToRadian(190) - Math.sin((time - state.attackTime) / 50),
+      );
+      context.fillStyle = '#aaf';
+      context.fillRect(-5, 0, 10, 80);
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+        canvas.height / 2 +
+          Math.sin(time / 240) +
+          y * TILE_HEIGHT +
+          Math.sin(time / 240),
+      );
+      context.rotate(
+        degreeToRadian(190) - Math.sin((time - state.attackTime) / 50),
+      );
+      context.fillStyle = '#000';
+      context.fillRect(-5, 0, 10, 20);
+    } else {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+        canvas.height / 2 +
+          Math.sin(time / 240) +
+          y * TILE_HEIGHT +
+          Math.sin(time / 240),
+      );
+      context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
+      context.fillStyle = '#aaf';
+      context.fillRect(-5, 0, 10, 80);
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+        canvas.height / 2 +
+          Math.sin(time / 240) +
+          y * TILE_HEIGHT +
+          Math.sin(time / 240),
+      );
+      context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
+      context.fillStyle = '#000';
+      context.fillRect(-5, 0, 10, 20);
+    }
   });
   draw(() => {
     // arms
@@ -199,4 +239,5 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') state.x -= 1;
   if (e.key === 'ArrowUp') state.y -= 1;
   if (e.key === 'ArrowDown') state.y += 1;
+  if (e.key === ' ') state.attack = true;
 });
