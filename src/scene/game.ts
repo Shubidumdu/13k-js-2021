@@ -428,5 +428,9 @@ window.addEventListener('keydown', (e) => {
     if (state.y === TILE_SIZE - 1) return;
     state.y += 1;
   }
-  if (e.key === ' ') state.attack = performance.now();
+  if (e.key === ' ') {
+    const now = performance.now();
+    if (now - state.attack < ATTACK_TIME) return;
+    state.attack = performance.now();
+  }
 });
