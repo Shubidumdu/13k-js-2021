@@ -1,9 +1,9 @@
-import { canvas, context, draw } from '../canvas';
+import { draw } from '../canvas';
 import { FONT } from '../font';
 import { degreeToRadian } from '../utils';
 
 const drawRoach = () => {
-  draw(() => {
+  draw((context, canvas) => {
     // body
     context.setTransform(1, 0, 0, 2, canvas.width / 2, canvas.height / 2);
     context.arc(0, 0, 40, 0, degreeToRadian(360));
@@ -12,7 +12,7 @@ const drawRoach = () => {
     context.fillStyle = '#6A3D3D';
     context.fill();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // eyes
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.fillStyle = '#000';
@@ -20,14 +20,14 @@ const drawRoach = () => {
     context.arc(10, -40, 5, 0, degreeToRadian(360));
     context.fill();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // mouth
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.arc(0, -20, 10, 0, degreeToRadian(180));
     context.fillStyle = '#000';
     context.fill();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // arms
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(-50, 0);
@@ -36,7 +36,7 @@ const drawRoach = () => {
     context.quadraticCurveTo(50, -20, 25, 0);
     context.stroke();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // legs
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(-20, 50);
@@ -45,7 +45,7 @@ const drawRoach = () => {
     context.quadraticCurveTo(30, 80, 40, 100);
     context.stroke();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // feelers
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(-10, -60);
@@ -57,11 +57,11 @@ const drawRoach = () => {
 };
 
 export const drawTitle = () => {
-  context.textBaseline = 'middle';
-  context.textAlign = 'center';
-  context.font = FONT;
   drawRoach();
-  draw(() => {
+  draw((context, canvas) => {
+    context.textBaseline = 'middle';
+    context.textAlign = 'center';
+    context.font = FONT;
     context.fillStyle = '#fff';
     context.shadowOffsetX = 3;
     context.shadowOffsetY = 3;

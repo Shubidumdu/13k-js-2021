@@ -6,7 +6,7 @@ const TILE_HEIGHT = 40;
 const state = {
   x: 0,
   y: 0,
-  attack: false,
+  attack: 0,
 };
 
 export const drawGame = (time: number) => {
@@ -199,8 +199,4 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') state.x -= 1;
   if (e.key === 'ArrowUp') state.y -= 1;
   if (e.key === 'ArrowDown') state.y += 1;
-  if (e.key === ' ') {
-    console.log('');
-    state.attack = !state.attack;
-  }
 });
