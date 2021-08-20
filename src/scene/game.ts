@@ -3,11 +3,13 @@ import { degreeToRadian } from '../utils';
 
 const TILE_WIDTH = 120;
 const TILE_HEIGHT = 40;
+
+const ATTACK_TIME = 200;
+
 const state = {
   x: 0,
   y: 0,
-  attack: false,
-  attackTime: 0,
+  attack: 0,
 };
 
 export const drawGame = (time: number) => {
@@ -16,20 +18,26 @@ export const drawGame = (time: number) => {
 };
 
 const drawPlayer = (x: number, y: number, time: number) => {
-  if (state.attack) {
-    state.attackTime = time;
-    state.attack = false;
-  }
+  const attackProgress = (time - state.attack) / ATTACK_TIME;
+  const isAttacking = attackProgress < 1 ? true : false;
   draw(() => {
     // BODY
-    context.setTransform(1, 0, 0, 2, canvas.width / 2, canvas.height / 2);
-    context.arc(
-      -160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -10 + (y * TILE_HEIGHT) / 2 + Math.sin(time / 240),
-      20,
+    context.setTransform(
+      1,
       0,
-      degreeToRadian(360),
+      0,
+      1,
+      canvas.width / 2 + (-160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+      canvas.height / 2 + (-20 + y * TILE_HEIGHT + Math.sin(time / 240)),
     );
+    if (isAttacking) {
+      context.rotate(
+        degreeToRadian(-20) *
+          Math.pow(attackProgress, 2) *
+          (3 * attackProgress - 3),
+      );
+    }
+    context.ellipse(0, 0, 20, 40, 0, 0, 2 * Math.PI);
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
     context.fillStyle = '#6A3D3D';
@@ -37,166 +45,328 @@ const drawPlayer = (x: number, y: number, time: number) => {
   });
   draw(() => {
     // EYES
-    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
-    context.arc(
-      -160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -40 + y * TILE_HEIGHT + Math.sin(time / 240),
-      3,
-      0,
-      degreeToRadian(360),
-    );
-    context.arc(
-      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -40 + y * TILE_HEIGHT + Math.sin(time / 240),
-      3,
-      0,
-      degreeToRadian(360),
-    );
+    if (isAttacking) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 +
+          (-160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6) +
+          2 * Math.sin(Math.PI * attackProgress),
+        canvas.height / 2 +
+          (-40 + y * TILE_HEIGHT + Math.sin(time / 240)) +
+          2 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 + (-40 + y * TILE_HEIGHT + Math.sin(time / 240)),
+      );
+    context.arc(0, 0, 3, 0, degreeToRadian(360));
+    if (isAttacking) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 +
+          (-150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6) +
+          2 * Math.sin(Math.PI * attackProgress),
+        canvas.height / 2 +
+          (-40 + y * TILE_HEIGHT + Math.sin(time / 240)) +
+          2 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 + (-40 + y * TILE_HEIGHT + Math.sin(time / 240)),
+      );
+    if (isAttacking) {
+      context.rotate(
+        degreeToRadian(-20) *
+          Math.pow(attackProgress, 2) *
+          (3 * attackProgress - 3),
+      );
+    }
+    context.arc(0, 0, 3, 0, degreeToRadian(360));
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
     context.fillStyle = '#000';
     context.fill();
   });
   draw(() => {
-    // WEAPON
-    if (state.attackTime) {
-      context.setTransform(
-        1,
-        0,
-        0,
-        1,
-        canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-        canvas.height / 2 +
-          Math.sin(time / 240) +
-          y * TILE_HEIGHT +
-          Math.sin(time / 240),
-      );
+    // Beam Sword
+    context.setTransform(
+      1,
+      0,
+      0,
+      1,
+      canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      canvas.height / 2 +
+        Math.sin(time / 240) +
+        y * TILE_HEIGHT +
+        Math.sin(time / 240),
+    );
+    context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
+    if (isAttacking) {
       context.rotate(
-        degreeToRadian(190) - Math.sin((time - state.attackTime) / 50),
+        degreeToRadian(-180) *
+          Math.pow(attackProgress, 2) *
+          (3 * attackProgress - 3),
       );
-      context.fillStyle = '#aaf';
-      context.fillRect(-5, 0, 10, 80);
-      context.setTransform(
-        1,
-        0,
-        0,
-        1,
-        canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-        canvas.height / 2 +
-          Math.sin(time / 240) +
-          y * TILE_HEIGHT +
-          Math.sin(time / 240),
-      );
-      context.rotate(
-        degreeToRadian(190) - Math.sin((time - state.attackTime) / 50),
-      );
-      context.fillStyle = '#000';
-      context.fillRect(-5, 0, 10, 20);
-    } else {
-      context.setTransform(
-        1,
-        0,
-        0,
-        1,
-        canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-        canvas.height / 2 +
-          Math.sin(time / 240) +
-          y * TILE_HEIGHT +
-          Math.sin(time / 240),
-      );
-      context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
-      context.fillStyle = '#aaf';
-      context.fillRect(-5, 0, 10, 80);
-      context.setTransform(
-        1,
-        0,
-        0,
-        1,
-        canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-        canvas.height / 2 +
-          Math.sin(time / 240) +
-          y * TILE_HEIGHT +
-          Math.sin(time / 240),
-      );
-      context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
-      context.fillStyle = '#000';
-      context.fillRect(-5, 0, 10, 20);
     }
+    context.fillStyle = '#aaf';
+    context.fillRect(-5, 0, 10, 80);
+    context.setTransform(
+      1,
+      0,
+      0,
+      1,
+      canvas.width / 2 - 130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
+      canvas.height / 2 +
+        Math.sin(time / 240) +
+        y * TILE_HEIGHT +
+        Math.sin(time / 240),
+    );
+    context.rotate(degreeToRadian(190 + Math.sin(time / 240)));
+    if (isAttacking) {
+      context.rotate(
+        degreeToRadian(-180) *
+          Math.pow(attackProgress, 2) *
+          (3 * attackProgress - 3),
+      );
+    }
+    context.fillStyle = '#000';
+    context.fillRect(-5, 0, 10, 20);
   });
   draw(() => {
     // arms
-    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
-    context.moveTo(
-      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -30 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.quadraticCurveTo(
-      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      0 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -10 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.moveTo(
-      -142 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -30 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.quadraticCurveTo(
-      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      0 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -130 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -10 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
+    if (isAttacking) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 +
+          (-30 + y * TILE_HEIGHT + Math.sin(time / 240)) +
+          2 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 + (-30 + y * TILE_HEIGHT + Math.sin(time / 240)),
+      );
+    context.moveTo(0, 0);
+    if (isAttacking) {
+      context.quadraticCurveTo(
+        0,
+        30 - 30 * Math.sin(Math.PI * attackProgress),
+        40 + 5 * Math.sin(Math.PI * attackProgress),
+        20 + 5 * Math.sin(Math.PI * attackProgress),
+      );
+    } else context.quadraticCurveTo(0, 30, 40, 20);
+    if (isAttacking) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 +
+          (-142 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6) +
+          2 * Math.sin(attackProgress * Math.PI),
+        canvas.height / 2 +
+          (-30 + y * TILE_HEIGHT + Math.sin(time / 240)) +
+          2 * Math.sin(attackProgress * Math.PI),
+      );
+    } else
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-142 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 + (-30 + y * TILE_HEIGHT + Math.sin(time / 240)),
+      );
+    context.moveTo(0, 0);
+    if (isAttacking) {
+      context.quadraticCurveTo(
+        0,
+        30 - 20 * Math.sin(Math.PI * attackProgress),
+        12 + 5 * Math.sin(Math.PI * attackProgress),
+        20 + 5 * Math.sin(Math.PI * attackProgress),
+      );
+    } else context.quadraticCurveTo(2, 30, 12, 20);
     context.strokeStyle = '#000';
     context.stroke();
   });
   draw(() => {
     // legs
-    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
-    context.moveTo(
-      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -0 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.quadraticCurveTo(
-      -165 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 240),
-      0 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      25 + y * TILE_HEIGHT,
-    );
-    context.moveTo(
-      -144 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -0 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.quadraticCurveTo(
-      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 + Math.sin(time / 240),
-      0 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -140 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      20 + y * TILE_HEIGHT,
-    );
+    if (isAttacking) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 +
+          (-170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6) -
+          4 * Math.sin(Math.PI * attackProgress),
+        canvas.height / 2 +
+          y * TILE_HEIGHT -
+          4 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 + y * TILE_HEIGHT,
+      );
+    context.moveTo(0, 0);
+    if (isAttacking) {
+      context.quadraticCurveTo(
+        5 + Math.sin(time / 240),
+        2 * Math.sin(Math.PI * attackProgress) + Math.sin(time / 240),
+        0 - 10 * Math.sin(Math.PI * attackProgress),
+        25 + 2 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.quadraticCurveTo(
+        5 + Math.sin(time / 240),
+        Math.sin(time / 240),
+        0,
+        25,
+      );
+    if (isAttacking) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 +
+          (-144 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6) -
+          2 * Math.sin(Math.PI * attackProgress),
+        canvas.height / 2 +
+          (-0 + y * TILE_HEIGHT + Math.sin(time / 240)) +
+          2 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-144 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 + (-0 + y * TILE_HEIGHT + Math.sin(time / 240)),
+      );
+    context.moveTo(0, 0);
+    if (isAttacking) {
+      context.quadraticCurveTo(
+        4 + Math.sin(time / 240),
+        Math.sin(time / 240),
+        4 - 2 * Math.sin(Math.PI * attackProgress),
+        20 - 2 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.quadraticCurveTo(
+        4 + Math.sin(time / 240),
+        Math.sin(time / 240),
+        4,
+        20,
+      );
     context.stroke();
   });
   draw(() => {
     // feelers
-    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
-    context.moveTo(
-      -170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -50 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.quadraticCurveTo(
-      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
-      -100 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -180 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
-      -80 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.moveTo(
-      -150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6,
-      -50 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
-    context.quadraticCurveTo(
-      -120 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
-      -100 + y * TILE_HEIGHT + Math.sin(time / 240),
-      -160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6 - Math.sin(time / 240),
-      -80 + y * TILE_HEIGHT + Math.sin(time / 240),
-    );
+    if (isAttacking) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 +
+          (-170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6) +
+          4 * Math.sin(Math.PI * attackProgress),
+        canvas.height / 2 +
+          (-50 + y * TILE_HEIGHT + Math.sin(time / 240)) +
+          2 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-170 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 + (-50 + y * TILE_HEIGHT + Math.sin(time / 240)),
+      );
+    context.moveTo(0, 0);
+    if (isAttacking) {
+      context.quadraticCurveTo(
+        20 - Math.sin(time / 240),
+        -50 + Math.sin(time / 240),
+        -10 - Math.sin(time / 240) + 16 * Math.sin(Math.PI * attackProgress),
+        -30 + Math.sin(time / 240) - 20 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.quadraticCurveTo(
+        20 - Math.sin(time / 240),
+        -50 + Math.sin(time / 240),
+        -10 - Math.sin(time / 240),
+        -30 + Math.sin(time / 240),
+      );
+    if (isAttacking) {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 +
+          (-150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6) +
+          4 * Math.sin(Math.PI * attackProgress),
+        canvas.height / 2 +
+          (-50 + y * TILE_HEIGHT + Math.sin(time / 240)) +
+          2 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + (-150 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+        canvas.height / 2 + (-50 + y * TILE_HEIGHT + Math.sin(time / 240)),
+      );
+    context.moveTo(0, 0);
+    if (isAttacking) {
+      context.quadraticCurveTo(
+        30 - Math.sin(time / 240),
+        -50 + Math.sin(time / 240),
+        -10 - Math.sin(time / 240) + 24 * Math.sin(Math.PI * attackProgress),
+        -30 + Math.sin(time / 240) - 10 * Math.sin(Math.PI * attackProgress),
+      );
+    } else
+      context.quadraticCurveTo(
+        30 - Math.sin(time / 240),
+        -50 + Math.sin(time / 240),
+        -10 - Math.sin(time / 240),
+        -30 + Math.sin(time / 240),
+      );
     context.stroke();
   });
 };
@@ -239,5 +409,5 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') state.x -= 1;
   if (e.key === 'ArrowUp') state.y -= 1;
   if (e.key === 'ArrowDown') state.y += 1;
-  if (e.key === ' ') state.attack = true;
+  if (e.key === ' ') state.attack = performance.now();
 });
