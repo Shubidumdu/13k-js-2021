@@ -10,7 +10,7 @@ const state = {
 };
 
 export const drawGame = (time: number) => {
-  drawMap(4, canvas.width / 2 + 40, canvas.height / 2, TILE_WIDTH, TILE_HEIGHT);
+  drawMap(4, canvas.width / 2, canvas.height / 2, TILE_WIDTH, TILE_HEIGHT);
   drawPlayer(state.x, state.y, time);
 };
 
