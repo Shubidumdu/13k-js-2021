@@ -28,6 +28,7 @@ export const drawGame = (time: number) => {
     TILE_HEIGHT,
   );
   drawLife(state.life);
+  drawEnemy(3, 0, time);
   if (
     time - state.damageTime < DAMAGE_TIME &&
     state.damageTime &&
@@ -51,6 +52,32 @@ const drawLife = (life: number) => {
     context.fillText('ROACH', -100, 18);
     context.fillStyle = '#ffa';
     context.fillRect(0, 0, 28 * life, 20);
+  });
+};
+
+const drawEnemy = (x: number, y: number, time: number) => {
+  const positionX =
+    canvas.width / 2 + (-160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6);
+  const positionY =
+    canvas.height / 2 + (-20 + y * TILE_HEIGHT + Math.sin(time / 240));
+  draw((context, canvas) => {
+    // BODY
+    context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.beginPath();
+    context.arc(0, 0, 40, 0, degreeToRadian(360));
+    context.fillStyle = '#6f9';
+    context.fill();
+    context.closePath();
+    context.beginPath();
+    context.arc(-20, -10, 5, 0, degreeToRadian(360));
+    context.fillStyle = '#000';
+    context.fill();
+    context.closePath();
+    context.beginPath();
+    context.arc(10, -10, 5, 0, degreeToRadian(360));
+    context.fillStyle = '#000';
+    context.fill();
+    context.closePath();
   });
 };
 
