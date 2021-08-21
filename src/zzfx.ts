@@ -1,11 +1,8 @@
 // @ts-nocheck
-'use strict';
 let zzfx, zzfxV, zzfxX;
 
-// ZzFXMicro - Zuper Zmall Zound Zynth - v1.1.8 ~ 884 bytes minified
-zzfxV = 0.2; // volume
+zzfxV = 0.2;
 export default zzfx = (
-  // play sound
   p = 1,
   k = 0.05,
   b = 220,
