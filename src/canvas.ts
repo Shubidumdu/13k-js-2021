@@ -22,10 +22,12 @@ export function draw(
     canvas?: HTMLCanvasElement,
   ) => void,
 ) {
-  context.setTransform(1, 0, 0, 1, 0, 0);
+  context.save();
   context.beginPath();
+  context.setTransform(1, 0, 0, 1, 0, 0);
   callback(context, canvas);
   context.closePath();
+  context.restore();
 }
 
 function init() {

@@ -1,4 +1,5 @@
-import { canvas, context, draw } from '../canvas';
+import { canvas, draw } from '../canvas';
+import { getFont } from '../font';
 import { degreeToRadian } from '../utils';
 import zzfx from '../zzfx';
 
@@ -12,7 +13,9 @@ const state = {
   x: 0,
   y: 0,
   attack: 0,
-  direction: -1, // 1 = RIGHT, -1 = LEFT
+  direction: 1, // 1 = RIGHT, -1 = LEFT
+  life: 10,
+  damageTime: 0,
 };
 
 export const drawGame = (time: number) => {
@@ -23,13 +26,37 @@ export const drawGame = (time: number) => {
     TILE_WIDTH,
     TILE_HEIGHT,
   );
+  drawLife(state.life);
+  if (
+    time - state.damageTime < 800 &&
+    state.damageTime &&
+    Math.ceil(time) % 2 === 0
+  )
+    return;
   drawPlayer(state.x, state.y, time);
+};
+
+const drawLife = (life: number) => {
+  draw((context, canvas) => {
+    context.setTransform(
+      1,
+      0,
+      0,
+      1,
+      canvas.width / 2 - 140,
+      canvas.height / 2 - 240,
+    );
+    context.font = getFont(18);
+    context.fillText('ROACH', -100, 18);
+    context.fillStyle = '#ffa';
+    context.fillRect(0, 0, 28 * life, 20);
+  });
 };
 
 const drawPlayer = (x: number, y: number, time: number) => {
   const attackProgress = (time - state.attack) / ATTACK_TIME;
   const isAttacking = attackProgress < 1 && state.attack ? true : false;
-  draw(() => {
+  draw((context, canvas) => {
     // BODY
     context.setTransform(
       1,
@@ -53,7 +80,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
     context.fillStyle = '#6A3D3D';
     context.fill();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // EYES
     if (isAttacking) {
       if (state.direction === -1) {
@@ -163,7 +190,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
     context.fillStyle = '#000';
     context.fill();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // Beam Sword
     if (state.direction === -1) {
       context.setTransform(
@@ -237,7 +264,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
     context.fillStyle = '#000';
     context.fillRect(-5, 0, 10, 20);
   });
-  draw(() => {
+  draw((context, canvas) => {
     // arms
     if (isAttacking) {
       if (state.direction === -1) {
@@ -354,7 +381,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
     context.strokeStyle = '#000';
     context.stroke();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // legs
     if (isAttacking) {
       if (state.direction === -1) {
@@ -486,7 +513,7 @@ const drawPlayer = (x: number, y: number, time: number) => {
       );
     context.stroke();
   });
-  draw(() => {
+  draw((context, canvas) => {
     // feelers
     if (isAttacking) {
       if (state.direction === -1) {
@@ -627,7 +654,7 @@ const drawMap = (
   tileWidth: number,
   tileHeight: number,
 ) => {
-  draw(() => {
+  draw((context, canvas) => {
     context.setTransform(
       1,
       0,
@@ -656,33 +683,66 @@ const drawMap = (
 window.addEventListener('keydown', (e) => {
   const now = performance.now();
   if (now - state.attack < ATTACK_TIME) return;
-  if (e.key === 'd') {
+  if (e.key === 'ArrowRight') {
     if (state.x === TILE_SIZE - 1) return;
     state.x += 1;
   }
-  if (e.key === 'a') {
+  if (e.key === 'ArrowLeft') {
     if (state.x === 0) return;
     state.x -= 1;
   }
-  if (e.key === 'w') {
+  if (e.key === 'ArrowUp') {
     if (state.y === 0) return;
     state.y -= 1;
   }
-  if (e.key === 's') {
+  if (e.key === 'ArrowDown') {
     if (state.y === TILE_SIZE - 1) return;
     state.y += 1;
   }
-  if (e.key === 'ArrowRight') {
+  if (e.key === 'd') {
     soundLightSaber();
     state.direction = 1;
     state.attack = performance.now();
   }
-  if (e.key === 'ArrowLeft') {
+  if (e.key === 's') {
     soundLightSaber();
     state.direction = -1;
     state.attack = performance.now();
   }
+  if (e.key === ' ') {
+    getAttacked(1);
+  }
 });
+
+const getAttacked = (damage: number) => {
+  if (!state.life) return;
+  state.life -= damage;
+  state.damageTime = performance.now();
+  zzfx(
+    ...[
+      2.19,
+      ,
+      ,
+      ,
+      ,
+      0.11,
+      3,
+      0.1,
+      -3.7,
+      0.8,
+      ,
+      ,
+      0.19,
+      0.5,
+      ,
+      0.4,
+      0.19,
+      0.87,
+      0.06,
+      0.18,
+    ],
+  );
+};
 
 const soundLightSaber = () => {
   zzfx(
