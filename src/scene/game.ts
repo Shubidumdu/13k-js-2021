@@ -8,6 +8,7 @@ const TILE_HEIGHT = 40;
 const TILE_SIZE = 4;
 
 const ATTACK_TIME = 200;
+const DAMAGE_TIME = 800;
 
 const state = {
   x: 0,
@@ -28,7 +29,7 @@ export const drawGame = (time: number) => {
   );
   drawLife(state.life);
   if (
-    time - state.damageTime < 800 &&
+    time - state.damageTime < DAMAGE_TIME &&
     state.damageTime &&
     Math.ceil(time) % 2 === 0
   )
@@ -699,12 +700,12 @@ window.addEventListener('keydown', (e) => {
     if (state.y === TILE_SIZE - 1) return;
     state.y += 1;
   }
-  if (e.key === 'd') {
+  if (e.key === 'd' || e.key === 'D') {
     soundLightSaber();
     state.direction = 1;
     state.attack = performance.now();
   }
-  if (e.key === 's') {
+  if (e.key === 's' || e.key === 'S') {
     soundLightSaber();
     state.direction = -1;
     state.attack = performance.now();
@@ -715,7 +716,7 @@ window.addEventListener('keydown', (e) => {
 });
 
 const getAttacked = (damage: number) => {
-  if (!state.life) return;
+  if (!state.life || performance.now() - state.damageTime < DAMAGE_TIME) return;
   state.life -= damage;
   state.damageTime = performance.now();
   zzfx(
