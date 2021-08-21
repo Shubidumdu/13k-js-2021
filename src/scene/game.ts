@@ -1,4 +1,4 @@
-import { canvas, draw } from '../canvas';
+import { canvas, draw, drawShape } from '../canvas';
 import { getFont } from '../font';
 import { degreeToRadian } from '../utils';
 import zzfx from '../zzfx';
@@ -36,6 +36,7 @@ export const drawGame = (time: number) => {
   )
     return;
   drawPlayer(state.x, state.y, time);
+  drawPlayer2(1, 0, time);
 };
 
 const drawLife = (life: number) => {
@@ -78,6 +79,93 @@ const drawEnemy = (x: number, y: number, time: number) => {
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
+  });
+};
+
+const drawPlayer2 = (x: number, y: number, time: number) => {
+  const attackProgress = (time - state.attack) / ATTACK_TIME;
+  const isAttacking = attackProgress < 1 && state.attack ? true : false;
+  const wave = Math.sin(time / 240);
+  draw((context, canvas) => {
+    context.setTransform(
+      1,
+      0,
+      0,
+      1,
+      canvas.width / 2 + (-160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
+      canvas.height / 2 + (-20 + y * TILE_HEIGHT),
+    );
+    if (state.direction === -1) context.scale(-1, 1);
+    if (isAttacking) {
+      context.rotate(
+        degreeToRadian(-20) *
+          Math.pow(attackProgress, 2) *
+          (3 * attackProgress - 3),
+      );
+    }
+    drawShape(() => {
+      // BODY
+      context.ellipse(0, wave, 20, 40, 0, 0, 2 * Math.PI);
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 0;
+      context.fillStyle = '#6A3D3D';
+      context.fill();
+    });
+    drawShape(() => {
+      // EYES
+      context.arc(0, -20 + wave, 3, 0, degreeToRadian(360));
+      context.arc(10, -20 + wave, 3, 0, degreeToRadian(360));
+      context.fillStyle = '#000';
+      context.fill();
+    });
+    drawShape(() => {
+      // ARMS
+      context.moveTo(-10, -10 + wave);
+      if (isAttacking) {
+        context.quadraticCurveTo(
+          -10,
+          20 - 30 * Math.sin(Math.PI * attackProgress),
+          30 + 5 * Math.sin(Math.PI * attackProgress),
+          10 + 5 * Math.sin(Math.PI * attackProgress),
+        );
+      } else context.quadraticCurveTo(-10, 20 + 2 * wave, 30, 10 - 2 * wave);
+      context.moveTo(16, -10 + wave);
+      if (isAttacking) {
+        context.quadraticCurveTo(
+          20,
+          20 - 30 * Math.sin(Math.PI * attackProgress),
+          30 + 5 * Math.sin(Math.PI * attackProgress),
+          10 + 5 * Math.sin(Math.PI * attackProgress),
+        );
+      } else context.quadraticCurveTo(20, 20 + 2 * wave, 30, 10 - 2 * wave);
+      context.stroke();
+    });
+    drawShape(() => {
+      // LEGS
+      context.moveTo(-10, 20);
+      context.quadraticCurveTo(-5 + wave, 28 + wave, -10, 48);
+      context.moveTo(14, 20);
+      context.quadraticCurveTo(24 + wave, 20 + wave, 20, 40);
+      context.stroke();
+    });
+    drawShape(() => {
+      // FEELERS
+      context.moveTo(-10, -28 + wave);
+      context.quadraticCurveTo(
+        10 + wave,
+        -80 + wave,
+        -24 + 2 * wave,
+        -60 - 2 * wave,
+      );
+      context.moveTo(10, -28 + wave);
+      context.quadraticCurveTo(
+        40 + wave,
+        -80 + wave,
+        1 + 2 * wave,
+        -60 - 2 * wave,
+      );
+      context.stroke();
+    });
   });
 };
 

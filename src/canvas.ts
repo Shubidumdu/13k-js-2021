@@ -30,6 +30,19 @@ export function draw(
   context.restore();
 }
 
+export function drawShape(
+  callback: (
+    context: CanvasRenderingContext2D,
+    canvas?: HTMLCanvasElement,
+  ) => void,
+) {
+  context.save();
+  context.beginPath();
+  callback(context, canvas);
+  context.closePath();
+  context.restore();
+}
+
 function init() {
   canvas.style.background = CANVAS_BACKGROUND;
   resizeCanvas();
