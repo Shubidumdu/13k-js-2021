@@ -86,15 +86,11 @@ const drawPlayer2 = (x: number, y: number, time: number) => {
   const attackProgress = (time - state.attack) / ATTACK_TIME;
   const isAttacking = attackProgress < 1 && state.attack ? true : false;
   const wave = Math.sin(time / 240);
+  const positionX =
+    canvas.width / 2 + (-160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6);
+  const positionY = canvas.height / 2 + (-20 + y * TILE_HEIGHT);
   draw((context, canvas) => {
-    context.setTransform(
-      1,
-      0,
-      0,
-      1,
-      canvas.width / 2 + (-160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6),
-      canvas.height / 2 + (-20 + y * TILE_HEIGHT),
-    );
+    context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (state.direction === -1) context.scale(-1, 1);
     if (isAttacking) {
       context.rotate(
@@ -103,7 +99,7 @@ const drawPlayer2 = (x: number, y: number, time: number) => {
           (3 * attackProgress - 3),
       );
     }
-    drawShape(() => {
+    drawShape((context, canvas) => {
       // BODY
       context.ellipse(0, wave, 20, 40, 0, 0, 2 * Math.PI);
       context.shadowOffsetX = 0;
@@ -111,14 +107,14 @@ const drawPlayer2 = (x: number, y: number, time: number) => {
       context.fillStyle = '#6A3D3D';
       context.fill();
     });
-    drawShape(() => {
+    drawShape((context, canvas) => {
       // EYES
       context.arc(0, -20 + wave, 3, 0, degreeToRadian(360));
       context.arc(10, -20 + wave, 3, 0, degreeToRadian(360));
       context.fillStyle = '#000';
       context.fill();
     });
-    drawShape(() => {
+    drawShape((context, canvas) => {
       // ARMS
       context.moveTo(-10, -10 + wave);
       if (isAttacking) {
@@ -140,7 +136,7 @@ const drawPlayer2 = (x: number, y: number, time: number) => {
       } else context.quadraticCurveTo(20, 20 + 2 * wave, 30, 10 - 2 * wave);
       context.stroke();
     });
-    drawShape(() => {
+    drawShape((context, canvas) => {
       // LEGS
       context.moveTo(-10, 20);
       context.quadraticCurveTo(-5 + wave, 28 + wave, -10, 48);
@@ -148,7 +144,7 @@ const drawPlayer2 = (x: number, y: number, time: number) => {
       context.quadraticCurveTo(24 + wave, 20 + wave, 20, 40);
       context.stroke();
     });
-    drawShape(() => {
+    drawShape((context, canvas) => {
       // FEELERS
       context.moveTo(-10, -28 + wave);
       context.quadraticCurveTo(
@@ -165,6 +161,40 @@ const drawPlayer2 = (x: number, y: number, time: number) => {
         -60 - 2 * wave,
       );
       context.stroke();
+    });
+    draw((context, canvas) => {
+      // SWORD
+      if (state.direction === -1)
+        context.setTransform(
+          1,
+          0,
+          0,
+          1,
+          positionX - 28,
+          positionY + 22 - Math.sin(time / 240),
+        );
+      else
+        context.setTransform(
+          1,
+          0,
+          0,
+          1,
+          positionX + 28,
+          positionY + 22 - Math.sin(time / 240),
+        );
+      if (state.direction === -1) context.scale(-1, 1);
+      context.fillStyle = '#aaf';
+      if (isAttacking) {
+        context.rotate(
+          degreeToRadian(-180) *
+            Math.pow(attackProgress, 2) *
+            (3 * attackProgress - 3),
+        );
+      }
+      context.rotate(degreeToRadian(200 - Math.sin(time / 240)));
+      context.fillRect(0, 0, 10, 120);
+      context.fillStyle = '#000';
+      context.fillRect(0, 0, 10, 20);
     });
   });
 };
