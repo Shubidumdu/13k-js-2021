@@ -10,6 +10,8 @@ const TILE_SIZE = 4;
 const ATTACK_TIME = 200;
 const DAMAGE_TIME = 800;
 
+const ENEMY_ATTACK1_TIME = 400;
+
 const state = {
   x: 0,
   y: 0,
@@ -17,6 +19,12 @@ const state = {
   direction: 1, // 1 = RIGHT, -1 = LEFT
   life: 10,
   damageTime: 0,
+};
+
+const enemyState = {
+  x: 3,
+  y: 0,
+  attack1: 0,
 };
 
 export const drawGame = (time: number) => {
@@ -28,7 +36,7 @@ export const drawGame = (time: number) => {
     TILE_HEIGHT,
   );
   drawLife(state.life);
-  drawEnemy(3, 0, time);
+  drawEnemy(enemyState.x, enemyState.y, time);
   if (
     time - state.damageTime < DAMAGE_TIME &&
     state.damageTime &&
@@ -56,6 +64,8 @@ const drawLife = (life: number) => {
 };
 
 const drawEnemy = (x: number, y: number, time: number) => {
+  const attackProgress = (time - enemyState.attack1) / ENEMY_ATTACK1_TIME;
+  const isAttacking1 = attackProgress < 1 && enemyState.attack1 ? true : false;
   const positionX =
     canvas.width / 2 + (-160 + x * TILE_WIDTH - (y * TILE_WIDTH) / 6);
   const positionY =
@@ -78,6 +88,13 @@ const drawEnemy = (x: number, y: number, time: number) => {
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
+    if (isAttacking1)
+      drawShape(() => {
+        // ATTACK 1
+        context.arc(-400 * attackProgress, 0, 10, 0, degreeToRadian(360));
+        context.fillStyle = '#6f9';
+        context.fill();
+      });
   });
 };
 
@@ -137,7 +154,6 @@ const drawPlayer = (x: number, y: number, time: number) => {
     });
     drawShape((context, canvas) => {
       // LEGS
-
       context.moveTo(-10, 20);
       if (isAttacking) {
         context.quadraticCurveTo(
@@ -294,7 +310,14 @@ window.addEventListener('keydown', (e) => {
   if (e.key === ' ') {
     getAttacked(1);
   }
+  if (e.key === 'k') {
+    enemyAttack1();
+  }
 });
+
+const enemyAttack1 = () => {
+  enemyState.attack1 = performance.now();
+};
 
 const getAttacked = (damage: number) => {
   if (!state.life || performance.now() - state.damageTime < DAMAGE_TIME) return;
