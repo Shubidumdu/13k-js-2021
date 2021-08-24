@@ -24,20 +24,6 @@ export function draw(
 ) {
   context.save();
   context.beginPath();
-  context.setTransform(1, 0, 0, 1, 0, 0);
-  callback(context, canvas);
-  context.closePath();
-  context.restore();
-}
-
-export function drawShape(
-  callback: (
-    context: CanvasRenderingContext2D,
-    canvas?: HTMLCanvasElement,
-  ) => void,
-) {
-  context.save();
-  context.beginPath();
   callback(context, canvas);
   context.closePath();
   context.restore();
