@@ -52,3 +52,9 @@ export const soundHitted = () => {
     ],
   );
 };
+
+export const enemyHitted = () => {
+  zzfx(
+    ...[1.01, , 376, , , 0.11, 1, 1.65, -8.2, , , , , 0.4, , 0.1, , 0.93, 0.04],
+  ); // Hit 138
+};

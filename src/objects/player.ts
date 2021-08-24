@@ -1,5 +1,5 @@
 import { canvas, draw } from '../canvas';
-import { degreeToRadian } from '../utils';
+import { degreeToRadian, getTimings } from '../utils';
 import { MapState } from './map';
 
 export interface PlayerState {
@@ -31,16 +31,23 @@ interface DrawPlayerProps {
 }
 
 export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
-  if (
-    time - player.damage.start < player.damage.duration &&
-    player.damage.start &&
-    Math.ceil(time) % 2 === 0
-  )
-    return;
-  const attackProgress = (time - player.attack.start) / player.attack.duration;
-  const isAttacking = attackProgress < 1;
-  const movingProgress = (time - player.move.start) / player.move.duration;
-  const isMoving = movingProgress < 1;
+  // Damage Effect
+  const [attackProgress, isAttacking] = getTimings({
+    time,
+    start: player.attack.start,
+    duration: player.attack.duration,
+  });
+  const [movingProgress, isMoving] = getTimings({
+    time,
+    start: player.move.start,
+    duration: player.move.duration,
+  });
+  const [_, isTakingDamage] = getTimings({
+    time,
+    start: player.damage.start,
+    duration: player.damage.duration,
+  });
+  if (isTakingDamage && Math.ceil(time) % 2 === 0) return;
   const wave = Math.sin(time / 240);
   const positionX = isMoving
     ? canvas.width / 2 +
@@ -63,7 +70,6 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
         1 / 2) *
         map.tileHeight
     : canvas.height / 2 + (player.y - 1 / 2) * map.tileHeight;
-  console.log(movingProgress);
   draw((context) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (player.direction === -1) context.scale(-1, 1);

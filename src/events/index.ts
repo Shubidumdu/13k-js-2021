@@ -1,17 +1,17 @@
 import { GameState } from '../scene/game';
-import { soundHitted, soundLightSaber } from '../sounds/effects';
+import { enemyHitted, soundHitted, soundLightSaber } from '../sounds/effects';
 
 let gameEventHandler;
 
 export const addGameEventListener = (state: GameState) => {
-  const { life, player, map } = state;
+  const { life, player, enemy, map } = state;
 
   gameEventHandler = (e: KeyboardEvent) => {
     const now = performance.now();
     if (now - player.attack.start < player.attack.duration) return;
     if (e.key === 'ArrowRight') {
       if (player.x === map.size - 1) return;
-      player.move.start = performance.now();
+      player.move.start = now;
       player.move.before = {
         x: player.x,
         y: player.y,
@@ -20,7 +20,7 @@ export const addGameEventListener = (state: GameState) => {
     }
     if (e.key === 'ArrowLeft') {
       if (player.x === 0) return;
-      player.move.start = performance.now();
+      player.move.start = now;
       player.move.before = {
         x: player.x,
         y: player.y,
@@ -29,7 +29,7 @@ export const addGameEventListener = (state: GameState) => {
     }
     if (e.key === 'ArrowUp') {
       if (player.y === 0) return;
-      player.move.start = performance.now();
+      player.move.start = now;
       player.move.before = {
         x: player.x,
         y: player.y,
@@ -38,7 +38,7 @@ export const addGameEventListener = (state: GameState) => {
     }
     if (e.key === 'ArrowDown') {
       if (player.y === map.size - 1) return;
-      player.move.start = performance.now();
+      player.move.start = now;
       player.move.before = {
         x: player.x,
         y: player.y,
@@ -48,21 +48,25 @@ export const addGameEventListener = (state: GameState) => {
     if (e.key === 'd' || e.key === 'D') {
       soundLightSaber();
       player.direction = 1;
-      player.attack.start = performance.now();
+      player.attack.start = now;
+      if (enemy.x === player.x + 1 && enemy.y === player.y) {
+        enemy.damage.start = now;
+        enemyHitted();
+      }
     }
     if (e.key === 's' || e.key === 'S') {
       soundLightSaber();
       player.direction = -1;
-      player.attack.start = performance.now();
+      player.attack.start = now;
+      if (enemy.x === player.x - 1 && enemy.y === player.y) {
+        enemy.damage.start = now;
+        enemyHitted();
+      }
     }
     if (e.key === ' ') {
-      if (
-        !life ||
-        performance.now() - player.damage.start < player.damage.duration
-      )
-        return;
+      if (!life || now - player.damage.start < player.damage.duration) return;
       life.remain -= 1;
-      player.damage.start = performance.now();
+      player.damage.start = now;
       soundHitted();
     }
   };
