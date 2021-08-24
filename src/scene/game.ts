@@ -3,6 +3,8 @@ import { drawEnemy, EnemyState } from '../objects/enemy';
 import { drawLifeBar, LifeState } from '../objects/lifeBar';
 import { drawMap, MapState } from '../objects/map';
 import { drawPlayer, PlayerState } from '../objects/player';
+import { soundHitted } from '../sounds/effects';
+import { getTimings } from '../utils';
 
 const TILE_WIDTH = 120;
 const TILE_HEIGHT = 40;
@@ -69,7 +71,22 @@ const gameState: GameState = {
   enemy: enemyState,
 };
 
+export const updateGame = (time: number) => {
+  if (enemyState.x === playerState.x && enemyState.y === playerState.y) {
+    const [isTakingDamage] = getTimings({
+      time,
+      start: playerState.damage.start,
+      duration: playerState.damage.duration,
+    });
+    if (isTakingDamage) return;
+    lifeState.player -= 10;
+    playerState.damage.start = time;
+    soundHitted();
+  }
+};
+
 export const drawGame = (time: number) => {
+  updateGame(time);
   drawMap(gameState.map);
   drawLifeBar(gameState.life);
   drawEnemy({ time, enemy: enemyState, map: mapState, player: playerState });

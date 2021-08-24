@@ -10,8 +10,8 @@ export const getTimings = ({
   time,
   start,
   duration,
-}: GetTimingProps): [progress: number, isProgressing: boolean] => {
+}: GetTimingProps): [isProgressing: boolean, progress: number] => {
   const progress = (time - start) / duration;
   const isProgressing = progress < 1;
-  return [progress, isProgressing];
+  return [isProgressing, progress];
 };

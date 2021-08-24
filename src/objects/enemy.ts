@@ -25,7 +25,7 @@ export const drawEnemy = ({ map, enemy, time }: DrawEnemyProps) => {
     (-160 + enemy.x * map.tileWidth - (enemy.y * map.tileWidth) / 6);
   const positionY =
     canvas.height / 2 + (-20 + enemy.y * map.tileWidth + Math.sin(time / 240));
-  const [_, isTakingDamage] = getTimings({
+  const [isTakingDamage] = getTimings({
     time,
     start: enemy.damage.start,
     duration: enemy.damage.duration,

@@ -33,22 +33,22 @@ interface DrawPlayerProps {
 
 export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
   // Damage Effect
-  const [attackProgress, isAttacking] = getTimings({
+  const [isAttacking, attackProgress] = getTimings({
     time,
     start: player.attack.start,
     duration: player.attack.duration,
   });
-  const [movingProgress, isMoving] = getTimings({
+  const [isMoving, movingProgress] = getTimings({
     time,
     start: player.move.start,
     duration: player.move.duration,
   });
-  const [_, isTakingDamage] = getTimings({
+  const [isTakingDamage] = getTimings({
     time,
     start: player.damage.start,
     duration: player.damage.duration,
   });
-  if (isTakingDamage && Math.ceil(time) % 2 === 0) return;
+  if (isTakingDamage && Math.ceil(time) % 4 === 0) return;
   const wave = Math.sin(time / 240);
   const positionX = isMoving
     ? canvas.width / 2 +
