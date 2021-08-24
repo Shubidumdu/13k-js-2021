@@ -10,6 +10,7 @@ const TILE_SIZE = 4;
 const ATTACK_TIME = 200;
 const DAMAGE_TIME = 800;
 const MOVE_TIME = 100;
+const PLAYER_POWER = 10;
 
 export interface GameState {
   life: LifeState;
@@ -19,7 +20,8 @@ export interface GameState {
 }
 
 const lifeState: LifeState = {
-  remain: 10,
+  player: 100,
+  enemy: 100,
 };
 
 const playerState: PlayerState = {
@@ -29,6 +31,7 @@ const playerState: PlayerState = {
   attack: {
     start: -Infinity,
     duration: ATTACK_TIME,
+    power: PLAYER_POWER,
   },
   damage: {
     start: -Infinity,

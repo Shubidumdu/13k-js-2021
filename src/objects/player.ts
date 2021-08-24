@@ -9,6 +9,7 @@ export interface PlayerState {
   attack: {
     start: number;
     duration: number;
+    power: number;
   };
   damage: {
     start: number;

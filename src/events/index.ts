@@ -52,6 +52,7 @@ export const addGameEventListener = (state: GameState) => {
       if (enemy.x === player.x + 1 && enemy.y === player.y) {
         enemy.damage.start = now;
         enemyHitted();
+        life.enemy -= player.attack.power;
       }
     }
     if (e.key === 's' || e.key === 'S') {
@@ -61,11 +62,12 @@ export const addGameEventListener = (state: GameState) => {
       if (enemy.x === player.x - 1 && enemy.y === player.y) {
         enemy.damage.start = now;
         enemyHitted();
+        life.enemy -= player.attack.power;
       }
     }
     if (e.key === ' ') {
       if (!life || now - player.damage.start < player.damage.duration) return;
-      life.remain -= 1;
+      life.player -= 1;
       player.damage.start = now;
       soundHitted();
     }
