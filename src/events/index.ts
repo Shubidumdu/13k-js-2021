@@ -12,21 +12,37 @@ export const addGameEventListener = (state: GameState) => {
     if (e.key === 'ArrowRight') {
       if (player.x === map.size - 1) return;
       player.move.start = performance.now();
+      player.move.before = {
+        x: player.x,
+        y: player.y,
+      };
       player.x += 1;
     }
     if (e.key === 'ArrowLeft') {
       if (player.x === 0) return;
       player.move.start = performance.now();
+      player.move.before = {
+        x: player.x,
+        y: player.y,
+      };
       player.x -= 1;
     }
     if (e.key === 'ArrowUp') {
       if (player.y === 0) return;
       player.move.start = performance.now();
+      player.move.before = {
+        x: player.x,
+        y: player.y,
+      };
       player.y -= 1;
     }
     if (e.key === 'ArrowDown') {
       if (player.y === map.size - 1) return;
       player.move.start = performance.now();
+      player.move.before = {
+        x: player.x,
+        y: player.y,
+      };
       player.y += 1;
     }
     if (e.key === 'd' || e.key === 'D') {

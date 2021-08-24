@@ -38,12 +38,32 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
   )
     return;
   const attackProgress = (time - player.attack.start) / player.attack.duration;
-  const isAttacking = attackProgress < 1 && player.attack.start ? true : false;
+  const isAttacking = attackProgress < 1;
+  const movingProgress = (time - player.move.start) / player.move.duration;
+  const isMoving = movingProgress < 1;
   const wave = Math.sin(time / 240);
-  const positionX =
-    canvas.width / 2 +
-    (-160 + player.x * map.tileWidth - (player.y * map.tileWidth) / 6);
-  const positionY = canvas.height / 2 + (-20 + player.y * map.tileHeight);
+  const positionX = isMoving
+    ? canvas.width / 2 +
+      (-(map.tileWidth + map.tileHeight) +
+        (player.move.before.x +
+          (player.x - player.move.before.x) * movingProgress) *
+          map.tileWidth -
+        ((player.move.before.y +
+          (player.y - player.move.before.y) * movingProgress) *
+          map.tileWidth) /
+          6)
+    : canvas.width / 2 +
+      (-(map.tileWidth + map.tileHeight) +
+        player.x * map.tileWidth -
+        (player.y * map.tileWidth) / 6);
+  const positionY = isMoving
+    ? canvas.height / 2 +
+      (player.move.before.y +
+        (player.y - player.move.before.y) * movingProgress -
+        1 / 2) *
+        map.tileHeight
+    : canvas.height / 2 + (player.y - 1 / 2) * map.tileHeight;
+  console.log(movingProgress);
   draw((context) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (player.direction === -1) context.scale(-1, 1);
