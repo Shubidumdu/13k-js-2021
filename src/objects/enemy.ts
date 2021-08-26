@@ -10,6 +10,12 @@ export interface EnemyState {
     start: number;
     duration: number;
   };
+  attack: {
+    type1: {
+      start: number;
+      duration: number;
+    };
+  };
 }
 
 interface DrawEnemyProps {
@@ -29,6 +35,11 @@ export const drawEnemy = ({ map, enemy, time }: DrawEnemyProps) => {
     time,
     start: enemy.damage.start,
     duration: enemy.damage.duration,
+  });
+  const [isAttaking1, attack1Progress] = getTimings({
+    time,
+    start: enemy.attack.type1.start,
+    duration: enemy.attack.type1.duration,
   });
   if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
   draw((context, canvas) => {

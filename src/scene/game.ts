@@ -13,6 +13,7 @@ const ATTACK_TIME = 200;
 const DAMAGE_TIME = 800;
 const MOVE_TIME = 100;
 const PLAYER_POWER = 10;
+const ENEMY_ATTACK1_TIME = 400;
 
 export interface GameState {
   life: LifeState;
@@ -55,6 +56,12 @@ const enemyState: EnemyState = {
   damage: {
     start: -Infinity,
     duration: DAMAGE_TIME,
+  },
+  attack: {
+    type1: {
+      start: 0,
+      duration: ENEMY_ATTACK1_TIME,
+    },
   },
 };
 
