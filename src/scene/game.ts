@@ -1,4 +1,4 @@
-import { enemyMove } from '../actions/enemy';
+import { enemyAttack, enemyMove } from '../actions/enemy';
 import { addGameEventListener } from '../events';
 import { drawEnemy, EnemyState } from '../graphic/enemy';
 import { drawLifeBar, LifeState } from '../graphic/lifeBar';
@@ -14,7 +14,6 @@ const ATTACK_TIME = 200;
 const DAMAGE_TIME = 800;
 const MOVE_TIME = 100;
 const PLAYER_POWER = 10;
-const ENEMY_ATTACK1_TIME = 400;
 const ENEMY_MOVE_SPEED = 100;
 const ENEMY_MOVE_DURATION = 1000;
 
@@ -65,10 +64,10 @@ const enemyState: EnemyState = {
     duration: DAMAGE_TIME,
   },
   attack: {
-    type1: {
-      start: -Infinity,
-      duration: ENEMY_ATTACK1_TIME,
-    },
+    start: -Infinity,
+    duration: 1000,
+    predelay: 0,
+    position: [],
   },
   move: {
     start: 1000,
@@ -120,6 +119,29 @@ export const updateGame = (time: number) => {
       ...enemyState.move.position,
     };
   }
+  // Enemy Attack
+  const [isEnemyAttacking] = getTimings({
+    time,
+    start: enemyState.attack.start + enemyState.attack.predelay,
+    duration: enemyState.attack.duration,
+  });
+  if (isEnemyAttacking) {
+    const isHitted = enemyState.attack.position.some(
+      ({ x, y }) =>
+        x === playerState.position.x && y === playerState.position.y,
+    );
+    if (isHitted) {
+      const [isTakingDamage] = getTimings({
+        time,
+        start: playerState.damage.start,
+        duration: playerState.damage.duration,
+      });
+      if (isTakingDamage) return;
+      lifeState.player -= 10;
+      playerState.damage.start = time;
+      soundHitted();
+    }
+  }
 };
 
 export const drawGame = (time: number) => {
@@ -144,9 +166,15 @@ export const drawGame = (time: number) => {
 };
 
 addGameEventListener(gameState);
-enemyMove(0, {
+enemyMove(5000, {
   enemy: enemyState,
   position: { x: 1, y: 3 },
   duration: 600,
   speed: ENEMY_MOVE_SPEED,
 });
+// enemyAttack(0, {
+//   enemy: enemyState,
+//   position: [{ x: 0, y: 0 }],
+//   duration: 2000,
+//   predelay: 1000,
+// });

@@ -27,6 +27,11 @@ export const drawMap = ({
     start: enemy.move.start,
     duration: enemy.move.duration - enemy.move.speed,
   });
+  const [isEnemyAttacking] = getTimings({
+    time,
+    start: enemy.attack.start,
+    duration: enemy.attack.duration + enemy.attack.predelay,
+  });
   draw((context, canvas) => {
     context.setTransform(
       1,
@@ -42,11 +47,26 @@ export const drawMap = ({
     context.shadowOffsetY = 8;
     for (let y = 0; y < size; y++) {
       for (let x = 0; x < size; x++) {
+        // if enemy will moving on the block
         if (
           isEnemyWaitingMove &&
           Math.ceil(time) % 4 === 0 &&
           enemy.move.position.x === x &&
           enemy.move.position.y === y
+        ) {
+          context.fillStyle = '#faa';
+          context.fillRect(
+            tileWidth * x,
+            tileHeight * y,
+            tileWidth,
+            tileHeight,
+          );
+        }
+        // if enemy will attack the block
+        else if (
+          isEnemyAttacking &&
+          Math.ceil(time) % 4 === 0 &&
+          enemy.attack.position.some(({ x: _x, y: _y }) => x === _x && y === _y)
         ) {
           context.fillStyle = '#faa';
           context.fillRect(

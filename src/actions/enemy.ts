@@ -18,3 +18,22 @@ export const enemyMove = (
     position,
   };
 };
+
+interface EnemyAttackProps {
+  enemy: EnemyState;
+  position: { x: number; y: number }[];
+  predelay: number;
+  duration: number;
+}
+
+export const enemyAttack = (
+  time: number,
+  { duration, position, enemy, predelay }: EnemyAttackProps,
+) => {
+  enemy.attack = {
+    predelay: predelay,
+    start: time,
+    duration,
+    position,
+  };
+};
