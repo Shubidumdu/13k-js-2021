@@ -3,8 +3,10 @@ import { degreeToRadian, getTimings } from '../utils';
 import { MapState } from './map';
 
 export interface PlayerState {
-  x: number;
-  y: number;
+  position: {
+    x: number;
+    y: number;
+  };
   direction: 1 | -1; // 1 = RIGHT, -1 = LEFT
   attack: {
     start: number;
@@ -54,23 +56,23 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
     ? canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (player.move.before.x +
-          (player.x - player.move.before.x) * movingProgress) *
+          (player.position.x - player.move.before.x) * movingProgress) *
           map.tileWidth -
         ((player.move.before.y +
-          (player.y - player.move.before.y) * movingProgress) *
+          (player.position.y - player.move.before.y) * movingProgress) *
           map.tileWidth) /
           6)
     : canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
-        player.x * map.tileWidth -
-        (player.y * map.tileWidth) / 6);
+        player.position.x * map.tileWidth -
+        (player.position.y * map.tileWidth) / 6);
   const positionY = isMoving
     ? canvas.height / 2 +
       (player.move.before.y +
-        (player.y - player.move.before.y) * movingProgress -
+        (player.position.y - player.move.before.y) * movingProgress -
         1 / 2) *
         map.tileHeight
-    : canvas.height / 2 + (player.y - 1 / 2) * map.tileHeight;
+    : canvas.height / 2 + (player.position.y - 1 / 2) * map.tileHeight;
   draw((context) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (player.direction === -1) context.scale(-1, 1);

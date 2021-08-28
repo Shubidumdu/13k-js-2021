@@ -1,11 +1,14 @@
 import { canvas, draw } from '../canvas';
+import { GameState } from '../scene/game';
 import { degreeToRadian, getTimings } from '../utils';
 import { MapState } from './map';
 import { PlayerState } from './player';
 
 export interface EnemyState {
-  x: number;
-  y: number;
+  position: {
+    x: number;
+    y: number;
+  };
   damage: {
     start: number;
     duration: number;
@@ -14,6 +17,14 @@ export interface EnemyState {
     type1: {
       start: number;
       duration: number;
+    };
+  };
+  move: {
+    start: number;
+    duration: number;
+    position: {
+      x: number;
+      y: number;
     };
   };
 }
@@ -28,9 +39,12 @@ interface DrawEnemyProps {
 export const drawEnemy = ({ map, enemy, time }: DrawEnemyProps) => {
   const positionX =
     canvas.width / 2 +
-    (-160 + enemy.x * map.tileWidth - (enemy.y * map.tileWidth) / 6);
+    (-160 +
+      enemy.position.x * map.tileWidth -
+      (enemy.position.y * map.tileWidth) / 6);
   const positionY =
-    canvas.height / 2 + (-20 + enemy.y * map.tileWidth + Math.sin(time / 240));
+    canvas.height / 2 +
+    (-20 + enemy.position.y * map.tileWidth + Math.sin(time / 240));
   const [isTakingDamage] = getTimings({
     time,
     start: enemy.damage.start,
@@ -40,6 +54,11 @@ export const drawEnemy = ({ map, enemy, time }: DrawEnemyProps) => {
     time,
     start: enemy.attack.type1.start,
     duration: enemy.attack.type1.duration,
+  });
+  const [isMoving, movingProgress] = getTimings({
+    time,
+    start: enemy.move.start,
+    duration: enemy.move.duration,
   });
   if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
   draw((context, canvas) => {

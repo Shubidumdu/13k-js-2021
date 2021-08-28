@@ -10,46 +10,49 @@ export const addGameEventListener = (state: GameState) => {
     const now = performance.now();
     if (now - player.attack.start < player.attack.duration) return;
     if (e.key === 'ArrowRight') {
-      if (player.x === map.size - 1) return;
+      if (player.position.x === map.size - 1) return;
       player.move.start = now;
       player.move.before = {
-        x: player.x,
-        y: player.y,
+        x: player.position.x,
+        y: player.position.y,
       };
-      player.x += 1;
+      player.position.x += 1;
     }
     if (e.key === 'ArrowLeft') {
-      if (player.x === 0) return;
+      if (player.position.x === 0) return;
       player.move.start = now;
       player.move.before = {
-        x: player.x,
-        y: player.y,
+        x: player.position.x,
+        y: player.position.y,
       };
-      player.x -= 1;
+      player.position.x -= 1;
     }
     if (e.key === 'ArrowUp') {
-      if (player.y === 0) return;
+      if (player.position.y === 0) return;
       player.move.start = now;
       player.move.before = {
-        x: player.x,
-        y: player.y,
+        x: player.position.x,
+        y: player.position.y,
       };
-      player.y -= 1;
+      player.position.y -= 1;
     }
     if (e.key === 'ArrowDown') {
-      if (player.y === map.size - 1) return;
+      if (player.position.y === map.size - 1) return;
       player.move.start = now;
       player.move.before = {
-        x: player.x,
-        y: player.y,
+        x: player.position.x,
+        y: player.position.y,
       };
-      player.y += 1;
+      player.position.y += 1;
     }
     if (e.key === 'd' || e.key === 'D') {
       soundLightSaber();
       player.direction = 1;
       player.attack.start = now;
-      if (enemy.x === player.x + 1 && enemy.y === player.y) {
+      if (
+        enemy.position.x === player.position.x + 1 &&
+        enemy.position.y === player.position.y
+      ) {
         enemy.damage.start = now;
         enemyHitted();
         life.enemy -= player.attack.power;
@@ -59,7 +62,10 @@ export const addGameEventListener = (state: GameState) => {
       soundLightSaber();
       player.direction = -1;
       player.attack.start = now;
-      if (enemy.x === player.x - 1 && enemy.y === player.y) {
+      if (
+        enemy.position.x === player.position.x - 1 &&
+        enemy.position.y === player.position.y
+      ) {
         enemy.damage.start = now;
         enemyHitted();
         life.enemy -= player.attack.power;

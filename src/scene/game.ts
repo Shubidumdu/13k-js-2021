@@ -1,8 +1,9 @@
+import { enemyMove } from '../actions/enemy';
 import { addGameEventListener } from '../events';
-import { drawEnemy, EnemyState } from '../objects/enemy';
-import { drawLifeBar, LifeState } from '../objects/lifeBar';
-import { drawMap, MapState } from '../objects/map';
-import { drawPlayer, PlayerState } from '../objects/player';
+import { drawEnemy, EnemyState } from '../graphic/enemy';
+import { drawLifeBar, LifeState } from '../graphic/lifeBar';
+import { drawMap, MapState } from '../graphic/map';
+import { drawPlayer, PlayerState } from '../graphic/player';
 import { soundHitted } from '../sounds/effects';
 import { getTimings } from '../utils';
 
@@ -14,6 +15,7 @@ const DAMAGE_TIME = 800;
 const MOVE_TIME = 100;
 const PLAYER_POWER = 10;
 const ENEMY_ATTACK1_TIME = 400;
+const ENEMY_MOVE_SPEED = 1000;
 
 export interface GameState {
   life: LifeState;
@@ -28,8 +30,10 @@ const lifeState: LifeState = {
 };
 
 const playerState: PlayerState = {
-  x: 0,
-  y: 0,
+  position: {
+    x: 0,
+    y: 0,
+  },
   direction: 1,
   attack: {
     start: -Infinity,
@@ -51,16 +55,26 @@ const playerState: PlayerState = {
 };
 
 const enemyState: EnemyState = {
-  x: 3,
-  y: 0,
+  position: {
+    x: 3,
+    y: 0,
+  },
   damage: {
     start: -Infinity,
     duration: DAMAGE_TIME,
   },
   attack: {
     type1: {
-      start: 0,
+      start: -Infinity,
       duration: ENEMY_ATTACK1_TIME,
+    },
+  },
+  move: {
+    start: 1000,
+    duration: ENEMY_MOVE_SPEED,
+    position: {
+      x: 0,
+      y: 0,
     },
   },
 };
@@ -79,7 +93,11 @@ const gameState: GameState = {
 };
 
 export const updateGame = (time: number) => {
-  if (enemyState.x === playerState.x && enemyState.y === playerState.y) {
+  // Damage
+  if (
+    enemyState.position.x === playerState.position.x &&
+    enemyState.position.y === playerState.position.y
+  ) {
     const [isTakingDamage] = getTimings({
       time,
       start: playerState.damage.start,
@@ -89,6 +107,16 @@ export const updateGame = (time: number) => {
     lifeState.player -= 10;
     playerState.damage.start = time;
     soundHitted();
+  }
+  // Enemy Move
+  if (
+    (enemyState.move.position.x !== enemyState.position.x ||
+      enemyState.move.position.y !== enemyState.position.y) &&
+    time - enemyState.move.start >= enemyState.move.duration
+  ) {
+    enemyState.position = {
+      ...enemyState.move.position,
+    };
   }
 };
 
@@ -105,3 +133,8 @@ export const drawGame = (time: number) => {
 };
 
 addGameEventListener(gameState);
+enemyMove(0, {
+  enemy: enemyState,
+  position: { x: 1, y: 0 },
+  duration: 1000,
+});
