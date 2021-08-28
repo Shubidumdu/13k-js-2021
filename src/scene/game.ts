@@ -172,9 +172,9 @@ enemyMove(5000, {
   duration: 600,
   speed: ENEMY_MOVE_SPEED,
 });
-// enemyAttack(0, {
-//   enemy: enemyState,
-//   position: [{ x: 0, y: 0 }],
-//   duration: 2000,
-//   predelay: 1000,
-// });
+enemyAttack(0, {
+  enemy: enemyState,
+  position: [{ x: 0, y: 0 }],
+  duration: 2000,
+  predelay: 1000,
+});

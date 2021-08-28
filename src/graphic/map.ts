@@ -30,7 +30,7 @@ export const drawMap = ({
   const [isEnemyAttacking] = getTimings({
     time,
     start: enemy.attack.start,
-    duration: enemy.attack.duration + enemy.attack.predelay,
+    duration: enemy.attack.predelay,
   });
   draw((context, canvas) => {
     context.setTransform(
