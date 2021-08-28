@@ -11,7 +11,8 @@ export const getTimings = ({
   start,
   duration,
 }: GetTimingProps): [isProgressing: boolean, progress: number] => {
-  const progress = (time - start) / duration;
-  const isProgressing = progress < 1;
+  const progress =
+    (time - start) / duration < 0 ? 0 : (time - start) / duration;
+  const isProgressing = progress < 1 && progress > 0;
   return [isProgressing, progress];
 };

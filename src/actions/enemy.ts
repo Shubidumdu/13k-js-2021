@@ -4,13 +4,15 @@ interface EnemyMoveProps {
   enemy: EnemyState;
   position: { x: number; y: number };
   duration: number;
+  speed: number;
 }
 
 export const enemyMove = (
   time: number,
-  { enemy, position, duration }: EnemyMoveProps,
+  { speed, enemy, position, duration }: EnemyMoveProps,
 ) => {
   enemy.move = {
+    speed,
     start: time,
     duration,
     position,

@@ -15,7 +15,8 @@ const DAMAGE_TIME = 800;
 const MOVE_TIME = 100;
 const PLAYER_POWER = 10;
 const ENEMY_ATTACK1_TIME = 400;
-const ENEMY_MOVE_SPEED = 1000;
+const ENEMY_MOVE_SPEED = 100;
+const ENEMY_MOVE_DURATION = 1000;
 
 export interface GameState {
   life: LifeState;
@@ -71,7 +72,8 @@ const enemyState: EnemyState = {
   },
   move: {
     start: 1000,
-    duration: ENEMY_MOVE_SPEED,
+    duration: ENEMY_MOVE_DURATION,
+    speed: ENEMY_MOVE_SPEED,
     position: {
       x: 0,
       y: 0,
@@ -122,19 +124,29 @@ export const updateGame = (time: number) => {
 
 export const drawGame = (time: number) => {
   updateGame(time);
-  drawMap(gameState.map);
+  drawMap({ map: gameState.map, enemy: enemyState, time });
   drawLifeBar(gameState.life);
-  drawEnemy({ time, enemy: enemyState, map: mapState, player: playerState });
-  drawPlayer({
-    time,
-    player: playerState,
-    map: mapState,
-  });
+  if (enemyState.position.y > playerState.position.y) {
+    drawPlayer({
+      time,
+      player: playerState,
+      map: mapState,
+    });
+    drawEnemy({ time, enemy: enemyState, map: mapState, player: playerState });
+  } else {
+    drawEnemy({ time, enemy: enemyState, map: mapState, player: playerState });
+    drawPlayer({
+      time,
+      player: playerState,
+      map: mapState,
+    });
+  }
 };
 
 addGameEventListener(gameState);
 enemyMove(0, {
   enemy: enemyState,
-  position: { x: 1, y: 0 },
-  duration: 1000,
+  position: { x: 1, y: 3 },
+  duration: 600,
+  speed: ENEMY_MOVE_SPEED,
 });
