@@ -1,4 +1,5 @@
 import { playerAttack, playerMove } from '../actions/player';
+import { soundLightSaber } from '../sounds/effects';
 import { mapState } from '../states/map';
 import { playerState } from '../states/player';
 import { getTimings } from '../utils';
@@ -58,20 +59,11 @@ export const addGameEventListener = () => {
       }
     }
     if (e.key === 'd' || e.key === 'D' || e.key === 's' || e.key === 'S') {
-      const [isAttacking] = getTimings({
-        time,
-        start: playerState.attack.start,
-        duration:
-          playerState.attack.predelay +
-          playerState.attack.duration +
-          playerState.attack.delay,
-      });
-      if (isAttacking) return;
       if (e.key === 'd' || e.key === 'D') {
-        playerAttack({ direction: 1 });
+        playerAttack(1);
       }
       if (e.key === 's' || e.key === 'S') {
-        playerAttack({ direction: -1 });
+        playerAttack(-1);
       }
     }
   };

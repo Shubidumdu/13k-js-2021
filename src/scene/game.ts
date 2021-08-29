@@ -1,5 +1,4 @@
-import { enemyGetDamage, enemyMove } from '../actions/enemy';
-import { playerGetDamage } from '../actions/player';
+import { playerGetDamage, updatePlayerAttack } from '../actions/player';
 import { addGameEventListener } from '../events/game';
 import { drawEnemy } from '../graphic/enemy';
 import { drawLifeBar } from '../graphic/lifeBar';
@@ -28,27 +27,7 @@ export const updateGame = (time: number) => {
     };
   }
   // Player Attack
-  const [isAttacking] = getTimings({
-    time,
-    start: playerState.attack.start + playerState.attack.predelay,
-    duration: playerState.attack.duration,
-  });
-  if (isAttacking) {
-    const [isEnemyGetDamaged] = getTimings({
-      time,
-      start: enemyState.damage.start,
-      duration: enemyState.damage.duration,
-    });
-    if (
-      playerState.attack.position.some(
-        ({ x, y }) =>
-          x === enemyState.position.x && y === enemyState.position.y,
-      ) &&
-      !isEnemyGetDamaged
-    ) {
-      enemyGetDamage(playerState.attack.power);
-    }
-  }
+  updatePlayerAttack();
   // Collision Damage
   if (
     enemyState.position.x === playerState.position.x &&

@@ -1,6 +1,8 @@
 import { soundLightSaber, soundPlayerHitted } from '../sounds/effects';
+import { enemyState } from '../states/enemy';
 import { playerState } from '../states/player';
 import { getTimings } from '../utils';
+import { enemyGetDamage } from './enemy';
 
 interface PlayerMoveProps {
   position: {
@@ -17,26 +19,20 @@ export const playerMove = ({ position }: PlayerMoveProps) => {
   };
 };
 
-interface PlayerAttackProps {
-  direction: -1 | 1;
-}
-
-export const playerAttack = ({ direction }: PlayerAttackProps) => {
-  soundLightSaber();
+export const playerAttack = (direction: 1 | -1) => {
+  const time = performance.now();
+  const [isAttacking] = getTimings({
+    time,
+    start: playerState.attack.start,
+    duration:
+      playerState.attack.duration +
+      playerState.attack.predelay +
+      playerState.attack.delay,
+  });
+  if (isAttacking) return;
+  playerState.attack.start = time;
   playerState.direction = direction;
-  playerState.attack = {
-    ...playerState.attack,
-    start: performance.now(),
-    position:
-      direction === 1
-        ? [
-            {
-              x: playerState.position.x + 1,
-              y: playerState.position.y,
-            },
-          ]
-        : [{ x: playerState.position.x - 1, y: playerState.position.y }],
-  };
+  soundLightSaber();
 };
 
 export const playerGetDamage = (damage: number) => {
@@ -53,4 +49,29 @@ export const playerGetDamage = (damage: number) => {
   playerState.life =
     playerState.life - damage < 0 ? 0 : playerState.life - damage;
   soundPlayerHitted();
+};
+
+export const updatePlayerAttack = () => {
+  const time = performance.now();
+  const [isAttacking] = getTimings({
+    time: performance.now(),
+    start: playerState.attack.start + playerState.attack.predelay,
+    duration: playerState.attack.duration,
+  });
+  if (!isAttacking) return;
+  const [isEnemyGetDamaged] = getTimings({
+    time,
+    start: enemyState.damage.start,
+    duration: enemyState.damage.duration,
+  });
+  if (
+    !isEnemyGetDamaged &&
+    ((playerState.direction === -1 &&
+      enemyState.position.x === playerState.position.x - 1 &&
+      enemyState.position.y === playerState.position.y) ||
+      (playerState.direction === 1 &&
+        enemyState.position.x === playerState.position.x + 1 &&
+        enemyState.position.y === playerState.position.y))
+  )
+    enemyGetDamage(playerState.attack.power);
 };

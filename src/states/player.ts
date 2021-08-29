@@ -12,10 +12,6 @@ export interface PlayerState {
   collisionDamage: number;
   attack: {
     start: number;
-    position: {
-      x: number;
-      y: number;
-    }[];
     predelay: number;
     duration: number;
     delay: number;
@@ -41,10 +37,9 @@ export const playerState: PlayerState = {
   direction: 1,
   attack: {
     start: -Infinity,
-    position: [],
-    predelay: 50,
-    delay: 50,
-    duration: 100,
+    predelay: 120,
+    delay: 100,
+    duration: 10,
     power: 10,
   },
   damage: {
