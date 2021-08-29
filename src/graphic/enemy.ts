@@ -15,7 +15,7 @@ interface DrawEnemyProps {
 export const drawEnemy = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
-    start: enemy.move.start + enemy.move.predelay - enemy.move.speed,
+    start: enemy.move.start + enemy.move.predelay,
     duration: enemy.move.speed,
   });
   const positionX = isMoving

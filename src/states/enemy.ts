@@ -1,4 +1,5 @@
 export interface EnemyState {
+  life: number;
   position: {
     x: number;
     y: number;
@@ -7,7 +8,7 @@ export interface EnemyState {
     start: number;
     duration: number;
   };
-  attack: {
+  attack?: {
     start: number;
     position: {
       x: number;
@@ -30,29 +31,30 @@ export interface EnemyState {
 }
 
 export const enemyState: EnemyState = {
+  life: 100,
   position: {
     x: 3,
     y: 0,
   },
   damage: {
     start: -Infinity,
-    duration: 800,
+    duration: 600,
   },
   attack: {
     start: -Infinity,
     duration: 1000,
     predelay: 0,
     delay: 0,
-    power: 1000,
+    power: 10,
     position: [],
   },
   move: {
-    start: 0,
+    start: -Infinity,
     predelay: 1000,
     speed: 100,
     position: {
-      x: 0,
-      y: 0,
+      x: 3,
+      y: 3,
     },
   },
 };

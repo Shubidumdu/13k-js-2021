@@ -1,3 +1,4 @@
+import { soundEnemyHitted } from '../sounds/effects';
 import { enemyState } from '../states/enemy';
 
 interface EnemyMoveProps {
@@ -39,4 +40,13 @@ export const enemyAttack = ({
     position,
     power,
   };
+};
+
+export const enemyGetDamage = (damage: number) => {
+  enemyState.damage = {
+    ...enemyState.damage,
+    start: performance.now(),
+  };
+  enemyState.life = enemyState.life - damage < 0 ? 0 : enemyState.life - damage;
+  soundEnemyHitted();
 };

@@ -14,7 +14,8 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
   const [isAttacking, attackProgress] = getTimings({
     time,
     start: player.attack.start,
-    duration: player.attack.duration,
+    duration:
+      player.attack.predelay + player.attack.duration + player.attack.delay,
   });
   const [isMoving, movingProgress] = getTimings({
     time,

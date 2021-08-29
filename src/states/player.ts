@@ -1,4 +1,5 @@
 export interface PlayerState {
+  life: number;
   position: {
     x: number;
     y: number;
@@ -8,6 +9,7 @@ export interface PlayerState {
     start: number;
     duration: number;
   };
+  collisionDamage: number;
   attack: {
     start: number;
     position: {
@@ -30,22 +32,24 @@ export interface PlayerState {
 }
 
 export const playerState: PlayerState = {
+  life: 100,
   position: {
     x: 0,
     y: 0,
   },
+  collisionDamage: 10,
   direction: 1,
   attack: {
     start: -Infinity,
     position: [],
-    predelay: 40,
-    delay: 100,
+    predelay: 50,
+    delay: 50,
     duration: 100,
     power: 10,
   },
   damage: {
     start: -Infinity,
-    duration: 800,
+    duration: 400,
   },
   move: {
     start: -Infinity,

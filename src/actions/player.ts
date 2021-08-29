@@ -1,5 +1,6 @@
-import { soundLightSaber } from '../sounds/effects';
+import { soundLightSaber, soundPlayerHitted } from '../sounds/effects';
 import { playerState } from '../states/player';
+import { getTimings } from '../utils';
 
 interface PlayerMoveProps {
   position: {
@@ -36,4 +37,20 @@ export const playerAttack = ({ direction }: PlayerAttackProps) => {
           ]
         : [{ x: playerState.position.x - 1, y: playerState.position.y }],
   };
+};
+
+export const playerGetDamage = (damage: number) => {
+  const [isTakingDamage] = getTimings({
+    time: performance.now(),
+    start: playerState.damage.start,
+    duration: playerState.damage.duration,
+  });
+  if (isTakingDamage) return;
+  playerState.damage = {
+    ...playerState.damage,
+    start: performance.now(),
+  };
+  playerState.life =
+    playerState.life - damage < 0 ? 0 : playerState.life - damage;
+  soundPlayerHitted();
 };
