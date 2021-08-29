@@ -1,13 +1,9 @@
 import { draw } from '../canvas';
 import { getFont } from '../font';
+import { LifeState } from '../states/life';
 
 const PLAYER_LIFE_COLOR = '#FFA';
 const ENEMY_LIFE_COLOR = '#F99';
-
-export interface LifeState {
-  enemy: number;
-  player: number;
-}
 
 export const drawLifeBar = ({ player, enemy }: LifeState) => {
   draw((context, canvas) => {

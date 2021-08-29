@@ -1,31 +1,7 @@
 import { canvas, draw } from '../canvas';
+import { MapState } from '../states/map';
+import { PlayerState } from '../states/player';
 import { degreeToRadian, getTimings } from '../utils';
-import { MapState } from './map';
-
-export interface PlayerState {
-  position: {
-    x: number;
-    y: number;
-  };
-  direction: 1 | -1; // 1 = RIGHT, -1 = LEFT
-  attack: {
-    start: number;
-    duration: number;
-    power: number;
-  };
-  damage: {
-    start: number;
-    duration: number;
-  };
-  move: {
-    start: number;
-    duration: number;
-    before: {
-      x: number;
-      y: number;
-    };
-  };
-}
 
 interface DrawPlayerProps {
   time: number;
@@ -43,7 +19,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: player.move.start,
-    duration: player.move.duration,
+    duration: player.move.speed,
   });
   const [isTakingDamage] = getTimings({
     time,
@@ -55,11 +31,11 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
   const positionX = isMoving
     ? canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
-        (player.move.before.x +
-          (player.position.x - player.move.before.x) * movingProgress) *
+        (player.position.x +
+          (player.move.position.x - player.position.x) * movingProgress) *
           map.tileWidth -
-        ((player.move.before.y +
-          (player.position.y - player.move.before.y) * movingProgress) *
+        ((player.position.y +
+          (player.move.position.y - player.position.y) * movingProgress) *
           map.tileWidth) /
           6)
     : canvas.width / 2 +
@@ -68,8 +44,8 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
         (player.position.y * map.tileWidth) / 6);
   const positionY = isMoving
     ? canvas.height / 2 +
-      (player.move.before.y +
-        (player.position.y - player.move.before.y) * movingProgress -
+      (player.position.y +
+        (player.move.position.y - player.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight
     : canvas.height / 2 + (player.position.y - 1 / 2) * map.tileHeight;

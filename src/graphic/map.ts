@@ -1,15 +1,10 @@
 import { draw } from '../canvas';
+import { EnemyState } from '../states/enemy';
+import { MapState } from '../states/map';
 import { getTimings } from '../utils';
-import { EnemyState } from './enemy';
 
 const MAP_COLOR = '#0F0';
 const SHADOW_COLOR = '#FFF';
-
-export interface MapState {
-  size: number;
-  tileWidth: number;
-  tileHeight: number;
-}
 
 interface DrawMapProps {
   map: MapState;
@@ -25,7 +20,7 @@ export const drawMap = ({
   const [isEnemyWaitingMove] = getTimings({
     time,
     start: enemy.move.start,
-    duration: enemy.move.duration - enemy.move.speed,
+    duration: enemy.move.predelay,
   });
   const [isEnemyAttacking] = getTimings({
     time,

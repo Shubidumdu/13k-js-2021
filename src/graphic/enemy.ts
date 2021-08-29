@@ -1,38 +1,9 @@
 import { enemyMove } from '../actions/enemy';
 import { canvas, draw } from '../canvas';
-import { GameState } from '../scene/game';
+import { EnemyState } from '../states/enemy';
+import { MapState } from '../states/map';
+import { PlayerState } from '../states/player';
 import { degreeToRadian, getTimings } from '../utils';
-import { MapState } from './map';
-import { PlayerState } from './player';
-
-export interface EnemyState {
-  position: {
-    x: number;
-    y: number;
-  };
-  damage: {
-    start: number;
-    duration: number;
-  };
-  attack: {
-    position: {
-      x: number;
-      y: number;
-    }[];
-    predelay: number;
-    start: number;
-    duration: number;
-  };
-  move: {
-    start: number;
-    duration: number;
-    speed: number;
-    position: {
-      x: number;
-      y: number;
-    };
-  };
-}
 
 interface DrawEnemyProps {
   map: MapState;
@@ -44,7 +15,7 @@ interface DrawEnemyProps {
 export const drawEnemy = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
-    start: enemy.move.start + enemy.move.duration - enemy.move.speed,
+    start: enemy.move.start + enemy.move.predelay - enemy.move.speed,
     duration: enemy.move.speed,
   });
   const positionX = isMoving

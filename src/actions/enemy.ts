@@ -1,39 +1,42 @@
-import { EnemyState } from '../graphic/enemy';
+import { enemyState } from '../states/enemy';
 
 interface EnemyMoveProps {
-  enemy: EnemyState;
   position: { x: number; y: number };
-  duration: number;
-  speed: number;
+  predelay?: number;
+  speed?: number;
 }
 
-export const enemyMove = (
-  time: number,
-  { speed, enemy, position, duration }: EnemyMoveProps,
-) => {
-  enemy.move = {
-    speed,
-    start: time,
-    duration,
+export const enemyMove = ({ predelay, speed, position }: EnemyMoveProps) => {
+  enemyState.move = {
+    ...enemyState.move,
+    start: performance.now(),
+    predelay: predelay ? predelay : enemyState.move.predelay,
+    speed: speed ? speed : enemyState.move.speed,
     position,
   };
 };
 
 interface EnemyAttackProps {
-  enemy: EnemyState;
   position: { x: number; y: number }[];
   predelay: number;
   duration: number;
+  delay: number;
+  power: number;
 }
 
-export const enemyAttack = (
-  time: number,
-  { duration, position, enemy, predelay }: EnemyAttackProps,
-) => {
-  enemy.attack = {
-    predelay: predelay,
-    start: time,
+export const enemyAttack = ({
+  position,
+  predelay,
+  delay,
+  duration,
+  power,
+}: EnemyAttackProps) => {
+  enemyState.attack = {
+    start: performance.now(),
     duration,
+    predelay,
+    delay,
     position,
+    power,
   };
 };

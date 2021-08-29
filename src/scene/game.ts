@@ -1,92 +1,16 @@
-import { enemyAttack, enemyMove } from '../actions/enemy';
-import { addGameEventListener } from '../events';
-import { drawEnemy, EnemyState } from '../graphic/enemy';
-import { drawLifeBar, LifeState } from '../graphic/lifeBar';
-import { drawMap, MapState } from '../graphic/map';
-import { drawPlayer, PlayerState } from '../graphic/player';
+import { addGameEventListener } from '../events/game';
+import { drawEnemy } from '../graphic/enemy';
+import { drawLifeBar } from '../graphic/lifeBar';
+import { drawMap } from '../graphic/map';
+import { drawPlayer } from '../graphic/player';
 import { soundHitted } from '../sounds/effects';
+import { enemyState } from '../states/enemy';
+import { lifeState } from '../states/life';
+import { mapState } from '../states/map';
+import { playerState } from '../states/player';
 import { getTimings } from '../utils';
 
-const TILE_WIDTH = 120;
-const TILE_HEIGHT = 40;
-const TILE_SIZE = 4;
-const ATTACK_TIME = 200;
-const DAMAGE_TIME = 800;
-const MOVE_TIME = 100;
-const PLAYER_POWER = 10;
-const ENEMY_MOVE_SPEED = 100;
-const ENEMY_MOVE_DURATION = 1000;
-
-export interface GameState {
-  life: LifeState;
-  player: PlayerState;
-  map: MapState;
-  enemy: EnemyState;
-}
-
-const lifeState: LifeState = {
-  player: 100,
-  enemy: 100,
-};
-
-const playerState: PlayerState = {
-  position: {
-    x: 0,
-    y: 0,
-  },
-  direction: 1,
-  attack: {
-    start: -Infinity,
-    duration: ATTACK_TIME,
-    power: PLAYER_POWER,
-  },
-  damage: {
-    start: -Infinity,
-    duration: DAMAGE_TIME,
-  },
-  move: {
-    start: -Infinity,
-    duration: MOVE_TIME,
-    before: {
-      x: 0,
-      y: 0,
-    },
-  },
-};
-
-const enemyState: EnemyState = {
-  position: {
-    x: 3,
-    y: 0,
-  },
-  damage: {
-    start: -Infinity,
-    duration: DAMAGE_TIME,
-  },
-  attack: {
-    start: -Infinity,
-    duration: 1000,
-    predelay: 0,
-    position: [],
-  },
-  move: {
-    start: 1000,
-    duration: ENEMY_MOVE_DURATION,
-    speed: ENEMY_MOVE_SPEED,
-    position: {
-      x: 0,
-      y: 0,
-    },
-  },
-};
-
-const mapState: MapState = {
-  size: TILE_SIZE,
-  tileWidth: TILE_WIDTH,
-  tileHeight: TILE_HEIGHT,
-};
-
-const gameState: GameState = {
+const gameState = {
   life: lifeState,
   player: playerState,
   map: mapState,
@@ -94,6 +18,16 @@ const gameState: GameState = {
 };
 
 export const updateGame = (time: number) => {
+  // Player Move
+  if (
+    (playerState.move.position.x !== playerState.position.x ||
+      playerState.move.position.y !== playerState.position.y) &&
+    time - playerState.move.start >= playerState.move.speed
+  ) {
+    playerState.position = {
+      ...playerState.move.position,
+    };
+  }
   // Damage
   if (
     enemyState.position.x === playerState.position.x &&
@@ -113,7 +47,7 @@ export const updateGame = (time: number) => {
   if (
     (enemyState.move.position.x !== enemyState.position.x ||
       enemyState.move.position.y !== enemyState.position.y) &&
-    time - enemyState.move.start >= enemyState.move.duration
+    time - enemyState.move.start >= enemyState.move.predelay
   ) {
     enemyState.position = {
       ...enemyState.move.position,
@@ -165,16 +99,4 @@ export const drawGame = (time: number) => {
   }
 };
 
-addGameEventListener(gameState);
-enemyMove(5000, {
-  enemy: enemyState,
-  position: { x: 1, y: 3 },
-  duration: 600,
-  speed: ENEMY_MOVE_SPEED,
-});
-enemyAttack(0, {
-  enemy: enemyState,
-  position: [{ x: 0, y: 0 }],
-  duration: 2000,
-  predelay: 1000,
-});
+addGameEventListener();
