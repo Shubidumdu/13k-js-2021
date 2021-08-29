@@ -1,3 +1,4 @@
+import { enemyMove } from '../actions/enemy';
 import { playerGetDamage, updatePlayerAttack } from '../actions/player';
 import { addGameEventListener } from '../events/game';
 import { drawEnemy } from '../graphic/enemy';
@@ -65,6 +66,27 @@ export const updateGame = (time: number) => {
     if (isHitted) {
       playerGetDamage(playerState.collisionDamage);
     }
+  }
+  // Enemy1 Pattern
+  const [isEnemyMoving, enemyMovingProgress] = getTimings({
+    time,
+    start: enemyState.move.start,
+    duration: enemyState.move.predelay + enemyState.move.speed,
+  });
+  if (
+    enemyMovingProgress >= 1 &&
+    !isEnemyMoving &&
+    (enemyState.position.x !== playerState.position.x ||
+      enemyState.position.y !== playerState.position.y)
+  ) {
+    enemyMove({
+      predelay: 800,
+      speed: 100,
+      position: {
+        x: playerState.position.x,
+        y: playerState.position.y,
+      },
+    });
   }
 };
 

@@ -49,7 +49,7 @@ export const drawMap = ({
           enemy.move.position.x === x &&
           enemy.move.position.y === y
         ) {
-          context.fillStyle = '#faa';
+          context.fillStyle = '#f00';
           context.fillRect(
             tileWidth * x,
             tileHeight * y,
@@ -63,7 +63,7 @@ export const drawMap = ({
           Math.ceil(time) % 4 === 0 &&
           enemy.attack.position.some(({ x: _x, y: _y }) => x === _x && y === _y)
         ) {
-          context.fillStyle = '#faa';
+          context.fillStyle = '#f00';
           context.fillRect(
             tileWidth * x,
             tileHeight * y,

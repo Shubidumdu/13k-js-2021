@@ -38,10 +38,10 @@ export const drawEnemy = ({ map, enemy, time }: DrawEnemyProps) => {
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
-      Math.sin(time / 240)
+      2 * Math.sin(time / 240)
     : canvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
-      Math.sin(time / 240);
+      2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
     time,
     start: enemy.damage.start,
