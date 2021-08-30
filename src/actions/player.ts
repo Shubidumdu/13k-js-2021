@@ -51,10 +51,9 @@ export const playerGetDamage = (damage: number) => {
   soundPlayerHitted();
 };
 
-export const updatePlayerAttack = () => {
-  const time = performance.now();
-  const [isAttacking] = getTimings({
-    time: performance.now(),
+export const updatePlayerAttack = (time: number) => {
+  const [isAttacking, attackProgress] = getTimings({
+    time: time,
     start: playerState.attack.start + playerState.attack.predelay,
     duration: playerState.attack.duration,
   });

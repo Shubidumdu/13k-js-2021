@@ -37,9 +37,9 @@ export const playerState: PlayerState = {
   direction: 1,
   attack: {
     start: -Infinity,
-    predelay: 120,
-    delay: 100,
-    duration: 10,
+    predelay: 80,
+    delay: 80,
+    duration: 32,
     power: 10,
   },
   damage: {

@@ -2,15 +2,21 @@ import { soundEnemyHitted } from '../sounds/effects';
 import { enemyState } from '../states/enemy';
 
 interface EnemyMoveProps {
+  start: number;
   position: { x: number; y: number };
   predelay?: number;
   speed?: number;
 }
 
-export const enemyMove = ({ predelay, speed, position }: EnemyMoveProps) => {
+export const enemyMove = ({
+  start,
+  predelay,
+  speed,
+  position,
+}: EnemyMoveProps) => {
   enemyState.move = {
     ...enemyState.move,
-    start: performance.now(),
+    start,
     predelay: predelay ? predelay : enemyState.move.predelay,
     speed: speed ? speed : enemyState.move.speed,
     position,
@@ -18,6 +24,7 @@ export const enemyMove = ({ predelay, speed, position }: EnemyMoveProps) => {
 };
 
 interface EnemyAttackProps {
+  start: number;
   position: { x: number; y: number }[];
   predelay: number;
   duration: number;
@@ -26,6 +33,7 @@ interface EnemyAttackProps {
 }
 
 export const enemyAttack = ({
+  start,
   position,
   predelay,
   delay,
@@ -33,7 +41,7 @@ export const enemyAttack = ({
   power,
 }: EnemyAttackProps) => {
   enemyState.attack = {
-    start: performance.now(),
+    start,
     duration,
     predelay,
     delay,

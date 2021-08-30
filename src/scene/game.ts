@@ -1,4 +1,4 @@
-import { enemyMove } from '../actions/enemy';
+import { enemyAttack, enemyMove } from '../actions/enemy';
 import { playerGetDamage, updatePlayerAttack } from '../actions/player';
 import { addGameEventListener } from '../events/game';
 import { drawEnemy1, drawEnemy2 } from '../graphic/enemy';
@@ -11,13 +11,29 @@ import { playerState } from '../states/player';
 import { getTimings } from '../utils';
 
 const gameState = {
-  stage: 1,
+  stage: 2,
   player: playerState,
   map: mapState,
   enemy: enemyState,
 };
 
 export const updateGame = (time: number) => {
+  // Enemy Move
+  if (
+    (enemyState.move.position.x !== enemyState.position.x ||
+      enemyState.move.position.y !== enemyState.position.y) &&
+    enemyState.move.start !== -Infinity
+  ) {
+    const [isEnemyMoving, enemyMovingProgress] = getTimings({
+      time,
+      start: enemyState.move.start + enemyState.move.predelay,
+      duration: enemyState.move.speed,
+    });
+    if (enemyMovingProgress >= 1)
+      enemyState.position = {
+        ...enemyState.move.position,
+      };
+  }
   // Player Move
   const [isPlayerMoving, progressPlayerMoving] = getTimings({
     time,
@@ -35,29 +51,13 @@ export const updateGame = (time: number) => {
     };
   }
   // Player Attack
-  updatePlayerAttack();
+  updatePlayerAttack(time);
   // Collision Damage
   if (
     enemyState.position.x === playerState.position.x &&
     enemyState.position.y === playerState.position.y
   ) {
-    playerGetDamage(enemyState.attack.power);
-  }
-  // Enemy Move
-  if (
-    (enemyState.move.position.x !== enemyState.position.x ||
-      enemyState.move.position.y !== enemyState.position.y) &&
-    enemyState.move.start !== -Infinity
-  ) {
-    const [isEnemyMoving, enemyMovingProgress] = getTimings({
-      time,
-      start: enemyState.move.start + enemyState.move.predelay,
-      duration: enemyState.move.speed,
-    });
-    if (enemyMovingProgress >= 1)
-      enemyState.position = {
-        ...enemyState.move.position,
-      };
+    playerGetDamage(playerState.collisionDamage);
   }
   // Damage By Enemy Attack
   const [isEnemyAttacking] = getTimings({
@@ -71,7 +71,7 @@ export const updateGame = (time: number) => {
         x === playerState.position.x && y === playerState.position.y,
     );
     if (isHitted) {
-      playerGetDamage(playerState.collisionDamage);
+      playerGetDamage(enemyState.attack.power);
     }
   }
   // Enemy1 Pattern
@@ -88,12 +88,67 @@ export const updateGame = (time: number) => {
         enemyState.position.y !== playerState.position.y)
     ) {
       enemyMove({
+        start: time,
         predelay: 800,
         speed: 100,
         position: {
           x: playerState.position.x,
           y: playerState.position.y,
         },
+      });
+    }
+  }
+  // Enemy2 Pattern
+  if (gameState.stage === 2) {
+    const [
+      isEnemyAttacking,
+      enemyAttackProgress,
+      isEnemyAttackReserved,
+      isEnemyAttackEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.attack.start,
+      duration:
+        enemyState.attack.predelay +
+        enemyState.attack.duration +
+        enemyState.attack.delay,
+    });
+    const [
+      isEnemyMoving,
+      enemyMovingProgress,
+      isEnemyMovingReserved,
+      isEnemyMovingEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.move.start,
+      duration: enemyState.move.predelay + enemyState.move.speed,
+    });
+    if (isEnemyMovingEnded && isEnemyAttackEnded) {
+      enemyMove({
+        start: time,
+        predelay: 500,
+        speed: 100,
+        position: {
+          x: Math.floor(Math.random() * 4),
+          y: Math.floor(Math.random() * 4),
+        },
+      });
+      enemyAttack({
+        start: time + 1200,
+        predelay: 800,
+        position: [
+          { x: enemyState.move.position.x, y: 0 },
+          { x: enemyState.move.position.x, y: 1 },
+          { x: enemyState.move.position.x, y: 2 },
+          { x: enemyState.move.position.x, y: 3 },
+          { x: 0, y: enemyState.move.position.y },
+          { x: 1, y: enemyState.move.position.y },
+          { x: 2, y: enemyState.move.position.y },
+          { x: 3, y: enemyState.move.position.y },
+        ],
+        delay: 0,
+        duration: 100,
+        power: 30,
       });
     }
   }
