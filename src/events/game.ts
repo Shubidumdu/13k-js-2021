@@ -15,11 +15,12 @@ export const addGameEventListener = () => {
       e.key === 'ArrowUp' ||
       e.key === 'ArrowDown'
     ) {
-      const [isMoving] = getTimings({
+      const [isMoving, movingProgress] = getTimings({
         time,
         start: playerState.move.start,
         duration: playerState.move.speed,
       });
+      console.log('Event', isMoving, movingProgress);
       if (isMoving) return;
       if (e.key === 'ArrowRight') {
         if (playerState.position.x === mapState.size - 1) return;

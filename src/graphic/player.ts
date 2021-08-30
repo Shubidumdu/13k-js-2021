@@ -1,6 +1,6 @@
 import { canvas, draw } from '../canvas';
 import { MapState } from '../states/map';
-import { PlayerState } from '../states/player';
+import { playerState, PlayerState } from '../states/player';
 import { degreeToRadian, getTimings } from '../utils';
 
 interface DrawPlayerProps {
@@ -22,6 +22,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
     start: player.move.start,
     duration: player.move.speed,
   });
+  // console.log(isMoving, movingProgress);
   const [isTakingDamage] = getTimings({
     time,
     start: player.damage.start,

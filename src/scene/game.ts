@@ -1,7 +1,7 @@
 import { enemyMove } from '../actions/enemy';
 import { playerGetDamage, updatePlayerAttack } from '../actions/player';
 import { addGameEventListener } from '../events/game';
-import { drawEnemy } from '../graphic/enemy';
+import { drawEnemy1, drawEnemy2 } from '../graphic/enemy';
 import { drawLifeBar } from '../graphic/lifeBar';
 import { drawMap } from '../graphic/map';
 import { drawPlayer } from '../graphic/player';
@@ -11,6 +11,7 @@ import { playerState } from '../states/player';
 import { getTimings } from '../utils';
 
 const gameState = {
+  stage: 1,
   player: playerState,
   map: mapState,
   enemy: enemyState,
@@ -18,10 +19,16 @@ const gameState = {
 
 export const updateGame = (time: number) => {
   // Player Move
+  const [isPlayerMoving, progressPlayerMoving] = getTimings({
+    time,
+    start: playerState.move.start,
+    duration: playerState.move.speed,
+  });
   if (
     (playerState.move.position.x !== playerState.position.x ||
       playerState.move.position.y !== playerState.position.y) &&
-    time - playerState.move.start >= playerState.move.speed
+    !isPlayerMoving &&
+    progressPlayerMoving > 1
   ) {
     playerState.position = {
       ...playerState.move.position,
@@ -68,25 +75,27 @@ export const updateGame = (time: number) => {
     }
   }
   // Enemy1 Pattern
-  const [isEnemyMoving, enemyMovingProgress] = getTimings({
-    time,
-    start: enemyState.move.start,
-    duration: enemyState.move.predelay + enemyState.move.speed,
-  });
-  if (
-    enemyMovingProgress >= 1 &&
-    !isEnemyMoving &&
-    (enemyState.position.x !== playerState.position.x ||
-      enemyState.position.y !== playerState.position.y)
-  ) {
-    enemyMove({
-      predelay: 800,
-      speed: 100,
-      position: {
-        x: playerState.position.x,
-        y: playerState.position.y,
-      },
+  if (gameState.stage === 1) {
+    const [isEnemyMoving, enemyMovingProgress] = getTimings({
+      time,
+      start: enemyState.move.start,
+      duration: enemyState.move.predelay + enemyState.move.speed,
     });
+    if (
+      enemyMovingProgress >= 1 &&
+      !isEnemyMoving &&
+      (enemyState.position.x !== playerState.position.x ||
+        enemyState.position.y !== playerState.position.y)
+    ) {
+      enemyMove({
+        predelay: 800,
+        speed: 100,
+        position: {
+          x: playerState.position.x,
+          y: playerState.position.y,
+        },
+      });
+    }
   }
 };
 
@@ -103,9 +112,39 @@ export const drawGame = (time: number) => {
       player: playerState,
       map: mapState,
     });
-    drawEnemy({ time, enemy: enemyState, map: mapState, player: playerState });
+    switch (gameState.stage) {
+      case 1:
+        drawEnemy1({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
+      case 2:
+        drawEnemy2({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
+    }
   } else {
-    drawEnemy({ time, enemy: enemyState, map: mapState, player: playerState });
+    switch (gameState.stage) {
+      case 1:
+        drawEnemy1({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
+      case 2:
+        drawEnemy2({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
+    }
     drawPlayer({
       time,
       player: playerState,
