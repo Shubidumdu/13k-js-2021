@@ -5,6 +5,7 @@ import { drawEnemy1, drawEnemy2 } from '../graphic/enemy';
 import { drawLifeBar } from '../graphic/lifeBar';
 import { drawMap } from '../graphic/map';
 import { drawPlayer } from '../graphic/player';
+import { soundLazerCharge, soundLazerShoot } from '../sounds/effects';
 import { enemyState } from '../states/enemy';
 import { mapState } from '../states/map';
 import { playerState } from '../states/player';
@@ -123,6 +124,34 @@ export const updateGame = (time: number) => {
       start: enemyState.move.start,
       duration: enemyState.move.predelay + enemyState.move.speed,
     });
+    const [
+      isEnemyAttackCharging,
+      enemyAttackChargingProgress,
+      _,
+      enemyAttackChargingEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.attack.start,
+      duration: enemyState.attack.predelay,
+    });
+    const [isEnemyShooting, __, enemyShootingReserved, enemyShootingEnded] =
+      getTimings({
+        time,
+        start: enemyState.attack.start + enemyState.attack.predelay,
+        duration: enemyState.attack.duration,
+      });
+    if (isEnemyAttackCharging) {
+      if (!enemyState.attack.sound[0]) {
+        soundLazerCharge();
+        enemyState.attack.sound[0] = true;
+      }
+    }
+    if (isEnemyShooting) {
+      if (!enemyState.attack.sound[1]) {
+        soundLazerShoot();
+        enemyState.attack.sound[1] = true;
+      }
+    }
     if (isEnemyMovingEnded && isEnemyAttackEnded) {
       enemyMove({
         start: time,
@@ -147,8 +176,9 @@ export const updateGame = (time: number) => {
           { x: 3, y: enemyState.move.position.y },
         ],
         delay: 0,
-        duration: 100,
+        duration: 200,
         power: 30,
+        sound: [false, false],
       });
     }
   }
@@ -161,7 +191,7 @@ export const drawGame = (time: number) => {
     player: playerState.life,
     enemy: enemyState.life,
   });
-  if (enemyState.position.y > playerState.position.y) {
+  if (enemyState.position.y >= playerState.position.y) {
     drawPlayer({
       time,
       player: playerState,

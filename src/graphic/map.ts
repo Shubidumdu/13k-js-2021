@@ -45,11 +45,11 @@ export const drawMap = ({
         // if enemy will moving on the block
         if (
           isEnemyWaitingMove &&
-          Math.ceil(time) % 4 === 0 &&
+          // Math.ceil(time) % 4 === 0 &&
           enemy.move.position.x === x &&
           enemy.move.position.y === y
         ) {
-          context.fillStyle = '#f00';
+          context.fillStyle = '#fac800';
           context.fillRect(
             tileWidth * x,
             tileHeight * y,
@@ -60,10 +60,9 @@ export const drawMap = ({
         // if enemy will attack the block
         else if (
           isEnemyAttacking &&
-          Math.ceil(time) % 4 === 0 &&
           enemy.attack.position.some(({ x: _x, y: _y }) => x === _x && y === _y)
         ) {
-          context.fillStyle = '#f00';
+          context.fillStyle = '#fa2b00';
           context.fillRect(
             tileWidth * x,
             tileHeight * y,

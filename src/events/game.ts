@@ -1,5 +1,4 @@
 import { playerAttack, playerMove } from '../actions/player';
-import { soundLightSaber } from '../sounds/effects';
 import { mapState } from '../states/map';
 import { playerState } from '../states/player';
 import { getTimings } from '../utils';

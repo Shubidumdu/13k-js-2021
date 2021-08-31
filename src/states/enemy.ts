@@ -8,7 +8,8 @@ export interface EnemyState {
     start: number;
     duration: number;
   };
-  attack?: {
+  attack: {
+    sound?: boolean[];
     start: number;
     position: {
       x: number;
@@ -41,6 +42,7 @@ export const enemyState: EnemyState = {
     duration: 600,
   },
   attack: {
+    sound: [],
     start: -Infinity,
     duration: 1000,
     predelay: 0,

@@ -30,6 +30,7 @@ interface EnemyAttackProps {
   duration: number;
   delay: number;
   power: number;
+  sound: boolean[];
 }
 
 export const enemyAttack = ({
@@ -39,8 +40,10 @@ export const enemyAttack = ({
   delay,
   duration,
   power,
+  sound,
 }: EnemyAttackProps) => {
   enemyState.attack = {
+    sound,
     start,
     duration,
     predelay,
