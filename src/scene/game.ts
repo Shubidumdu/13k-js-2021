@@ -1,7 +1,12 @@
 import { enemyAttack, enemyMove } from '../actions/enemy';
 import { playerGetDamage, updatePlayerAttack } from '../actions/player';
 import { addGameEventListener } from '../events/game';
-import { drawEnemy1, drawEnemy2, drawEnemy3 } from '../graphic/enemy';
+import {
+  drawEnemy1,
+  drawEnemy2,
+  drawEnemy3,
+  drawEnemy4,
+} from '../graphic/enemy';
 import { drawLifeBar } from '../graphic/lifeBar';
 import { drawMap } from '../graphic/map';
 import { drawPlayer } from '../graphic/player';
@@ -13,10 +18,10 @@ import {
 import { enemyState } from '../states/enemy';
 import { mapState } from '../states/map';
 import { playerState } from '../states/player';
-import { getTimings } from '../utils';
+import { getRandomInt, getTimings } from '../utils';
 
 const gameState = {
-  stage: 3,
+  stage: 4,
   player: playerState,
   map: mapState,
   enemy: enemyState,
@@ -234,6 +239,71 @@ export const updateGame = (time: number) => {
       });
     }
   }
+  if (gameState.stage === 4) {
+    const [
+      isEnemyAttacking,
+      enemyAttackProgress,
+      isEnemyAttackReserved,
+      isEnemyAttackEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.attack.start + enemyState.attack.predelay,
+      duration: enemyState.attack.duration + enemyState.attack.delay,
+    });
+    const [
+      isEnemyMoving,
+      enemyMovingProgress,
+      isEnemyMovingReserved,
+      isEnemyMovingEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.move.start,
+      duration: enemyState.move.predelay + enemyState.move.speed,
+    });
+    if (isEnemyAttacking && !enemyState.attack.sound[0]) {
+    }
+    if (isEnemyMovingEnded && isEnemyAttackEnded) {
+      const random = Math.floor(Math.random() * 2);
+      if (random === 0) {
+        const enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
+        enemyMove({
+          start: time,
+          predelay: 200,
+          speed: 100,
+          position: enemyMovePosition,
+        });
+        const safeZone = { x: getRandomInt(4), y: getRandomInt(4) };
+        enemyAttack({
+          start: time + 300,
+          predelay: 1400,
+          delay: 200,
+          position: [0, 1, 2, 3].reduce((prev, val1) => {
+            const pos = [0, 1, 2, 3]
+              .map((val2) => ({ x: val1, y: val2 }))
+              .filter(
+                ({ x, y }) =>
+                  (x !== enemyMovePosition.x || y !== enemyMovePosition.y) &&
+                  (x !== safeZone.x || y !== safeZone.y),
+              );
+            return [...prev, ...pos];
+          }, []),
+          duration: 200,
+          power: 20,
+          sound: [false],
+        });
+      } else {
+        enemyAttack({
+          start: time,
+          predelay: 600,
+          delay: 200,
+          position: [0, 1, 2, 3].map((x) => ({ x, y: getRandomInt(4) })),
+          duration: 100,
+          power: 20,
+          sound: [],
+        });
+      }
+    }
+  }
 };
 
 export const drawGame = (time: number) => {
@@ -257,6 +327,7 @@ export const drawGame = (time: number) => {
           map: mapState,
           player: playerState,
         });
+        break;
       case 2:
         drawEnemy2({
           time,
@@ -264,6 +335,7 @@ export const drawGame = (time: number) => {
           map: mapState,
           player: playerState,
         });
+        break;
       case 3:
         drawEnemy3({
           time,
@@ -271,6 +343,15 @@ export const drawGame = (time: number) => {
           map: mapState,
           player: playerState,
         });
+        break;
+      case 4:
+        drawEnemy4({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
+        break;
     }
   } else {
     switch (gameState.stage) {
@@ -281,6 +362,7 @@ export const drawGame = (time: number) => {
           map: mapState,
           player: playerState,
         });
+        break;
       case 2:
         drawEnemy2({
           time,
@@ -288,6 +370,7 @@ export const drawGame = (time: number) => {
           map: mapState,
           player: playerState,
         });
+        break;
       case 3:
         drawEnemy3({
           time,
@@ -295,6 +378,15 @@ export const drawGame = (time: number) => {
           map: mapState,
           player: playerState,
         });
+        break;
+      case 4:
+        drawEnemy4({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
+        break;
     }
     drawPlayer({
       time,

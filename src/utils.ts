@@ -23,3 +23,5 @@ export const getTimings = ({
   const isProgressing = progress < 1 && progress > 0;
   return [isProgressing, progress, isReserved, isEnded];
 };
+
+export const getRandomInt = (size: number) => Math.floor(Math.random() * size);
