@@ -1,18 +1,22 @@
 import { enemyAttack, enemyMove } from '../actions/enemy';
 import { playerGetDamage, updatePlayerAttack } from '../actions/player';
 import { addGameEventListener } from '../events/game';
-import { drawEnemy1, drawEnemy2 } from '../graphic/enemy';
+import { drawEnemy1, drawEnemy2, drawEnemy3 } from '../graphic/enemy';
 import { drawLifeBar } from '../graphic/lifeBar';
 import { drawMap } from '../graphic/map';
 import { drawPlayer } from '../graphic/player';
-import { soundLazerCharge, soundLazerShoot } from '../sounds/effects';
+import {
+  soundExplostion,
+  soundLazerCharge,
+  soundLazerShoot,
+} from '../sounds/effects';
 import { enemyState } from '../states/enemy';
 import { mapState } from '../states/map';
 import { playerState } from '../states/player';
 import { getTimings } from '../utils';
 
 const gameState = {
-  stage: 2,
+  stage: 3,
   player: playerState,
   map: mapState,
   enemy: enemyState,
@@ -182,6 +186,54 @@ export const updateGame = (time: number) => {
       });
     }
   }
+  if (gameState.stage === 3) {
+    const [
+      isEnemyAttacking,
+      enemyAttackProgress,
+      isEnemyAttackReserved,
+      isEnemyAttackEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.attack.start + enemyState.attack.predelay,
+      duration: enemyState.attack.duration + enemyState.attack.delay,
+    });
+    const [
+      isEnemyMoving,
+      enemyMovingProgress,
+      isEnemyMovingReserved,
+      isEnemyMovingEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.move.start,
+      duration: enemyState.move.predelay + enemyState.move.speed,
+    });
+    if (isEnemyAttacking && !enemyState.attack.sound[0]) {
+      soundExplostion();
+      enemyState.attack.sound[0] = true;
+    }
+    if (isEnemyMovingEnded) {
+      enemyMove({
+        start: time,
+        predelay: 400,
+        speed: 200,
+        position: {
+          x: Math.floor(Math.random() * 4),
+          y: Math.floor(Math.random() * 4),
+        },
+      });
+    }
+    if (isEnemyAttackEnded) {
+      enemyAttack({
+        start: time,
+        predelay: 400,
+        delay: 200,
+        position: [{ x: playerState.position.x, y: playerState.position.y }],
+        duration: 400,
+        power: 20,
+        sound: [false],
+      });
+    }
+  }
 };
 
 export const drawGame = (time: number) => {
@@ -212,6 +264,13 @@ export const drawGame = (time: number) => {
           map: mapState,
           player: playerState,
         });
+      case 3:
+        drawEnemy3({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
     }
   } else {
     switch (gameState.stage) {
@@ -224,6 +283,13 @@ export const drawGame = (time: number) => {
         });
       case 2:
         drawEnemy2({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
+      case 3:
+        drawEnemy3({
           time,
           enemy: enemyState,
           map: mapState,

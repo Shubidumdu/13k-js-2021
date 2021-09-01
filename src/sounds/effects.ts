@@ -112,3 +112,30 @@ export const soundLazerShoot = () => {
     ],
   );
 };
+
+export const soundExplostion = () => {
+  zzfx(
+    ...[
+      1.87,
+      ,
+      695,
+      0.05,
+      0.13,
+      0.52,
+      3,
+      0.24,
+      ,
+      0.7,
+      ,
+      ,
+      ,
+      1,
+      38,
+      0.6,
+      0.13,
+      0.58,
+      0.02,
+    ],
+  );
+  // Explosion 50
+};
