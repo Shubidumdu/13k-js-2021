@@ -113,6 +113,12 @@ export const soundLazerShoot = () => {
   );
 };
 
+export const soundBlackHoleBeam = () => {
+  zzfx(
+    ...[1.59, , 345, , , 0.38, 3, 1.64, 2.9, , , , , 0.2, , 0.3, 0.04, 0.92],
+  ); // Hit 267
+};
+
 export const soundExplostion = () => {
   zzfx(
     ...[
@@ -138,6 +144,33 @@ export const soundExplostion = () => {
     ],
   );
   // Explosion 50
+};
+
+export const soundBlackSpike = () => {
+  zzfx(
+    ...[
+      1.52,
+      ,
+      102,
+      ,
+      ,
+      0.3,
+      ,
+      2.47,
+      -0.6,
+      ,
+      ,
+      ,
+      ,
+      0.3,
+      ,
+      0.4,
+      0.02,
+      0.74,
+      0.04,
+      0.11,
+    ],
+  ); // Hit 252
 };
 
 export const soundGetFreezing = () => {
@@ -176,4 +209,30 @@ export const soundDrop = () => {
   zzfx(
     ...[, , 840, 0.05, 0.06, 0.08, , 1.06, -6.1, , , , , , , , , 0.73, 0.01],
   ); // Jump 201
+};
+
+export const soundHoleOpen = () => {
+  zzfx(
+    ...[
+      1.38,
+      ,
+      334,
+      0.17,
+      0.14,
+      0.11,
+      1,
+      0.42,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      6.8,
+      ,
+      0.05,
+      0.25,
+      0.17,
+    ],
+  ); // Random 237
 };

@@ -6,14 +6,18 @@ import {
   drawEnemy2,
   drawEnemy3,
   drawEnemy4,
+  drawEnemy5,
 } from '../graphic/enemy';
 import { drawLifeBar } from '../graphic/lifeBar';
 import { drawMap } from '../graphic/map';
 import { drawPlayer } from '../graphic/player';
 import {
+  soundBlackHoleBeam,
+  soundBlackSpike,
   soundDrop,
   soundExplostion,
   soundGetFreezing,
+  soundHoleOpen,
   soundIceSpike,
   soundLazerCharge,
   soundLazerShoot,
@@ -24,7 +28,7 @@ import { playerState } from '../states/player';
 import { getRandomInt, getTimings } from '../utils';
 
 const gameState = {
-  stage: 4,
+  stage: 5,
   player: playerState,
   map: mapState,
   enemy: enemyState,
@@ -300,10 +304,10 @@ export const updateGame = (time: number) => {
           position: enemyMovePosition,
         });
         const safeZone = { x: getRandomInt(4), y: getRandomInt(4) };
-        while (safeZone.x === enemyState.position.x) {
+        while (safeZone.x === enemyState.move.position.x) {
           safeZone.x = getRandomInt(4);
         }
-        while (safeZone.y === enemyState.position.y) {
+        while (safeZone.y === enemyState.move.position.y) {
           safeZone.y = getRandomInt(4);
         }
         enemyAttack({
@@ -343,6 +347,171 @@ export const updateGame = (time: number) => {
           duration: 200,
           power: 20,
           sound: [false],
+        });
+      }
+    }
+  }
+  if (gameState.stage === 5) {
+    const [
+      isEnemyAttacking,
+      enemyAttackProgress,
+      isEnemyAttackReserved,
+      isEnemyAttackEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.attack.start + enemyState.attack.predelay,
+      duration: enemyState.attack.duration + enemyState.attack.delay,
+    });
+    const [
+      isEnemyMoving,
+      enemyMovingProgress,
+      isEnemyMovingReserved,
+      isEnemyMovingEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.move.start,
+      duration: enemyState.move.predelay + enemyState.move.speed,
+    });
+    const [
+      isEnemyAttackCharging,
+      enemyAttackChargingProgress,
+      _,
+      enemyAttackChargingEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.attack.start,
+      duration: enemyState.attack.predelay,
+    });
+    if (isEnemyAttackCharging) {
+      if (enemyState.attack.type === 0 && !enemyState.attack.sound[0]) {
+        soundHoleOpen();
+        enemyState.attack.sound[0] = true;
+      }
+      if (enemyState.attack.type === 2 && !enemyState.attack.sound[0]) {
+        soundHoleOpen();
+        enemyState.attack.sound[0] = true;
+      }
+    }
+    if (isEnemyAttacking) {
+      if (enemyState.attack.type === 0 && !enemyState.attack.sound[1]) {
+        soundBlackHoleBeam();
+        enemyState.attack.sound[1] = true;
+      }
+      if (enemyState.attack.type === 1 && !enemyState.attack.sound[0]) {
+        soundBlackSpike();
+        enemyState.attack.sound[0] = true;
+      }
+      if (enemyState.attack.type === 2 && !enemyState.attack.sound[1]) {
+        soundBlackHoleBeam();
+        enemyState.attack.sound[1] = true;
+      }
+    }
+    if (isEnemyMovingEnded && isEnemyAttackEnded) {
+      const random = getRandomInt(3);
+      if (random === 0) {
+        enemyMove({
+          start: time,
+          predelay: 200,
+          speed: 100,
+          position: {
+            x: getRandomInt(2) * 3,
+            y: getRandomInt(2) + 1,
+          },
+        });
+        enemyAttack({
+          type: 0,
+          start: time + 300,
+          position: (() => {
+            if (enemyState.move.position.x === 3) {
+              return [0, 1, 2].reduce((prev, x) => {
+                const pos = [-1, 0, 1].map((y) => ({
+                  x: x,
+                  y: enemyState.move.position.y + y,
+                }));
+                return [...prev, ...pos];
+              }, []);
+            }
+            if (enemyState.move.position.x === 0) {
+              return [1, 2, 3].reduce((prev, x) => {
+                const pos = [-1, 0, 1].map((y) => ({
+                  x: x,
+                  y: enemyState.move.position.y + y,
+                }));
+                return [...prev, ...pos];
+              }, []);
+            }
+          })(),
+          predelay: 700,
+          delay: 100,
+          duration: 400,
+          power: 40,
+          sound: [false, false],
+        });
+      }
+      if (random === 1) {
+        enemyMove({
+          start: time,
+          predelay: 200,
+          speed: 100,
+          position: {
+            x:
+              playerState.position.x === 0
+                ? 1
+                : playerState.position.x === 3
+                ? 2
+                : playerState.position.x - 2 * getRandomInt(2) + 1,
+            y: playerState.position.y,
+          },
+        });
+        enemyAttack({
+          type: 1,
+          start: time,
+          position: [
+            {
+              x: playerState.position.x,
+              y: playerState.position.y,
+            },
+          ],
+          predelay: 300,
+          delay: 100,
+          duration: 200,
+          power: 30,
+          sound: [false],
+        });
+      }
+      if (random === 2) {
+        enemyMove({
+          start: time,
+          predelay: 200,
+          speed: 100,
+          position: {
+            x: getRandomInt(2) + 1,
+            y: getRandomInt(2) + 1,
+          },
+        });
+        enemyAttack({
+          type: 2,
+          start: time + 300,
+          position: (() => {
+            return [-1, 0, 1].reduce((prev, x) => {
+              const pos = [-1, 0, 1]
+                .map((y) => ({
+                  x: enemyState.move.position.x + x,
+                  y: enemyState.move.position.y + y,
+                }))
+                .filter(
+                  ({ x, y }) =>
+                    x !== enemyState.move.position.x ||
+                    y !== enemyState.move.position.y,
+                );
+              return [...prev, ...pos];
+            }, []);
+          })(),
+          predelay: 400,
+          delay: 100,
+          duration: 400,
+          power: 50,
+          sound: [false, false],
         });
       }
     }
@@ -395,6 +564,13 @@ export const drawGame = (time: number) => {
           player: playerState,
         });
         break;
+      case 5:
+        drawEnemy5({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
     }
   } else {
     switch (gameState.stage) {
@@ -430,6 +606,13 @@ export const drawGame = (time: number) => {
           player: playerState,
         });
         break;
+      case 5:
+        drawEnemy5({
+          time,
+          enemy: enemyState,
+          map: mapState,
+          player: playerState,
+        });
     }
     drawPlayer({
       time,
