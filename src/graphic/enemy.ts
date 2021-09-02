@@ -4,7 +4,7 @@ import { soundLazerCharge } from '../sounds/effects';
 import { enemyState, EnemyState } from '../states/enemy';
 import { MapState } from '../states/map';
 import { PlayerState } from '../states/player';
-import { degreeToRadian, getTimings } from '../utils';
+import { degreeToRadian, getPosition, getTimings } from '../utils';
 
 interface DrawEnemyProps {
   map: MapState;
@@ -451,6 +451,11 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     start: enemy.attack.start + enemy.attack.predelay,
     duration: enemy.attack.duration,
   });
+  const [isAttackCharging, attackChargingProgress] = getTimings({
+    time,
+    start: enemy.attack.start,
+    duration: enemy.attack.predelay,
+  });
   const positionX = isMoving
     ? canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
@@ -480,9 +485,9 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     start: enemy.damage.start,
     duration: enemy.damage.duration,
   });
-  if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
   draw((context, canvas) => {
     // BODY
+    if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
     if (isMoving) context.globalAlpha = 0.5;
@@ -507,4 +512,106 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.fill();
     context.closePath();
   });
+  if (enemyState.attack.type === 0) {
+    if (isAttackCharging) {
+      draw(() => {
+        context.fillStyle = '#ccfffb';
+        enemyState.attack.position.forEach(({ x, y }) => {
+          const { x: positionX, y: positionY } = getPosition(x, y);
+          context.setTransform(
+            1,
+            0,
+            -0.5,
+            1,
+            positionX - 60 * attackChargingProgress,
+            positionY - 20 * attackChargingProgress,
+          );
+          context.beginPath();
+          context.filter = `blur(8px)`;
+          context.globalAlpha = 0.5;
+          context.fillRect(
+            0,
+            0,
+            120 * attackChargingProgress,
+            40 * attackChargingProgress,
+          );
+          context.fill();
+        });
+        context.closePath();
+      });
+    }
+    if (isAttacking) {
+      draw(() => {
+        context.fillStyle = '#ccfffb';
+        enemyState.attack.position.forEach(({ x, y }) => {
+          const { x: positionX, y: positionY } = getPosition(x, y);
+          context.setTransform(
+            1,
+            0,
+            -0.5,
+            1,
+            positionX - 60 * (1 - attackProgress),
+            positionY - 20 * (1 - attackProgress),
+          );
+          context.beginPath();
+          context.filter = `blur(8px)`;
+          context.globalAlpha = 1;
+          context.fillRect(
+            0,
+            0,
+            120 * (1 - attackProgress),
+            40 * (1 - attackProgress),
+          );
+          context.fill();
+        });
+        context.closePath();
+      });
+      draw(() => {
+        context.fillStyle = '#ccfffb';
+        enemyState.attack.position.forEach(({ x, y }) => {
+          const flow = Math.sin(Math.PI * attackProgress);
+          const { x: positionX, y: positionY } = getPosition(x, y);
+          context.beginPath();
+          context.filter = `blur(${2 * attackProgress}px)`;
+          context.globalAlpha = 1 - attackProgress;
+          context.moveTo(positionX - 20 * flow, positionY + 10);
+          context.lineTo(positionX - 30 * flow, positionY - 120 * flow);
+          context.lineTo(positionX + flow, positionY + 5);
+          context.fill();
+          context.closePath();
+        });
+      });
+    }
+  }
+  if (enemyState.attack.type === 1) {
+    if (isAttacking) {
+      enemyState.attack.position.forEach(({ x, y }) => {
+        const { x: positionX, y: positionY } = getPosition(x, y);
+        draw(() => {
+          context.setTransform(
+            1,
+            0,
+            0,
+            1,
+            positionX,
+            positionY - 125 + 130 * attackProgress,
+          );
+          context.beginPath();
+          context.fillStyle = '#ccfffb';
+          context.arc(
+            0,
+            -75,
+            10 * (1 - attackProgress),
+            degreeToRadian(180),
+            degreeToRadian(-20),
+          );
+          context.moveTo(0, 0);
+          context.lineTo(-10, -75 * (1 - attackProgress));
+          context.lineTo(10, -75);
+          context.fill();
+          context.closePath();
+        });
+      });
+    }
+  }
 };

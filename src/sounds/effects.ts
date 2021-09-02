@@ -139,3 +139,41 @@ export const soundExplostion = () => {
   );
   // Explosion 50
 };
+
+export const soundGetFreezing = () => {
+  zzfx(
+    ...[
+      1.15,
+      ,
+      76,
+      ,
+      0.24,
+      0.08,
+      ,
+      1.19,
+      ,
+      25,
+      -791,
+      0.05,
+      0.04,
+      0.8,
+      -141,
+      ,
+      0.12,
+      ,
+      0.08,
+    ],
+  ); // Random 209
+};
+
+export const soundIceSpike = () => {
+  zzfx(
+    ...[1.99, , 378, , 0.11, 0.24, , 0.42, 0.1, , -765, 0.04, , 0.4, , , 0.21],
+  ); // Random 163
+};
+
+export const soundDrop = () => {
+  zzfx(
+    ...[, , 840, 0.05, 0.06, 0.08, , 1.06, -6.1, , , , , , , , , 0.73, 0.01],
+  ); // Jump 201
+};

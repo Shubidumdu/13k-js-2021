@@ -24,6 +24,7 @@ export const enemyMove = ({
 };
 
 interface EnemyAttackProps {
+  type?: number;
   start: number;
   position: { x: number; y: number }[];
   predelay: number;
@@ -34,6 +35,7 @@ interface EnemyAttackProps {
 }
 
 export const enemyAttack = ({
+  type,
   start,
   position,
   predelay,
@@ -43,6 +45,7 @@ export const enemyAttack = ({
   sound,
 }: EnemyAttackProps) => {
   enemyState.attack = {
+    type,
     sound,
     start,
     duration,

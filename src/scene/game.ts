@@ -11,7 +11,10 @@ import { drawLifeBar } from '../graphic/lifeBar';
 import { drawMap } from '../graphic/map';
 import { drawPlayer } from '../graphic/player';
 import {
+  soundDrop,
   soundExplostion,
+  soundGetFreezing,
+  soundIceSpike,
   soundLazerCharge,
   soundLazerShoot,
 } from '../sounds/effects';
@@ -260,7 +263,31 @@ export const updateGame = (time: number) => {
       start: enemyState.move.start,
       duration: enemyState.move.predelay + enemyState.move.speed,
     });
-    if (isEnemyAttacking && !enemyState.attack.sound[0]) {
+    const [
+      isEnemyAttackCharging,
+      enemyAttackChargingProgress,
+      _,
+      enemyAttackChargingEnded,
+    ] = getTimings({
+      time,
+      start: enemyState.attack.start,
+      duration: enemyState.attack.predelay,
+    });
+    if (isEnemyAttackCharging) {
+      if (enemyState.attack.type === 0 && !enemyState.attack.sound[0]) {
+        soundGetFreezing();
+        enemyState.attack.sound[0] = true;
+      }
+    }
+    if (isEnemyAttacking) {
+      if (enemyState.attack.type === 0 && !enemyState.attack.sound[1]) {
+        soundIceSpike();
+        enemyState.attack.sound[1] = true;
+      }
+      if (enemyState.attack.type === 1 && !enemyState.attack.sound[0]) {
+        soundDrop();
+        enemyState.attack.sound[0] = true;
+      }
     }
     if (isEnemyMovingEnded && isEnemyAttackEnded) {
       const random = Math.floor(Math.random() * 2);
@@ -273,33 +300,49 @@ export const updateGame = (time: number) => {
           position: enemyMovePosition,
         });
         const safeZone = { x: getRandomInt(4), y: getRandomInt(4) };
+        while (safeZone.x === enemyState.position.x) {
+          safeZone.x = getRandomInt(4);
+        }
+        while (safeZone.y === enemyState.position.y) {
+          safeZone.y = getRandomInt(4);
+        }
         enemyAttack({
+          type: 0,
           start: time + 300,
           predelay: 1400,
           delay: 200,
           position: [0, 1, 2, 3].reduce((prev, val1) => {
             const pos = [0, 1, 2, 3]
               .map((val2) => ({ x: val1, y: val2 }))
-              .filter(
-                ({ x, y }) =>
+              .filter(({ x, y }) => {
+                return (
                   (x !== enemyMovePosition.x || y !== enemyMovePosition.y) &&
-                  (x !== safeZone.x || y !== safeZone.y),
-              );
+                  (x !== safeZone.x || y !== safeZone.y)
+                );
+              });
             return [...prev, ...pos];
           }, []),
           duration: 200,
           power: 20,
-          sound: [false],
+          sound: [false, false],
         });
       } else {
-        enemyAttack({
+        const enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
+        enemyMove({
           start: time,
+          predelay: 200,
+          speed: 100,
+          position: enemyMovePosition,
+        });
+        enemyAttack({
+          type: 1,
+          start: time + 200,
           predelay: 600,
-          delay: 200,
+          delay: 100,
           position: [0, 1, 2, 3].map((x) => ({ x, y: getRandomInt(4) })),
-          duration: 100,
+          duration: 200,
           power: 20,
-          sound: [],
+          sound: [false],
         });
       }
     }

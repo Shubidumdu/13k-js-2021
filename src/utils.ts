@@ -1,3 +1,7 @@
+import { canvas } from './canvas';
+import { enemyState } from './states/enemy';
+import { mapState } from './states/map';
+
 export const degreeToRadian = (degree: number) => (Math.PI / 180) * degree;
 
 interface GetTimingProps {
@@ -25,3 +29,14 @@ export const getTimings = ({
 };
 
 export const getRandomInt = (size: number) => Math.floor(Math.random() * size);
+
+export const getPosition = (x: number, y: number) => {
+  const PositionX =
+    canvas.width / 2 +
+    (-(mapState.tileWidth + mapState.tileHeight) +
+      x * mapState.tileWidth -
+      (y * mapState.tileWidth) / 6);
+  const PositionY =
+    canvas.height / 2 + (y - 1 / 2) + mapState.tileHeight * (y + 0.5);
+  return { x: PositionX, y: PositionY };
+};
