@@ -12,7 +12,9 @@ const state = {
 const loop = (time: number) => {
   resetCanvas();
   if (state.sceneType === 0) {
-    // drawTitle();
+    drawTitle();
+  }
+  if (state.sceneType === 1) {
     drawGame(time);
   }
   requestAnimationFrame(loop);
