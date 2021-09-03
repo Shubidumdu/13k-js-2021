@@ -32,7 +32,7 @@ export interface EnemyState {
   };
 }
 
-export const enemyState: EnemyState = {
+export let enemyState: EnemyState = {
   life: 100,
   position: {
     x: 3,
@@ -61,4 +61,37 @@ export const enemyState: EnemyState = {
       y: 3,
     },
   },
+};
+
+export const resetEnemyState = () => {
+  enemyState = {
+    life: 100,
+    position: {
+      x: 3,
+      y: 0,
+    },
+    damage: {
+      start: -Infinity,
+      duration: 600,
+    },
+    attack: {
+      type: 0,
+      sound: [],
+      start: -Infinity,
+      duration: 1000,
+      predelay: 0,
+      delay: 0,
+      power: 10,
+      position: [],
+    },
+    move: {
+      start: -Infinity,
+      predelay: 1000,
+      speed: 100,
+      position: {
+        x: 3,
+        y: 3,
+      },
+    },
+  };
 };

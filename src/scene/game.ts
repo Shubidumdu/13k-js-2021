@@ -8,7 +8,7 @@ import {
   drawEnemy4,
   drawEnemy5,
 } from '../graphic/enemy';
-import { drawLifeBar } from '../graphic/lifeBar';
+import { drawLifeBar } from '../graphic/ui';
 import { drawMap } from '../graphic/map';
 import { drawPlayer } from '../graphic/player';
 import {
@@ -22,19 +22,25 @@ import {
   soundLazerCharge,
   soundLazerShoot,
 } from '../sounds/effects';
-import { enemyState } from '../states/enemy';
+import { enemyState, resetEnemyState } from '../states/enemy';
 import { mapState } from '../states/map';
-import { playerState } from '../states/player';
+import { playerState, resetPlayerState } from '../states/player';
 import { getRandomInt, getTimings } from '../utils';
 
 const gameState = {
-  stage: 5,
+  stage: 1,
   player: playerState,
   map: mapState,
   enemy: enemyState,
 };
 
 export const updateGame = (time: number) => {
+  // When game cleared
+  if (enemyState.life <= 0) {
+    resetEnemyState();
+    resetPlayerState();
+    gameState.stage += 1;
+  }
   // Enemy Move
   if (
     (enemyState.move.position.x !== enemyState.position.x ||

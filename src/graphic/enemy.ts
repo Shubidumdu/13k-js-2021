@@ -1,5 +1,5 @@
 import { enemyMove } from '../actions/enemy';
-import { canvas, context, draw } from '../canvas';
+import { gameCanvas, gameContext, draw } from '../canvas';
 import { soundLazerCharge } from '../sounds/effects';
 import { enemyState, EnemyState } from '../states/enemy';
 import { MapState } from '../states/map';
@@ -20,7 +20,7 @@ export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.move.speed,
   });
   const positionX = isMoving
-    ? canvas.width / 2 +
+    ? gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -29,18 +29,18 @@ export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : canvas.width / 2 +
+    : gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? canvas.height / 2 +
+    ? gameCanvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
       2 * Math.sin(time / 240)
-    : canvas.height / 2 +
+    : gameCanvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
       2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
@@ -89,7 +89,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.attack.duration,
   });
   const positionX = isMoving
-    ? canvas.width / 2 +
+    ? gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -98,18 +98,18 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : canvas.width / 2 +
+    : gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? canvas.height / 2 +
+    ? gameCanvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
       2 * Math.sin(time / 240)
-    : canvas.height / 2 +
+    : gameCanvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
       2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
@@ -313,7 +313,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.attack.duration,
   });
   const positionX = isMoving
-    ? canvas.width / 2 +
+    ? gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -322,18 +322,18 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : canvas.width / 2 +
+    : gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? canvas.height / 2 +
+    ? gameCanvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
       2 * Math.sin(time / 240)
-    : canvas.height / 2 +
+    : gameCanvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
       2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
@@ -344,15 +344,15 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
   if (isAttacking && enemyState.attack.position[0].y < enemyState.position.y) {
     const attackPositionX =
-      canvas.width / 2 +
+      gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.attack.position[0].x * map.tileWidth -
         (enemy.attack.position[0].y * map.tileWidth) / 6);
     const attackPositionY =
-      canvas.height / 2 +
+      gameCanvas.height / 2 +
       (enemy.attack.position[0].y - 1 / 2) +
       map.tileHeight * (enemy.attack.position[0].y + 0.5);
-    draw(() => {
+    draw((context) => {
       context.beginPath();
       context.fillStyle = '#f00';
       context.filter = 'blur(8px)';
@@ -405,15 +405,15 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
   if (isAttacking && enemyState.attack.position[0].y >= enemyState.position.y) {
     const attackPositionX =
-      canvas.width / 2 +
+      gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.attack.position[0].x * map.tileWidth -
         (enemy.attack.position[0].y * map.tileWidth) / 6);
     const attackPositionY =
-      canvas.height / 2 +
+      gameCanvas.height / 2 +
       (enemy.attack.position[0].y - 1 / 2) +
       map.tileHeight * (enemy.attack.position[0].y + 0.5);
-    draw(() => {
+    draw((context) => {
       context.beginPath();
       context.fillStyle = '#f00';
       context.filter = 'blur(8px)';
@@ -457,7 +457,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.attack.predelay,
   });
   const positionX = isMoving
-    ? canvas.width / 2 +
+    ? gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -466,18 +466,18 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : canvas.width / 2 +
+    : gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? canvas.height / 2 +
+    ? gameCanvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
       2 * Math.sin(time / 240)
-    : canvas.height / 2 +
+    : gameCanvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
       2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
@@ -514,7 +514,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
   if (enemyState.attack.type === 0) {
     if (isAttackCharging) {
-      draw(() => {
+      draw((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
@@ -541,7 +541,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
     if (isAttacking) {
-      draw(() => {
+      draw((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
@@ -566,7 +566,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
         });
         context.closePath();
       });
-      draw(() => {
+      draw((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const flow = Math.sin(Math.PI * attackProgress);
@@ -587,7 +587,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     if (isAttacking) {
       enemyState.attack.position.forEach(({ x, y }) => {
         const { x: positionX, y: positionY } = getPosition(x, y);
-        draw(() => {
+        draw((context) => {
           context.setTransform(
             1,
             0,
@@ -633,7 +633,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.attack.predelay,
   });
   const positionX = isMoving
-    ? canvas.width / 2 +
+    ? gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -642,18 +642,18 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : canvas.width / 2 +
+    : gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? canvas.height / 2 +
+    ? gameCanvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
       2 * Math.sin(time / 240)
-    : canvas.height / 2 +
+    : gameCanvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
       2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
@@ -831,7 +831,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
   if (enemyState.attack.type === 2) {
     if (isAttackCharging) {
-      draw(() => {
+      draw((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();
@@ -851,7 +851,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
     if (isAttacking) {
-      draw(() => {
+      draw((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();
@@ -869,7 +869,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
           context.closePath();
         });
       });
-      draw(() => {
+      draw((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();

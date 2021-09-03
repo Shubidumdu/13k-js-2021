@@ -5,16 +5,16 @@ import { drawTitle } from './scene/title';
 
 // 0 => TITLE
 // 1 => ON_GAME
-const state = {
+export const globalState = {
   sceneType: 0,
 };
 
 const loop = (time: number) => {
   resetCanvas();
-  if (state.sceneType === 0) {
-    drawTitle();
+  if (globalState.sceneType === 0) {
+    drawTitle(time);
   }
-  if (state.sceneType === 1) {
+  if (globalState.sceneType === 1) {
     drawGame(time);
   }
   requestAnimationFrame(loop);

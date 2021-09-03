@@ -1,5 +1,28 @@
 body {
+  position: relative;
   margin: 0;
   overflow: hidden;
   padding: 0;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#background {
+  z-index: 0;
+}
+
+#map {
+  z-index: 1;
+}
+
+#game {
+  z-index: 2;
+}
+
+#ui {
+  z-index: 3;
 }

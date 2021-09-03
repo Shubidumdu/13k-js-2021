@@ -1,19 +1,27 @@
 const CANVAS_BACKGROUND = '#333';
 
-export const canvas: HTMLCanvasElement = document.getElementById(
-  'canvas',
+export const gameCanvas: HTMLCanvasElement = document.getElementById(
+  'game',
 ) as HTMLCanvasElement;
 
-export const context = canvas.getContext('2d');
+export const gameContext = gameCanvas.getContext('2d');
+
+export const backgroundCanvas = document.getElementById(
+  'background',
+) as HTMLCanvasElement;
+
+export const backgroundContext = backgroundCanvas.getContext('2d');
 
 export function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  gameCanvas.width = window.innerWidth;
+  gameCanvas.height = window.innerHeight;
+  backgroundCanvas.width = window.innerWidth;
+  backgroundCanvas.height = window.innerHeight;
 }
 
 export function resetCanvas() {
-  context.setTransform(1, 0, 0, 1, 0, 0);
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  gameContext.setTransform(1, 0, 0, 1, 0, 0);
+  gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 }
 
 export function draw(
@@ -22,15 +30,15 @@ export function draw(
     canvas?: HTMLCanvasElement,
   ) => void,
 ) {
-  context.save();
-  context.beginPath();
-  callback(context, canvas);
-  context.closePath();
-  context.restore();
+  gameContext.save();
+  gameContext.beginPath();
+  callback(gameContext, gameCanvas);
+  gameContext.closePath();
+  gameContext.restore();
 }
 
 function init() {
-  canvas.style.background = CANVAS_BACKGROUND;
+  backgroundCanvas.style.background = CANVAS_BACKGROUND;
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 }

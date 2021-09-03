@@ -1,4 +1,4 @@
-import { canvas, draw } from '../canvas';
+import { gameCanvas, draw } from '../canvas';
 import { MapState } from '../states/map';
 import { playerState, PlayerState } from '../states/player';
 import { degreeToRadian, getTimings } from '../utils';
@@ -31,7 +31,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
   if (isTakingDamage && Math.ceil(time) % 4 === 0) return;
   const wave = Math.sin(time / 240);
   const positionX = isMoving
-    ? canvas.width / 2 +
+    ? gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (player.position.x +
           (player.move.position.x - player.position.x) * movingProgress) *
@@ -40,17 +40,17 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
           (player.move.position.y - player.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : canvas.width / 2 +
+    : gameCanvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         player.position.x * map.tileWidth -
         (player.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? canvas.height / 2 +
+    ? gameCanvas.height / 2 +
       (player.position.y +
         (player.move.position.y - player.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight
-    : canvas.height / 2 + (player.position.y - 1 / 2) * map.tileHeight;
+    : gameCanvas.height / 2 + (player.position.y - 1 / 2) * map.tileHeight;
   draw((context) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (player.direction === -1) context.scale(-1, 1);

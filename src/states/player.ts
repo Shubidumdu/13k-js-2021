@@ -27,7 +27,7 @@ export interface PlayerState {
   };
 }
 
-export const playerState: PlayerState = {
+export let playerState: PlayerState = {
   life: 100,
   position: {
     x: 0,
@@ -54,4 +54,35 @@ export const playerState: PlayerState = {
       y: 0,
     },
   },
+};
+
+export const resetPlayerState = () => {
+  playerState = {
+    life: 100,
+    position: {
+      x: 0,
+      y: 0,
+    },
+    collisionDamage: 10,
+    direction: 1,
+    attack: {
+      start: -Infinity,
+      predelay: 80,
+      delay: 80,
+      duration: 32,
+      power: 10,
+    },
+    damage: {
+      start: -Infinity,
+      duration: 400,
+    },
+    move: {
+      start: -Infinity,
+      speed: 100,
+      position: {
+        x: 0,
+        y: 0,
+      },
+    },
+  };
 };
