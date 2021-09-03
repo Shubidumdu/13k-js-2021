@@ -1,4 +1,4 @@
-import zzfx from '../zzfx';
+import { zzfx } from '../zzfx';
 
 export const soundLightSaber = () => {
   zzfx(

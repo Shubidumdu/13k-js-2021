@@ -27,14 +27,19 @@ import { mapState } from '../states/map';
 import { playerState, resetPlayerState } from '../states/player';
 import { getRandomInt, getTimings } from '../utils';
 
-const gameState = {
+export const gameState = {
   stage: 1,
+  time: 0,
   player: playerState,
   map: mapState,
   enemy: enemyState,
 };
 
 export const updateGame = (time: number) => {
+  // Get Ready
+  if (gameState.time === 0) {
+    gameState.time = time;
+  }
   // When game cleared
   if (enemyState.life <= 0) {
     resetEnemyState();

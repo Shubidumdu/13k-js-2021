@@ -2,7 +2,6 @@ import { resetCanvas } from './canvas';
 import './index.scss';
 import { drawGame } from './scene/game';
 import { drawTitle } from './scene/title';
-
 // 0 => TITLE
 // 1 => ON_GAME
 export const globalState = {
@@ -16,6 +15,8 @@ const loop = (time: number) => {
   }
   if (globalState.sceneType === 1) {
     drawGame(time);
+  }
+  if (globalState.sceneType === 2) {
   }
   requestAnimationFrame(loop);
 };
