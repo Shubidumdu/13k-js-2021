@@ -1,11 +1,14 @@
 import { resetCanvas } from './canvas';
 import './index.scss';
 import { drawGame } from './scene/game';
-import { drawTitle } from './scene/title';
+import { drawGameOver } from './scene/gameover';
+import { drawResult } from './scene/result';
+import { drawTitle, startTitleScene } from './scene/title';
 // 0 => TITLE
 // 1 => ON_GAME
 export const globalState = {
   sceneType: 0,
+  music: false,
 };
 
 const loop = (time: number) => {
@@ -17,8 +20,14 @@ const loop = (time: number) => {
     drawGame(time);
   }
   if (globalState.sceneType === 2) {
+    drawGameOver(time);
+  }
+  if (globalState.sceneType === 3) {
+    drawResult(time);
   }
   requestAnimationFrame(loop);
 };
 
 requestAnimationFrame(loop);
+
+startTitleScene();

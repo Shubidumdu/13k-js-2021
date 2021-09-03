@@ -1,18 +1,22 @@
 import { globalState } from '..';
-import { titleMusic } from '../scene/title';
-import { battleMusicPlay } from '../sounds/music';
+import { startGameScene } from '../scene/game';
+import { endTitleScene, startTitleMusic, stopTitleMusic } from '../scene/title';
 
 let titleEventHandler: (e: KeyboardEvent) => void;
 
 export const addTitleEventListener = () => {
   titleEventHandler = (e: KeyboardEvent) => {
-    const time = performance.now();
-    if (e.key === 'Enter') {
-      titleMusic.stop();
-      const battleMusic = battleMusicPlay();
-      battleMusic.loop = true;
-      globalState.sceneType = 1;
-      removeTitleEventListener();
+    if (e.key === 's' || e.key === 'S') {
+      startGameScene();
+      endTitleScene();
+    }
+    if (e.key === 'm' || e.key === 'M') {
+      globalState.music = !globalState.music;
+      if (globalState.music) {
+        startTitleMusic();
+      } else {
+        stopTitleMusic();
+      }
     }
   };
 

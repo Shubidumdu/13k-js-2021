@@ -1,7 +1,11 @@
+import { globalState } from '..';
 import { draw } from '../canvas';
-import { addTitleEventListener } from '../events/title';
+import {
+  addTitleEventListener,
+  removeTitleEventListener,
+} from '../events/title';
 import { getFont } from '../font';
-import { titleMusicPlay } from '../sounds/music';
+import { resultMusicPlay, titleMusicPlay } from '../sounds/music';
 
 export const updateTitle = () => {};
 
@@ -23,7 +27,25 @@ export const drawTitle = (time: number) => {
   });
 };
 
-export const titleMusic = titleMusicPlay();
-titleMusic.loop = true;
+export let titleMusic: AudioBufferSourceNode;
 
-addTitleEventListener();
+export const startTitleMusic = () => {
+  titleMusic = titleMusicPlay();
+  titleMusic.loop = true;
+};
+
+export const stopTitleMusic = () => {
+  titleMusic.stop();
+};
+
+export const startTitleScene = () => {
+  globalState.sceneType = 0;
+  if (globalState.music) startTitleMusic();
+  addTitleEventListener();
+};
+
+export const endTitleScene = () => {
+  titleMusic?.stop();
+  if (globalState.music) stopTitleMusic();
+  removeTitleEventListener();
+};

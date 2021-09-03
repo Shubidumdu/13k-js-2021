@@ -26,6 +26,10 @@ import { enemyState, resetEnemyState } from '../states/enemy';
 import { mapState } from '../states/map';
 import { playerState, resetPlayerState } from '../states/player';
 import { getRandomInt, getTimings } from '../utils';
+import { globalState } from '..';
+import { battleMusicPlay } from '../sounds/music';
+import { removeTitleEventListener } from '../events/title';
+import { startGameOverScene } from './gameover';
 
 export const gameState = {
   stage: 1,
@@ -45,6 +49,14 @@ export const updateGame = (time: number) => {
     resetEnemyState();
     resetPlayerState();
     gameState.stage += 1;
+  }
+  // When player dead
+  if (playerState.life <= 0) {
+    resetEnemyState();
+    resetPlayerState();
+    gameState.stage = 1;
+    endGameScene();
+    startGameOverScene();
   }
   // Enemy Move
   if (
@@ -633,4 +645,16 @@ export const drawGame = (time: number) => {
   }
 };
 
-addGameEventListener();
+export let battleMusic: AudioBufferSourceNode;
+
+export const startGameScene = () => {
+  battleMusic = battleMusicPlay();
+  battleMusic.loop = true;
+  globalState.sceneType = 1;
+  addGameEventListener();
+};
+
+export const endGameScene = () => {
+  battleMusic.stop();
+  removeTitleEventListener();
+};

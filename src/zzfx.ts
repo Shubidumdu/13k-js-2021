@@ -20,7 +20,7 @@
 // ==/ClosureCompiler==
 
 export const zzfx = (...z) => zzfxP(zzfxG(...z)); // generate and play sound
-export const zzfxV = 0.3; // volume
+export const zzfxV = 0.2; // volume
 export const zzfxR = 44100; // sample rate
 export const zzfxX = new (window.AudioContext || webkitAudioContext)(); // audio context
 export const zzfxP = (
