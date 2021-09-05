@@ -5,6 +5,10 @@ import {
   removeGameOverEventListener,
 } from '../events/gameover';
 import { getFont } from '../font';
+import { gameoverMusicPlay } from '../sounds/music';
+import { resetEnemyState } from '../states/enemy';
+import { resetPlayerState } from '../states/player';
+import { gameState } from './game';
 
 export const drawGameOver = (time: number) => {
   draw((context, canvas) => {
@@ -19,13 +23,19 @@ export const drawGameOver = (time: number) => {
     context.fillText(
       "Press 'S' key to return to title",
       canvas.width / 2,
-      canvas.height / 2 + 120,
+      canvas.height / 2 + 40,
     );
   });
 };
 
 export const startGameOverScene = () => {
   globalState.sceneType = 2;
+  gameState.stage = 0;
+  resetEnemyState();
+  resetPlayerState();
+  if (globalState.music) {
+    gameoverMusicPlay();
+  }
   addGameOverEventListener();
 };
 

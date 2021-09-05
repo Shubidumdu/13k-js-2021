@@ -121,7 +121,6 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     draw((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
-      console.log(isAttacking, isAttackCharging);
       if (isAttackCharging) {
         context.arc(
           -80,

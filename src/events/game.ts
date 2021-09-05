@@ -3,7 +3,7 @@ import { mapState } from '../states/map';
 import { playerState } from '../states/player';
 import { getTimings } from '../utils';
 
-let gameEventHandler;
+let gameEventHandler: (e: KeyboardEvent) => void;
 
 export const addGameEventListener = () => {
   gameEventHandler = (e: KeyboardEvent) => {
@@ -68,4 +68,8 @@ export const addGameEventListener = () => {
   };
 
   window.addEventListener('keydown', gameEventHandler);
+};
+
+export const removeGameEventListener = () => {
+  window.removeEventListener('keydown', gameEventHandler);
 };

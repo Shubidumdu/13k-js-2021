@@ -1,6 +1,6 @@
 import { enemyAttack, enemyMove } from '../actions/enemy';
 import { playerGetDamage, updatePlayerAttack } from '../actions/player';
-import { addGameEventListener } from '../events/game';
+import { addGameEventListener, removeGameEventListener } from '../events/game';
 import {
   drawEnemy1,
   drawEnemy2,
@@ -30,9 +30,10 @@ import { globalState } from '..';
 import { battleMusicPlay } from '../sounds/music';
 import { removeTitleEventListener } from '../events/title';
 import { startGameOverScene } from './gameover';
+import { startResultScene } from './result';
 
 export const gameState = {
-  stage: 1,
+  stage: 0,
   time: 0,
   player: playerState,
   map: mapState,
@@ -46,15 +47,11 @@ export const updateGame = (time: number) => {
   }
   // When game cleared
   if (enemyState.life <= 0) {
-    resetEnemyState();
-    resetPlayerState();
-    gameState.stage += 1;
+    endGameScene();
+    startResultScene();
   }
   // When player dead
   if (playerState.life <= 0) {
-    resetEnemyState();
-    resetPlayerState();
-    gameState.stage = 1;
     endGameScene();
     startGameOverScene();
   }
@@ -648,13 +645,20 @@ export const drawGame = (time: number) => {
 export let battleMusic: AudioBufferSourceNode;
 
 export const startGameScene = () => {
-  battleMusic = battleMusicPlay();
-  battleMusic.loop = true;
+  gameState.stage += 1;
+  resetEnemyState();
+  resetPlayerState();
+  if (globalState.music) {
+    battleMusic = battleMusicPlay();
+    battleMusic.loop = true;
+  }
   globalState.sceneType = 1;
   addGameEventListener();
 };
 
 export const endGameScene = () => {
-  battleMusic.stop();
-  removeTitleEventListener();
+  if (globalState.music) {
+    battleMusic.stop();
+  }
+  removeGameEventListener();
 };
