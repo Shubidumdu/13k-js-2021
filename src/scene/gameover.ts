@@ -21,7 +21,7 @@ export const drawGameOver = (time: number) => {
     context.shadowColor = '#aaa';
     context.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 120);
     context.fillText(
-      "Press 'S' key to return to title",
+      "Press 'S' or 'D' key to return to title",
       canvas.width / 2,
       canvas.height / 2 + 40,
     );

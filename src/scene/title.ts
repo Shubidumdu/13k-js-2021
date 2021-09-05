@@ -20,9 +20,14 @@ export const drawTitle = (time: number) => {
     context.shadowColor = '#aaa';
     context.fillText('ASTROACH', canvas.width / 2, canvas.height / 2 - 150);
     context.fillText(
-      'Press any button to start',
+      "Press 'S' or 'D' key to start",
       canvas.width / 2,
-      canvas.height / 2 + 150,
+      canvas.height / 2 + 40,
+    );
+    context.fillText(
+      "Press 'M' to toggle music",
+      canvas.width / 2,
+      canvas.height / 2 + 120,
     );
   });
 };

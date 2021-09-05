@@ -6,7 +6,7 @@ let titleEventHandler: (e: KeyboardEvent) => void;
 
 export const addTitleEventListener = () => {
   titleEventHandler = (e: KeyboardEvent) => {
-    if (e.key === 's' || e.key === 'S') {
+    if (e.key === 's' || e.key === 'S' || e.key === 'd' || e.key === 'D') {
       startGameScene();
       endTitleScene();
     }

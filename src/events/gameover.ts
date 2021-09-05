@@ -5,7 +5,7 @@ let gameOverEventHandler: (e: KeyboardEvent) => void;
 
 export const addGameOverEventListener = () => {
   gameOverEventHandler = (e: KeyboardEvent) => {
-    if (e.key === 'S' || e.key === 's') {
+    if (e.key === 'S' || e.key === 's' || e.key === 'd' || e.key === 'D') {
       startTitleScene();
       endGameOverScene();
     }

@@ -8,12 +8,13 @@ import {
   drawEnemy4,
   drawEnemy5,
 } from '../graphic/enemy';
-import { drawLifeBar } from '../graphic/ui';
+import { drawLifeBar, drawMessage, drawScoreTime } from '../graphic/ui';
 import { drawMap } from '../graphic/map';
 import { drawPlayer } from '../graphic/player';
 import {
   soundBlackHoleBeam,
   soundBlackSpike,
+  soundCountDown,
   soundDrop,
   soundExplostion,
   soundGetFreezing,
@@ -28,22 +29,32 @@ import { playerState, resetPlayerState } from '../states/player';
 import { getRandomInt, getTimings } from '../utils';
 import { globalState } from '..';
 import { battleMusicPlay } from '../sounds/music';
-import { removeTitleEventListener } from '../events/title';
 import { startGameOverScene } from './gameover';
 import { startResultScene } from './result';
 
 export const gameState = {
   stage: 0,
-  time: 0,
+  countDownSound: [false, false, false],
+  startTime: 0,
+  scoreTime: 0,
+  playTime: 0,
   player: playerState,
   map: mapState,
   enemy: enemyState,
 };
 
 export const updateGame = (time: number) => {
-  // Get Ready
-  if (gameState.time === 0) {
-    gameState.time = time;
+  // Get ReadyS
+  gameState.playTime = time - gameState.startTime;
+  gameState.scoreTime = gameState.playTime - 3000;
+  console.log(gameState.playTime);
+  if (gameState.playTime < 3000) {
+    const count = Math.ceil(gameState.playTime / 1000) - 1;
+    if (!gameState.countDownSound[count]) {
+      soundCountDown();
+      gameState.countDownSound[count] = true;
+    }
+    return;
   }
   // When game cleared
   if (enemyState.life <= 0) {
@@ -640,12 +651,16 @@ export const drawGame = (time: number) => {
       map: mapState,
     });
   }
+  drawMessage({ game: gameState });
+  drawScoreTime({ game: gameState });
 };
 
 export let battleMusic: AudioBufferSourceNode;
 
 export const startGameScene = () => {
   gameState.stage += 1;
+  gameState.startTime = performance.now();
+  gameState.countDownSound = [false, false, false];
   resetEnemyState();
   resetPlayerState();
   if (globalState.music) {
