@@ -47,7 +47,6 @@ export const updateGame = (time: number) => {
   // Get ReadyS
   gameState.playTime = time - gameState.startTime;
   gameState.scoreTime = gameState.playTime - 3000;
-  console.log(gameState.playTime);
   if (gameState.playTime < 3000) {
     const count = Math.ceil(gameState.playTime / 1000) - 1;
     if (!gameState.countDownSound[count]) {
