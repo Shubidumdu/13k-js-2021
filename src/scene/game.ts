@@ -44,7 +44,7 @@ export const gameState = {
 };
 
 export const updateGame = (time: number) => {
-  // Get ReadyS
+  // Get Ready
   gameState.playTime = time - gameState.startTime;
   gameState.scoreTime = gameState.playTime - 3000;
   if (gameState.playTime < 3000) {
@@ -82,17 +82,14 @@ export const updateGame = (time: number) => {
       };
   }
   // Player Move
-  const [isPlayerMoving, progressPlayerMoving] = getTimings({
-    time,
-    start: playerState.move.start,
-    duration: playerState.move.speed,
-  });
-  if (
-    (playerState.move.position.x !== playerState.position.x ||
-      playerState.move.position.y !== playerState.position.y) &&
-    !isPlayerMoving &&
-    progressPlayerMoving > 1
-  ) {
+  const [isPlayerMoving, progressPlayerMoving, _, playerMoveEnded] = getTimings(
+    {
+      time,
+      start: playerState.move.start,
+      duration: playerState.move.speed,
+    },
+  );
+  if (!isPlayerMoving && playerMoveEnded) {
     playerState.position = {
       ...playerState.move.position,
     };

@@ -1,4 +1,5 @@
 import { playerAttack, playerMove } from '../actions/player';
+import { gameState } from '../scene/game';
 import { mapState } from '../states/map';
 import { playerState } from '../states/player';
 import { getTimings } from '../utils';
@@ -7,6 +8,7 @@ let gameEventHandler: (e: KeyboardEvent) => void;
 
 export const addGameEventListener = () => {
   gameEventHandler = (e: KeyboardEvent) => {
+    if (gameState.playTime < 3000) return;
     const time = performance.now();
     if (
       e.key === 'ArrowRight' ||
