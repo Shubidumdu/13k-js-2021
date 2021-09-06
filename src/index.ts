@@ -1,7 +1,7 @@
 import { resetCanvas } from './canvas';
 import './index.scss';
-import { drawGame } from './scene/game';
-import { drawGameOver } from './scene/gameover';
+import { drawGame, startGameScene } from './scene/game';
+import { drawGameOver, startGameOverScene } from './scene/gameover';
 import { drawResult, startResultScene } from './scene/result';
 import { drawTitle, startTitleScene } from './scene/title';
 import { resultMusicPlay } from './sounds/music';

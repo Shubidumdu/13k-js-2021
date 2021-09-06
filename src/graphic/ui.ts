@@ -56,7 +56,10 @@ export const drawMessage = ({ game }: { game: typeof gameState }) => {
         canvas.width / 2,
         canvas.height / 2 - 80,
       );
-      context.font = getFont(24);
+      context.shadowColor = '#000';
+      context.shadowOffsetX = 4;
+      context.shadowOffsetY = 4;
+      context.font = getFont(48);
       context.fillStyle = '#fff';
       context.fillText(count.toString(), 0, 0);
     });
