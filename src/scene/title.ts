@@ -215,7 +215,7 @@ export const drawTitle = (time: number) => {
     drawRoach(time);
   });
   draw((context, canvas) => {
-    context.setTransform(1, 0, 0, 1, canvas.width / 2, 240);
+    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2 - 160);
     context.textBaseline = 'middle';
     context.textAlign = 'center';
     context.font = getFont(48);
