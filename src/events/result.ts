@@ -32,6 +32,7 @@ export const addResultEventListener = () => {
         }
       } else {
         if (resultState.index === 0) {
+          gameState.stage = 0;
           startTitleScene();
           endResultScene();
         }
@@ -46,7 +47,7 @@ export const addResultEventListener = () => {
 
   setTimeout(() => {
     window.addEventListener('keydown', resultEventHandler);
-  }, 1000);
+  }, 600);
 };
 
 export const removeResultEventListener = () => {
