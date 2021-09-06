@@ -13,8 +13,8 @@ export const backgroundCanvas = document.getElementById(
 export const backgroundContext = backgroundCanvas.getContext('2d');
 
 export function resizeCanvas() {
-  gameCanvas.width = window.innerWidth;
   gameCanvas.height = window.innerHeight;
+  gameCanvas.width = window.innerWidth;
   backgroundCanvas.width = window.innerWidth;
   backgroundCanvas.height = window.innerHeight;
 }
