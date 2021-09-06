@@ -70,7 +70,7 @@ export const resetPlayerState = () => {
       predelay: 80,
       delay: 80,
       duration: 32,
-      power: 10,
+      power: 100,
     },
     damage: {
       start: -Infinity,

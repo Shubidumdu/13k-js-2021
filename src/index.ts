@@ -2,8 +2,9 @@ import { resetCanvas } from './canvas';
 import './index.scss';
 import { drawGame } from './scene/game';
 import { drawGameOver } from './scene/gameover';
-import { drawResult } from './scene/result';
+import { drawResult, startResultScene } from './scene/result';
 import { drawTitle, startTitleScene } from './scene/title';
+import { resultMusicPlay } from './sounds/music';
 // 0 => TITLE
 // 1 => ON_GAME
 export const globalState = {
