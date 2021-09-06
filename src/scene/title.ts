@@ -8,7 +8,7 @@ import { getFont } from '../font';
 import { resultMusicPlay, titleMusicPlay } from '../sounds/music';
 import { degreeToRadian } from '../utils';
 
-const SELECTED_TEXT_COLOR = '#ff6';
+const SELECTED_TEXT_COLOR = '#D5D471';
 const NORMAL_TEXT_COLOR = '#FFF';
 
 export const updateTitle = () => {};
@@ -27,12 +27,22 @@ const drawRoach = (time: number) => {
       0,
       2,
       canvas.width / 2,
-      canvas.height / 2 + 1 * Math.sin(time / 80),
+      canvas.height / 2 + 20 + 1 * Math.sin(time / 80),
     );
     context.filter = 'blur(4px)';
-    context.ellipse(0, 50, 60, 10, 0, 0, degreeToRadian(360));
+    context.ellipse(0, 50, 60, 5, 0, 0, degreeToRadian(360));
     context.fillStyle = '#222';
     context.fill();
+  });
+  draw((context, canvas) => {
+    context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
+    context.globalAlpha = 0.3;
+    context.fillStyle = '#ffa';
+    context.filter = 'blur(2px)';
+    context.beginPath();
+    context.ellipse(0, 120, 120, 20, 0, 0, degreeToRadian(360));
+    context.fill();
+    context.closePath();
   });
   draw((context, canvas) => {
     // body
@@ -42,7 +52,7 @@ const drawRoach = (time: number) => {
       0,
       2,
       canvas.width / 2,
-      canvas.height / 2 + 10 * Math.sin(time / 80),
+      canvas.height / 2 + 20 + 10 * Math.sin(time / 80),
     );
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     context.shadowOffsetX = 0;
@@ -58,7 +68,7 @@ const drawRoach = (time: number) => {
       0,
       1,
       canvas.width / 2,
-      canvas.height / 2 + 10 * Math.sin(time / 80),
+      canvas.height / 2 + 20 + 10 * Math.sin(time / 80),
     );
     context.fillStyle = '#000';
     context.arc(-10, -40, 5, 0, degreeToRadian(360));
@@ -73,7 +83,7 @@ const drawRoach = (time: number) => {
       0,
       1,
       canvas.width / 2,
-      canvas.height / 2 + 10 * Math.sin(time / 80),
+      canvas.height / 2 + 20 + 10 * Math.sin(time / 80),
     );
     context.arc(0, -20, 10, 0, degreeToRadian(180));
     context.fillStyle = '#000';
@@ -87,7 +97,7 @@ const drawRoach = (time: number) => {
       0,
       1,
       canvas.width / 2,
-      canvas.height / 2 + 10 * Math.sin(time / 80),
+      canvas.height / 2 + 20 + 10 * Math.sin(time / 80),
     );
     context.moveTo(-25, 10);
     context.quadraticCurveTo(
@@ -108,10 +118,10 @@ const drawRoach = (time: number) => {
   draw((context, canvas) => {
     // legs
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
-    context.moveTo(-20, 50 + 10 * Math.sin(time / 80));
-    context.quadraticCurveTo(-40, 60, -40, 100);
-    context.moveTo(20, 50 + 10 * Math.sin(time / 80));
-    context.quadraticCurveTo(40, 60, 40, 100);
+    context.moveTo(-20, 70 + 10 * Math.sin(time / 80));
+    context.quadraticCurveTo(-40, 80, -40, 100 + 20);
+    context.moveTo(20, 70 + 10 * Math.sin(time / 80));
+    context.quadraticCurveTo(40, 80, 40, 100 + 20);
     context.stroke();
   });
   draw((context, canvas) => {
@@ -122,7 +132,7 @@ const drawRoach = (time: number) => {
       0,
       1,
       canvas.width / 2,
-      canvas.height / 2 + 10 * Math.sin(time / 80),
+      canvas.height / 2 + 20 + 10 * Math.sin(time / 80),
     );
     context.moveTo(-10, -60);
     context.quadraticCurveTo(
@@ -143,25 +153,32 @@ const drawRoach = (time: number) => {
   draw((context, canvas) => {
     // light
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
+    context.globalAlpha = 0.3;
+    context.fillStyle = '#ffa';
+    context.filter = 'blur(2px)';
+    context.beginPath();
     context.moveTo(-120, 120);
     context.lineTo(-40, -250);
     context.lineTo(40, -250);
     context.lineTo(120, 120);
-    context.ellipse(0, 120, 120, 20, 0, 0, degreeToRadian(180));
-    context.fillStyle = '#ffa';
-    context.filter = 'blur(2px)';
-    context.globalAlpha = 0.3;
+    context.ellipse(0, 120, 120, 20, 0, 0, degreeToRadian(360));
     context.fill();
+    context.closePath();
   });
   draw((context, canvas) => {
     // astroship
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.beginPath();
+    context.fillStyle = '#fff';
+    context.shadowOffsetY = 6;
+    context.shadowColor = '#000';
     context.ellipse(0, -240, 240, 20, 0, 0, degreeToRadian(360));
     context.fillStyle = '#fff';
     context.fill();
     context.closePath();
     context.beginPath();
+    context.shadowOffsetX = 8;
+    context.shadowOffsetY = 0;
     context.ellipse(
       0,
       -250,
@@ -171,26 +188,29 @@ const drawRoach = (time: number) => {
       degreeToRadian(180),
       degreeToRadian(360),
     );
-    context.fillStyle = '#bfb';
+    context.fillStyle = '#D5D471';
     context.fill();
     context.closePath();
     context.beginPath();
     context.ellipse(
       0,
-      -251,
+      -250,
       120,
       10,
       0,
       degreeToRadian(0),
-      degreeToRadian(180),
+      degreeToRadian(360),
     );
-    context.fillStyle = '#bfb';
+    context.shadowOffsetX = 8;
+    context.shadowOffsetY = 1;
+    context.fillStyle = '#C4C639';
     context.fill();
     context.closePath();
   });
 };
 
 export const drawTitle = (time: number) => {
+  drawBackground(time);
   draw((context, canvas) => {
     drawRoach(time);
   });
@@ -200,12 +220,18 @@ export const drawTitle = (time: number) => {
     context.textAlign = 'center';
     context.font = getFont(48);
     context.fillStyle = '#fff';
+    context.shadowOffsetX = 6;
+    context.shadowOffsetY = 6;
+    context.shadowColor = '#000';
     context.fillText('ASTROACH', 0, 0);
   });
   draw((context, canvas) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2 + 200);
     context.textBaseline = 'middle';
     context.textAlign = 'center';
+    context.shadowColor = '#000';
+    context.shadowOffsetX = 4;
+    context.shadowOffsetY = 4;
     context.font = getFont(24);
     context.beginPath();
     if (titleState.index === 0) context.fillStyle = SELECTED_TEXT_COLOR;
@@ -275,6 +301,15 @@ export const drawGuide = (time: number) => {
     context.textBaseline = 'middle';
     context.textAlign = 'center';
     context.fillText('Press S or D key to back to title', 0, 180);
+  });
+};
+
+const drawBackground = (time: number) => {
+  draw((context, canvas) => {
+    context.beginPath();
+    context.fillStyle = '#475644';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.closePath();
   });
 };
 
