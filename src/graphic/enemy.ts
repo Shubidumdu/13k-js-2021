@@ -1,5 +1,5 @@
 import { enemyMove } from '../actions/enemy';
-import { gameCanvas, gameContext, draw } from '../canvas';
+import { drawGame, gameCanvas } from '../canvas';
 import { soundLazerCharge } from '../sounds/effects';
 import { enemyState, EnemyState } from '../states/enemy';
 import { MapState } from '../states/map';
@@ -13,7 +13,7 @@ interface DrawEnemyProps {
   player: PlayerState;
 }
 
-export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawGameEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -49,7 +49,7 @@ export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.damage.duration,
   });
   if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
-  draw((context, canvas) => {
+  drawGame((context, canvas) => {
     // BODY
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
@@ -72,7 +72,7 @@ export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
 };
 
-export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -118,7 +118,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.damage.duration,
   });
   if (isAttackCharging || isAttacking) {
-    draw((context, canvas) => {
+    drawGame((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       if (isAttackCharging) {
@@ -192,7 +192,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     });
   }
   if (isAttacking) {
-    draw((context, canvas) => {
+    drawGame((context, canvas) => {
       context.setTransform(-1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -204,7 +204,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
       );
       context.closePath();
     });
-    draw((context, canvas) => {
+    drawGame((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -216,7 +216,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
       );
       context.closePath();
     });
-    draw((context, canvas) => {
+    drawGame((context, canvas) => {
       context.setTransform(-1, 0, 0, -1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -231,7 +231,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     });
   }
   if (isTakingDamage && Math.ceil(time) % 6 === 0) return;
-  draw((context, canvas) => {
+  drawGame((context, canvas) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (isTakingDamage) context.fillStyle = '#f66';
     else context.fillStyle = '#ee0';
@@ -254,7 +254,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.closePath();
   });
   if (isAttackCharging) {
-    draw((context, canvas) => {
+    drawGame((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -271,7 +271,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     });
   }
   if (isAttacking) {
-    draw((context, canvas) => {
+    drawGame((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -300,7 +300,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
 };
 
-export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawGameEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -351,7 +351,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
       gameCanvas.height / 2 +
       (enemy.attack.position[0].y - 1 / 2) +
       map.tileHeight * (enemy.attack.position[0].y + 0.5);
-    draw((context) => {
+    drawGame((context) => {
       context.beginPath();
       context.fillStyle = '#f00';
       context.filter = 'blur(8px)';
@@ -376,7 +376,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
       context.closePath();
     });
   }
-  draw((context, canvas) => {
+  drawGame((context, canvas) => {
     // BODY
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
@@ -412,7 +412,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
       gameCanvas.height / 2 +
       (enemy.attack.position[0].y - 1 / 2) +
       map.tileHeight * (enemy.attack.position[0].y + 0.5);
-    draw((context) => {
+    drawGame((context) => {
       context.beginPath();
       context.fillStyle = '#f00';
       context.filter = 'blur(8px)';
@@ -439,7 +439,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
 };
 
-export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -484,7 +484,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     start: enemy.damage.start,
     duration: enemy.damage.duration,
   });
-  draw((context, canvas) => {
+  drawGame((context, canvas) => {
     // BODY
     if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
     context.setTransform(1, 0, 0, 1, positionX, positionY);
@@ -513,7 +513,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
   if (enemyState.attack.type === 0) {
     if (isAttackCharging) {
-      draw((context) => {
+      drawGame((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
@@ -540,7 +540,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
     if (isAttacking) {
-      draw((context) => {
+      drawGame((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
@@ -565,7 +565,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
         });
         context.closePath();
       });
-      draw((context) => {
+      drawGame((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const flow = Math.sin(Math.PI * attackProgress);
@@ -586,7 +586,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     if (isAttacking) {
       enemyState.attack.position.forEach(({ x, y }) => {
         const { x: positionX, y: positionY } = getPosition(x, y);
-        draw((context) => {
+        drawGame((context) => {
           context.setTransform(
             1,
             0,
@@ -615,7 +615,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
 };
 
-export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -666,7 +666,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       enemyState.position.y,
     );
     if (isAttacking) {
-      draw((context, canvas) => {
+      drawGame((context, canvas) => {
         context.setTransform(1, 0, 0, 1, positionX, positionY - 40);
         context.beginPath();
         if (enemyState.attack.position[0].x > enemyState.position.x)
@@ -681,7 +681,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
   }
-  draw((context, canvas) => {
+  drawGame((context, canvas) => {
     // BODY
     if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
     context.setTransform(1, 0, 0, 1, positionX, positionY);
@@ -707,7 +707,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
   if (enemyState.attack.type === 0) {
     if (isAttackCharging) {
-      draw((context, canvas) => {
+      drawGame((context, canvas) => {
         const { x: positionX, y: positionY } = getPosition(
           enemyState.position.x,
           enemyState.position.y,
@@ -754,7 +754,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
     if (isAttacking) {
-      draw((context, canvas) => {
+      drawGame((context, canvas) => {
         const { x: positionX, y: positionY } = getPosition(
           enemyState.position.x,
           enemyState.position.y,
@@ -799,7 +799,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
         );
         context.closePath();
       });
-      draw((context, canvas) => {
+      drawGame((context, canvas) => {
         const { x: positionX, y: positionY } = getPosition(
           enemyState.position.x,
           enemyState.position.y,
@@ -830,7 +830,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
   if (enemyState.attack.type === 2) {
     if (isAttackCharging) {
-      draw((context) => {
+      drawGame((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();
@@ -850,7 +850,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
     if (isAttacking) {
-      draw((context) => {
+      drawGame((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();
@@ -868,7 +868,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
           context.closePath();
         });
       });
-      draw((context) => {
+      drawGame((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();

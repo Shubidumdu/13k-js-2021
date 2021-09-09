@@ -1,4 +1,4 @@
-import { resetCanvas } from './canvas';
+import { resetAllCanvas } from './canvas';
 import './index.scss';
 import { drawGame } from './scene/game';
 import { drawGameOver } from './scene/gameover';
@@ -13,7 +13,7 @@ export const globalState = {
 };
 
 const loop = (time: number) => {
-  resetCanvas();
+  resetAllCanvas();
   if (globalState.sceneType === 0) {
     drawTitle(time);
   }

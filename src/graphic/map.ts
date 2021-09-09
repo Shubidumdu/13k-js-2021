@@ -1,4 +1,4 @@
-import { draw } from '../canvas';
+import { drawBackground, drawMap } from '../canvas';
 import { EnemyState } from '../states/enemy';
 import { MapState } from '../states/map';
 import { getTimings } from '../utils';
@@ -12,7 +12,7 @@ interface DrawMapProps {
   time: number;
 }
 
-export const drawMap = ({
+export const drawGameMap = ({
   time,
   enemy,
   map: { size, tileWidth, tileHeight },
@@ -27,7 +27,13 @@ export const drawMap = ({
     start: enemy.attack.start,
     duration: enemy.attack.predelay,
   });
-  draw((context, canvas) => {
+  drawBackground((context, canvas) => {
+    context.beginPath();
+    context.fillStyle = '#475644';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.closePath();
+  });
+  drawMap((context, canvas) => {
     context.setTransform(
       1,
       0,

@@ -1,4 +1,4 @@
-import { gameCanvas, draw } from '../canvas';
+import { gameCanvas, drawGame } from '../canvas';
 import { MapState } from '../states/map';
 import { playerState, PlayerState } from '../states/player';
 import { degreeToRadian, getTimings } from '../utils';
@@ -9,7 +9,7 @@ interface DrawPlayerProps {
   map: MapState;
 }
 
-export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
+export const drawGamePlayer = ({ time, player, map }: DrawPlayerProps) => {
   // Damage Effect
   const [isAttacking, attackProgress] = getTimings({
     time,
@@ -51,7 +51,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
         1 / 2) *
         map.tileHeight
     : gameCanvas.height / 2 + (player.position.y - 1 / 2) * map.tileHeight;
-  draw((context) => {
+  drawGame((context) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (player.direction === -1) context.scale(-1, 1);
     if (isAttacking) {
@@ -61,7 +61,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
           (3 * attackProgress - 3),
       );
     }
-    draw((context) => {
+    drawGame((context) => {
       // BODY
       context.ellipse(0, wave, 20, 40, 0, 0, 2 * Math.PI);
       context.shadowOffsetX = 0;
@@ -69,14 +69,14 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
       context.fillStyle = '#6A3D3D';
       context.fill();
     });
-    draw((context) => {
+    drawGame((context) => {
       // EYES
       context.arc(0, -20 + wave, 3, 0, degreeToRadian(360));
       context.arc(10, -20 + wave, 3, 0, degreeToRadian(360));
       context.fillStyle = '#000';
       context.fill();
     });
-    draw((context) => {
+    drawGame((context) => {
       // ARMS
       context.moveTo(-10, -10 + wave);
       if (isAttacking) {
@@ -98,7 +98,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
       } else context.quadraticCurveTo(20, 20 + 2 * wave, 30, 10 - 2 * wave);
       context.stroke();
     });
-    draw((context) => {
+    drawGame((context) => {
       // LEGS
       context.moveTo(-10, 20);
       if (isAttacking) {
@@ -120,7 +120,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
       } else context.quadraticCurveTo(24 + wave, 20 + wave, 20, 40);
       context.stroke();
     });
-    draw((context) => {
+    drawGame((context) => {
       // FEELERS
       context.moveTo(-10, -28 + wave);
       if (isAttacking) {
@@ -154,7 +154,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
         );
       context.stroke();
     });
-    draw((context) => {
+    drawGame((context) => {
       // SWORD
       if (player.direction === -1)
         context.setTransform(

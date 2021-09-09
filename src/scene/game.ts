@@ -2,16 +2,6 @@ import { enemyAttack, enemyMove } from '../actions/enemy';
 import { playerGetDamage, updatePlayerAttack } from '../actions/player';
 import { addGameEventListener, removeGameEventListener } from '../events/game';
 import {
-  drawEnemy1,
-  drawEnemy2,
-  drawEnemy3,
-  drawEnemy4,
-  drawEnemy5,
-} from '../graphic/enemy';
-import { drawLifeBar, drawMessage, drawScoreTime } from '../graphic/ui';
-import { drawMap } from '../graphic/map';
-import { drawPlayer } from '../graphic/player';
-import {
   soundBlackHoleBeam,
   soundBlackSpike,
   soundCountDown,
@@ -31,6 +21,16 @@ import { globalState } from '..';
 import { battleMusicPlay } from '../sounds/music';
 import { startGameOverScene } from './gameover';
 import { startResultScene } from './result';
+import { drawGameMap } from '../graphic/map';
+import { drawLifeBar, drawMessage, drawScoreTime } from '../graphic/ui';
+import { drawGamePlayer } from '../graphic/player';
+import {
+  drawGameEnemy1,
+  drawGameEnemy2,
+  drawGameEnemy3,
+  drawGameEnemy4,
+  drawGameEnemy5,
+} from '../graphic/enemy';
 
 export const gameState = {
   stage: 0,
@@ -547,20 +547,20 @@ export const updateGame = (time: number) => {
 
 export const drawGame = (time: number) => {
   updateGame(time);
-  drawMap({ map: gameState.map, enemy: enemyState, time });
+  drawGameMap({ map: gameState.map, enemy: enemyState, time });
   drawLifeBar({
     player: playerState.life,
     enemy: enemyState.life,
   });
   if (enemyState.position.y >= playerState.position.y) {
-    drawPlayer({
+    drawGamePlayer({
       time,
       player: playerState,
       map: mapState,
     });
     switch (gameState.stage) {
       case 1:
-        drawEnemy1({
+        drawGameEnemy1({
           time,
           enemy: enemyState,
           map: mapState,
@@ -568,7 +568,7 @@ export const drawGame = (time: number) => {
         });
         break;
       case 2:
-        drawEnemy2({
+        drawGameEnemy2({
           time,
           enemy: enemyState,
           map: mapState,
@@ -576,7 +576,7 @@ export const drawGame = (time: number) => {
         });
         break;
       case 3:
-        drawEnemy3({
+        drawGameEnemy3({
           time,
           enemy: enemyState,
           map: mapState,
@@ -584,7 +584,7 @@ export const drawGame = (time: number) => {
         });
         break;
       case 4:
-        drawEnemy4({
+        drawGameEnemy4({
           time,
           enemy: enemyState,
           map: mapState,
@@ -592,7 +592,7 @@ export const drawGame = (time: number) => {
         });
         break;
       case 5:
-        drawEnemy5({
+        drawGameEnemy5({
           time,
           enemy: enemyState,
           map: mapState,
@@ -602,7 +602,7 @@ export const drawGame = (time: number) => {
   } else {
     switch (gameState.stage) {
       case 1:
-        drawEnemy1({
+        drawGameEnemy1({
           time,
           enemy: enemyState,
           map: mapState,
@@ -610,7 +610,7 @@ export const drawGame = (time: number) => {
         });
         break;
       case 2:
-        drawEnemy2({
+        drawGameEnemy2({
           time,
           enemy: enemyState,
           map: mapState,
@@ -618,7 +618,7 @@ export const drawGame = (time: number) => {
         });
         break;
       case 3:
-        drawEnemy3({
+        drawGameEnemy3({
           time,
           enemy: enemyState,
           map: mapState,
@@ -626,7 +626,7 @@ export const drawGame = (time: number) => {
         });
         break;
       case 4:
-        drawEnemy4({
+        drawGameEnemy4({
           time,
           enemy: enemyState,
           map: mapState,
@@ -634,14 +634,14 @@ export const drawGame = (time: number) => {
         });
         break;
       case 5:
-        drawEnemy5({
+        drawGameEnemy5({
           time,
           enemy: enemyState,
           map: mapState,
           player: playerState,
         });
     }
-    drawPlayer({
+    drawGamePlayer({
       time,
       player: playerState,
       map: mapState,

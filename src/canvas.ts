@@ -1,28 +1,18 @@
-const CANVAS_BACKGROUND = '#333';
-
 export const gameCanvas: HTMLCanvasElement = document.getElementById(
   'game',
 ) as HTMLCanvasElement;
-
-export const gameContext = gameCanvas.getContext('2d');
 
 export const backgroundCanvas = document.getElementById(
   'background',
 ) as HTMLCanvasElement;
 
-export const backgroundContext = backgroundCanvas.getContext('2d');
-
 export const uiCanvas: HTMLCanvasElement = document.getElementById(
   'ui',
 ) as HTMLCanvasElement;
 
-export const uiContext = uiCanvas.getContext('2d');
-
 export const mapCanvas: HTMLCanvasElement = document.getElementById(
   'map',
 ) as HTMLCanvasElement;
-
-export const mapContext = mapCanvas.getContext('2d');
 
 export function resizeCanvas() {
   gameCanvas.height = window.innerHeight;
@@ -35,23 +25,54 @@ export function resizeCanvas() {
   mapCanvas.height = window.innerHeight;
 }
 
-export function resetCanvas() {
-  gameContext.setTransform(1, 0, 0, 1, 0, 0);
-  gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+function draw(canvas: HTMLCanvasElement) {
+  const context = canvas.getContext('2d');
+
+  return (
+    callback: (
+      context: CanvasRenderingContext2D,
+      canvas?: HTMLCanvasElement,
+    ) => void,
+  ) => {
+    context.save();
+    context.beginPath();
+    callback(context, canvas);
+    context.closePath();
+    context.restore();
+  };
 }
 
-// export function draw(
-//   callback: (
-//     context: CanvasRenderingContext2D,
-//     canvas?: HTMLCanvasElement,
-//   ) => void,
-// ) {
-//   gameContext.save();
-//   gameContext.beginPath();
-//   callback(gameContext, gameCanvas);
-//   gameContext.closePath();
-//   gameContext.restore();
-// }
+function reset(canvas: HTMLCanvasElement) {
+  const context = canvas.getContext('2d');
+
+  return () => {
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  };
+}
+
+export const drawGame = draw(gameCanvas);
+
+export const drawBackground = draw(backgroundCanvas);
+
+export const drawUI = draw(uiCanvas);
+
+export const drawMap = draw(mapCanvas);
+
+export const resetGame = reset(gameCanvas);
+
+export const resetBackground = reset(backgroundCanvas);
+
+export const resetUI = reset(uiCanvas);
+
+export const resetMap = reset(mapCanvas);
+
+export const resetAllCanvas = () => {
+  resetGame();
+  resetBackground();
+  resetUI();
+  resetMap();
+};
 
 function init() {
   resizeCanvas();

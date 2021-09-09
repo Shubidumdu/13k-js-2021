@@ -2,6 +2,7 @@ import { gameState, startGameScene } from '../scene/game';
 import { endGameOverScene, gameOverState } from '../scene/gameover';
 import { startTitleScene } from '../scene/title';
 import { soundCursor } from '../sounds/effects';
+import { enemyState, resetEnemyState } from '../states/enemy';
 
 let gameOverEventHandler: (e: KeyboardEvent) => void;
 
@@ -27,6 +28,7 @@ export const addGameOverEventListener = () => {
         endGameOverScene();
       }
       if (gameOverState.index === 1) {
+        gameState.stage = 0;
         startTitleScene();
         endGameOverScene();
       }
