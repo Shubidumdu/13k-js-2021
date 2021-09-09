@@ -53,7 +53,7 @@ export const drawMessage = ({ game }: { game: typeof gameState }) => {
         0,
         0,
         1,
-        canvas.width / 2,
+        canvas.width / 2 - 24,
         canvas.height / 2 - 80,
       );
       context.shadowColor = '#000';
