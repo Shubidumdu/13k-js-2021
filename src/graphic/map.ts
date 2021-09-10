@@ -49,10 +49,10 @@ export const drawGameMap = ({
     drawLayer1((context, canvas) => {
       context.beginPath();
       const lingrad = context.createLinearGradient(0, 0, 0, innerHeight);
-      lingrad.addColorStop(0.3, '#0D0D0D');
-      lingrad.addColorStop(0.39, '#401410');
-      lingrad.addColorStop(0.4, '#D97652');
-      lingrad.addColorStop(0.8, '#8C3420');
+      lingrad.addColorStop(0.35, '#252E3E');
+      lingrad.addColorStop(0.4, '#44A748');
+      lingrad.addColorStop(0.4, '#96DF50');
+      lingrad.addColorStop(0.8, '#5FBF03');
       context.fillStyle = lingrad;
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.closePath();
@@ -61,8 +61,8 @@ export const drawGameMap = ({
     context.fillStyle = '#fff';
     if (!stars.length) {
       for (let i = 0; i < 50; i++) {
-        const x = Math.random() * innerWidth;
-        const y = Math.random() * (innerHeight / 3);
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * (canvas.height / 3);
         const dx = (Math.random() - 0.5) * 0.5;
         const dy = (Math.random() - 0.5) * 0;
         const radius = Math.random() * 2 + 1;
@@ -80,8 +80,8 @@ export const drawGameMap = ({
       const positionY = y + dy * 2;
       if (positionX < 0) stars[idx].dx = -dx;
       if (positionY < 0) stars[idx].dy = -dy;
-      if (positionX > innerWidth) stars[idx].dx = -dx;
-      if (positionY > innerHeight) stars[idx].dy = -dy;
+      if (positionX > canvas.width) stars[idx].dx = -dx;
+      if (positionY > canvas.height) stars[idx].dy = -dy;
       stars[idx].x = positionX;
       stars[idx].y = positionY;
       context.beginPath();
@@ -101,6 +101,10 @@ export const drawGameMap = ({
     );
     context.lineWidth = 2;
     if (gameState.stage === 1) {
+      context.strokeStyle = '#5A290C';
+      context.shadowColor = '#240000';
+    }
+    if (gameState.stage === 2) {
       context.strokeStyle = '#5A290C';
       context.shadowColor = '#240000';
     }
@@ -159,6 +163,7 @@ export const drawGameMap = ({
           context.shadowOffsetX = 8;
           context.shadowOffsetY = 8;
           if (gameState.stage === 1) context.fillStyle = '#F0C085';
+          if (gameState.stage === 2) context.fillStyle = '#fff';
           context.fillRect(
             tileWidth * x,
             tileHeight * y,

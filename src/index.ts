@@ -31,4 +31,4 @@ const loop = (time: number) => {
 
 requestAnimationFrame(loop);
 
-startGameScene();
+startTitleScene();
