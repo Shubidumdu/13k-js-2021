@@ -57,6 +57,42 @@ export const drawGameMap = ({
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.closePath();
     });
+  if (gameState.stage === 3)
+    drawLayer1((context, canvas) => {
+      context.beginPath();
+      const lingrad = context.createLinearGradient(0, 0, 0, innerHeight);
+      lingrad.addColorStop(0.34, '#1B1A1F');
+      lingrad.addColorStop(0.38, '#FB3D31');
+      lingrad.addColorStop(0.4, '#CC1017');
+      lingrad.addColorStop(0.8, '#51191E');
+      context.fillStyle = lingrad;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.closePath();
+    });
+  if (gameState.stage === 4)
+    drawLayer1((context, canvas) => {
+      context.beginPath();
+      const lingrad = context.createLinearGradient(0, 0, 0, innerHeight);
+      lingrad.addColorStop(0.36, '#182026');
+      lingrad.addColorStop(0.38, '#B6DBF2');
+      lingrad.addColorStop(0.6, '#8BBBD9');
+      lingrad.addColorStop(0.8, '#759CBF');
+      context.fillStyle = lingrad;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.closePath();
+    });
+  if (gameState.stage === 5)
+    drawLayer1((context, canvas) => {
+      context.beginPath();
+      const lingrad = context.createLinearGradient(0, 0, 0, innerHeight);
+      lingrad.addColorStop(0.38, '#0D0D0D');
+      lingrad.addColorStop(0.39, '#F2F2F2');
+      lingrad.addColorStop(0.6, '#D7D7D9');
+      lingrad.addColorStop(0.8, '#979DA6');
+      context.fillStyle = lingrad;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.closePath();
+    });
   drawLayer1((context, canvas) => {
     context.fillStyle = '#fff';
     if (!stars.length) {
@@ -105,8 +141,20 @@ export const drawGameMap = ({
       context.shadowColor = '#240000';
     }
     if (gameState.stage === 2) {
-      context.strokeStyle = '#5A290C';
-      context.shadowColor = '#240000';
+      context.strokeStyle = '#252E3E';
+      context.shadowColor = '#0B020E';
+    }
+    if (gameState.stage === 3) {
+      context.strokeStyle = '#51191E';
+      context.shadowColor = '#1B1A1F';
+    }
+    if (gameState.stage === 4) {
+      context.strokeStyle = '#182026';
+      context.shadowColor = '#182026';
+    }
+    if (gameState.stage === 5) {
+      context.strokeStyle = '#0D0D0D';
+      context.shadowColor = '#0D0D0D';
     }
     context.shadowOffsetX = 8;
     context.shadowOffsetY = 8;
@@ -162,8 +210,7 @@ export const drawGameMap = ({
         } else {
           context.shadowOffsetX = 8;
           context.shadowOffsetY = 8;
-          if (gameState.stage === 1) context.fillStyle = '#F0C085';
-          if (gameState.stage === 2) context.fillStyle = '#fff';
+          context.fillStyle = '#fff';
           context.fillRect(
             tileWidth * x,
             tileHeight * y,

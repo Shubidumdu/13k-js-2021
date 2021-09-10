@@ -252,11 +252,30 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
   if (isTakingDamage && Math.ceil(time) % 6 === 0) return;
   drawLayer1((context, canvas) => {
+    // SHADOW
     context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.beginPath();
+    context.ellipse(
+      0,
+      40 - 2 * Math.sin(time / 240),
+      40 - 1 * Math.sin(time / 240),
+      10 - 1 * Math.sin(time / 240),
+      0,
+      0,
+      degreeToRadian(360),
+    );
+    context.globalAlpha = 0.4;
+    context.fillStyle = '#000';
+    context.fill();
+    context.closePath();
+    context.beginPath();
+    context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.globalAlpha = 1;
     if (isTakingDamage) context.fillStyle = '#f66';
     else context.fillStyle = '#ee0';
-    context.arc(0, 0, 48, 0, degreeToRadian(360));
+    context.arc(0, 0, 40, 0, degreeToRadian(360));
     context.fill();
+    context.closePath();
     context.beginPath();
     context.arc(-20, -10, 20, degreeToRadian(90), degreeToRadian(180));
     context.fillStyle = '#000';
@@ -345,16 +364,17 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
-  const positionY = isMoving
-    ? layer1Canvas.height / 2 +
-      (enemy.position.y +
-        (enemy.move.position.y - enemy.position.y) * movingProgress -
-        1 / 2) *
-        map.tileHeight +
-      2 * Math.sin(time / 240)
-    : layer1Canvas.height / 2 +
-      (enemy.position.y - 1 / 2) * map.tileHeight +
-      2 * Math.sin(time / 240);
+  const positionY =
+    (isMoving
+      ? layer1Canvas.height / 2 +
+        (enemy.position.y +
+          (enemy.move.position.y - enemy.position.y) * movingProgress -
+          1 / 2) *
+          map.tileHeight +
+        2 * Math.sin(time / 240)
+      : layer1Canvas.height / 2 +
+        (enemy.position.y - 1 / 2) * map.tileHeight +
+        2 * Math.sin(time / 240)) - 40;
   const [isTakingDamage] = getTimings({
     time,
     start: enemy.damage.start,
@@ -397,8 +417,25 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
     });
   }
   drawLayer1((context, canvas) => {
+    // SHADOW
+    context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.beginPath();
+    context.ellipse(
+      0,
+      40 - 2 * Math.sin(time / 240),
+      40 - 1 * Math.sin(time / 240),
+      10 - 1 * Math.sin(time / 240),
+      0,
+      0,
+      degreeToRadian(360),
+    );
+    context.fillStyle = '#000';
+    context.globalAlpha = 0.4;
+    context.fill();
+    context.closePath();
     // BODY
     context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.globalAlpha = 1;
     context.beginPath();
     if (isMoving) context.globalAlpha = 0.5;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
@@ -489,25 +526,43 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
-  const positionY = isMoving
-    ? layer1Canvas.height / 2 +
-      (enemy.position.y +
-        (enemy.move.position.y - enemy.position.y) * movingProgress -
-        1 / 2) *
-        map.tileHeight +
-      2 * Math.sin(time / 240)
-    : layer1Canvas.height / 2 +
-      (enemy.position.y - 1 / 2) * map.tileHeight +
-      2 * Math.sin(time / 240);
+  const positionY =
+    (isMoving
+      ? layer1Canvas.height / 2 +
+        (enemy.position.y +
+          (enemy.move.position.y - enemy.position.y) * movingProgress -
+          1 / 2) *
+          map.tileHeight +
+        2 * Math.sin(time / 240)
+      : layer1Canvas.height / 2 +
+        (enemy.position.y - 1 / 2) * map.tileHeight +
+        2 * Math.sin(time / 240)) - 40;
   const [isTakingDamage] = getTimings({
     time,
     start: enemy.damage.start,
     duration: enemy.damage.duration,
   });
   drawLayer1((context, canvas) => {
+    // SHADOW
+    context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.beginPath();
+    context.ellipse(
+      0,
+      40 - 2 * Math.sin(time / 240),
+      40 - 1 * Math.sin(time / 240),
+      10 - 1 * Math.sin(time / 240),
+      0,
+      0,
+      degreeToRadian(360),
+    );
+    context.fillStyle = '#000';
+    context.globalAlpha = 0.4;
+    context.fill();
+    context.closePath();
     // BODY
     if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
     context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.globalAlpha = 1;
     context.beginPath();
     if (isMoving) context.globalAlpha = 0.5;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
@@ -665,16 +720,17 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
-  const positionY = isMoving
-    ? layer1Canvas.height / 2 +
-      (enemy.position.y +
-        (enemy.move.position.y - enemy.position.y) * movingProgress -
-        1 / 2) *
-        map.tileHeight +
-      2 * Math.sin(time / 240)
-    : layer1Canvas.height / 2 +
-      (enemy.position.y - 1 / 2) * map.tileHeight +
-      2 * Math.sin(time / 240);
+  const positionY =
+    (isMoving
+      ? layer1Canvas.height / 2 +
+        (enemy.position.y +
+          (enemy.move.position.y - enemy.position.y) * movingProgress -
+          1 / 2) *
+          map.tileHeight +
+        2 * Math.sin(time / 240)
+      : layer1Canvas.height / 2 +
+        (enemy.position.y - 1 / 2) * map.tileHeight +
+        2 * Math.sin(time / 240)) - 40;
   const [isTakingDamage] = getTimings({
     time,
     start: enemy.damage.start,
@@ -702,9 +758,26 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
     }
   }
   drawLayer1((context, canvas) => {
+    // SHADOW
+    context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.beginPath();
+    context.ellipse(
+      0,
+      40 - 2 * Math.sin(time / 240),
+      40 - 1 * Math.sin(time / 240),
+      10 - 1 * Math.sin(time / 240),
+      0,
+      0,
+      degreeToRadian(360),
+    );
+    context.fillStyle = '#000';
+    context.globalAlpha = 0.4;
+    context.fill();
+    context.closePath();
     // BODY
     if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
     context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.globalAlpha = 1;
     context.beginPath();
     context.filter = 'blur(4px)';
     if (isMoving) context.globalAlpha = 0.5;

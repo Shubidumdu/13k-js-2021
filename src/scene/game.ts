@@ -33,7 +33,7 @@ import {
 } from '../graphic/enemy';
 
 export const gameState = {
-  stage: 0,
+  stage: 3,
   countDownSound: [false, false, false],
   startTime: 0,
   scoreTime: 0,
