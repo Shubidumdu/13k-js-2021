@@ -227,7 +227,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
           positionY + 22 - Math.sin(time / 240),
         );
       if (player.direction === -1) context.scale(-1, 1);
-      context.fillStyle = '#aaf';
+      context.fillStyle = '#afa';
       if (isAttacking) {
         context.rotate(
           degreeToRadian(-180) *

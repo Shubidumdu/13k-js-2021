@@ -5,16 +5,18 @@ import { getTimings } from '../utils';
 import { enemyGetDamage } from './enemy';
 
 interface PlayerMoveProps {
+  start: number;
   position: {
     x: number;
     y: number;
   };
 }
 
-export const playerMove = ({ position }: PlayerMoveProps) => {
+export const playerMove = ({ start, position }: PlayerMoveProps) => {
+  console.log(start, position);
   playerState.move = {
     ...playerState.move,
-    start: performance.now(),
+    start,
     position,
   };
 };

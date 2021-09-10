@@ -1,6 +1,4 @@
-import { enemyMove } from '../actions/enemy';
 import { drawLayer1, layer1Canvas } from '../canvas';
-import { soundLazerCharge } from '../sounds/effects';
 import { enemyState, EnemyState } from '../states/enemy';
 import { MapState } from '../states/map';
 import { playerState, PlayerState } from '../states/player';
@@ -58,8 +56,8 @@ export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.ellipse(
       0,
       40 - 2 * Math.sin(time / 240),
-      40 - 1 * Math.sin(time / 240),
-      10 - 1 * Math.sin(time / 240),
+      44 - 1 * Math.sin(time / 240),
+      12 - 1 * Math.sin(time / 240),
       0,
       0,
       degreeToRadian(360),
@@ -67,26 +65,34 @@ export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.fillStyle = '#000';
     context.globalAlpha = 0.4;
     context.fill();
-    context.closePath();
-    // BODY
-    context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
     context.globalAlpha = 1;
+    context.ellipse(0, 12, 45, 28, 0, 0, degreeToRadian(360));
     if (isMoving) context.globalAlpha = 0.5;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     if (isTakingDamage) context.fillStyle = '#fa9';
-    else context.fillStyle = '#6f9';
+    else context.fillStyle = '#fed1ff';
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(-20, -10, 5, 0, degreeToRadian(360));
+    context.arc(-20, -10, 6, 0, degreeToRadian(360));
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(10, -10, 5, 0, degreeToRadian(360));
+    context.arc(10, -10, 7, 0, degreeToRadian(360));
     context.fillStyle = '#000';
     context.fill();
+    context.closePath();
+    context.beginPath();
+    context.fillStyle = '#fff';
+    context.fillRect(-10, 16, 10, 10);
+    context.closePath();
+    context.beginPath();
+    context.lineWidth = 2;
+    context.moveTo(-30, 14);
+    context.quadraticCurveTo(-10, 20, 20, 14);
+    context.stroke();
     context.closePath();
   });
 };
@@ -149,7 +155,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
           0,
           degreeToRadian(360),
         );
-        context.fillStyle = '#00f';
+        context.fillStyle = '#fffa6b';
         context.fill();
         context.arc(
           80,
@@ -158,12 +164,12 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
           0,
           degreeToRadian(360),
         );
-        context.fillStyle = '#00f';
+        context.fillStyle = '#fffa6b';
         context.fill();
         context.closePath();
         context.setTransform(-1, 0, 0, -1, positionX, positionY);
         context.beginPath();
-        context.fillStyle = '#00f';
+        context.fillStyle = '#fffa6b';
         context.rotate(degreeToRadian(115));
         context.arc(
           60,
@@ -183,7 +189,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
           0,
           degreeToRadian(360),
         );
-        context.fillStyle = '#00f';
+        context.fillStyle = '#fffa6b';
         context.fill();
         context.arc(
           80,
@@ -192,12 +198,12 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
           0,
           degreeToRadian(360),
         );
-        context.fillStyle = '#00f';
+        context.fillStyle = '#fffa6b';
         context.fill();
         context.closePath();
         context.setTransform(-1, 0, 0, -1, positionX, positionY);
         context.beginPath();
-        context.fillStyle = '#00f';
+        context.fillStyle = '#fffa6b';
         context.rotate(degreeToRadian(115));
         context.arc(
           60,
@@ -215,7 +221,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     drawLayer1((context, canvas) => {
       context.setTransform(-1, 0, 0, 1, positionX, positionY);
       context.beginPath();
-      context.fillStyle = '#00f';
+      context.fillStyle = '#fffa6b';
       context.fillRect(
         80,
         -(20 * Math.sin(Math.PI * attackProgress)) / 2,
@@ -227,7 +233,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     drawLayer1((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
-      context.fillStyle = '#00f';
+      context.fillStyle = '#fffa6b';
       context.fillRect(
         80,
         -(20 * Math.sin(Math.PI * attackProgress)) / 2,
@@ -239,7 +245,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     drawLayer1((context, canvas) => {
       context.setTransform(-1, 0, 0, -1, positionX, positionY);
       context.beginPath();
-      context.fillStyle = '#00f';
+      context.fillStyle = '#fffa6b';
       context.rotate(degreeToRadian(115));
       context.fillRect(
         60,
@@ -272,23 +278,23 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.globalAlpha = 1;
     if (isTakingDamage) context.fillStyle = '#f66';
-    else context.fillStyle = '#ee0';
+    else context.fillStyle = '#5cab73';
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(-20, -10, 20, degreeToRadian(90), degreeToRadian(180));
-    context.fillStyle = '#000';
+    context.arc(-20, 0, 10, 0, degreeToRadian(360));
+    context.fillStyle = '#fff';
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(10, -10, 20, degreeToRadian(-10), degreeToRadian(110));
-    context.fillStyle = '#000';
+    context.arc(5, 0, 10, 0, degreeToRadian(360));
+    context.fillStyle = '#fff';
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(-10, 20, 10, degreeToRadian(0), degreeToRadian(140));
-    context.fillStyle = '#000';
+    context.arc(-8, 15, 10, degreeToRadian(20), degreeToRadian(140));
+    context.fillStyle = '#fff';
     context.fill();
     context.closePath();
   });
@@ -296,7 +302,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     drawLayer1((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
-      context.fillStyle = '#00f';
+      context.fillStyle = '#fffa6b';
       context.rotate(degreeToRadian(115));
       context.arc(
         40,
@@ -313,7 +319,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     drawLayer1((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
-      context.fillStyle = '#00f';
+      context.fillStyle = '#fffa6b';
       context.rotate(degreeToRadian(115));
       context.arc(
         40,
@@ -326,7 +332,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
       context.closePath();
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
-      context.fillStyle = '#00f';
+      context.fillStyle = '#fffa6b';
       context.rotate(degreeToRadian(115));
       context.fillRect(
         40,
@@ -441,20 +447,27 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     if (isTakingDamage) context.fillStyle = '#fa9';
     else context.fillStyle = '#f33';
-    context.arc(0, 0, 48, 0, degreeToRadian(360));
+    context.arc(0, 0, 40, 0, degreeToRadian(360));
+    context.moveTo(-25, -20);
+    context.lineTo(-20, -50);
+    context.lineTo(-5, -20);
+    context.moveTo(5, -20);
+    context.lineTo(20, -50);
+    context.lineTo(25, -20);
     context.fill();
+    context.closePath();
     context.beginPath();
-    context.arc(-20, -10, 20, degreeToRadian(90), degreeToRadian(180));
+    context.arc(-12, -10, 14, degreeToRadian(90), degreeToRadian(180));
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(10, -10, 20, degreeToRadian(-10), degreeToRadian(110));
+    context.arc(0, -10, 14, degreeToRadian(-10), degreeToRadian(110));
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(-10, 20, 10, degreeToRadian(0), degreeToRadian(140));
+    context.arc(-5, 22, 12, degreeToRadian(170), degreeToRadian(-10));
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
@@ -568,22 +581,23 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     if (isTakingDamage) context.fillStyle = '#fa9';
     else context.fillStyle = '#0ff';
-    context.arc(0, 0, 48, 0, degreeToRadian(360));
+    context.arc(0, 0, 30, 0, degreeToRadian(360));
     context.fill();
     context.beginPath();
-    context.arc(-20, -10, 20, degreeToRadian(90), degreeToRadian(180));
+    context.arc(-25, -10, 10, degreeToRadian(-40), degreeToRadian(120));
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(10, -10, 20, degreeToRadian(-10), degreeToRadian(110));
+    context.arc(5, -10, 12, degreeToRadian(20), degreeToRadian(-120));
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
     context.beginPath();
-    context.arc(-10, 20, 10, degreeToRadian(0), degreeToRadian(140));
-    context.fillStyle = '#000';
-    context.fill();
+    context.lineWidth = 2;
+    context.moveTo(-20, 20);
+    context.quadraticCurveTo(-20, 0, 5, 20);
+    context.stroke();
     context.closePath();
   });
   if (enemyState.attack.type === 0) {
@@ -601,7 +615,6 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
             positionY - 20 * attackChargingProgress,
           );
           context.beginPath();
-          context.filter = `blur(8px)`;
           context.globalAlpha = 0.5;
           context.fillRect(
             0,
@@ -628,7 +641,6 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
             positionY - 20 * (1 - attackProgress),
           );
           context.beginPath();
-          context.filter = `blur(8px)`;
           context.globalAlpha = 1;
           context.fillRect(
             0,
@@ -646,7 +658,6 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
           const flow = Math.sin(Math.PI * attackProgress);
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();
-          context.filter = `blur(${2 * attackProgress}px)`;
           context.globalAlpha = 1 - attackProgress;
           context.moveTo(positionX - 20 * flow, positionY + 10);
           context.lineTo(positionX - 30 * flow, positionY - 120 * flow);
@@ -937,7 +948,6 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
           context.beginPath();
           context.setTransform(1, 0, 0, 1, positionX, positionY);
           context.scale(2, 1);
-          context.filter = 'blur(2px)';
           context.arc(
             0,
             0,
@@ -957,7 +967,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
           context.beginPath();
           context.setTransform(1, 0, 0, 1, positionX, positionY);
           context.scale(2, 1);
-          context.filter = 'blur(2px)';
+          // context.filter = 'blur(2px)';
           context.arc(
             0,
             0,
@@ -975,7 +985,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
           context.beginPath();
           context.setTransform(1, 0, 0, 1, positionX, positionY - 20);
           context.scale(1, 6 * (1 / 2 + (1 / 2) * attackProgress));
-          context.filter = 'blur(2px)';
+          // context.filter = 'blur(2px)';
           context.arc(0, -200 * attackProgress, 12, 0, degreeToRadian(360));
           context.fill();
           context.closePath();

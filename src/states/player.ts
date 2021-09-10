@@ -48,7 +48,7 @@ export let playerState: PlayerState = {
   },
   move: {
     start: -Infinity,
-    speed: 100,
+    speed: 50,
     position: {
       x: 0,
       y: 0,

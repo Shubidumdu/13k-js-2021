@@ -9,22 +9,21 @@ let gameEventHandler: (e: KeyboardEvent) => void;
 export const addGameEventListener = () => {
   gameEventHandler = (e: KeyboardEvent) => {
     if (gameState.playTime < 3000) return;
-    const time = performance.now();
     if (
       e.key === 'ArrowRight' ||
       e.key === 'ArrowLeft' ||
       e.key === 'ArrowUp' ||
       e.key === 'ArrowDown'
     ) {
-      const [isMoving] = getTimings({
-        time,
-        start: playerState.move.start,
-        duration: playerState.move.speed,
-      });
-      if (isMoving) return;
+      if (
+        playerState.move.position.x !== playerState.position.x ||
+        playerState.move.position.y !== playerState.position.y
+      )
+        return;
       if (e.key === 'ArrowRight') {
         if (playerState.position.x === mapState.size - 1) return;
         playerMove({
+          start: performance.now(),
           position: {
             x: playerState.position.x + 1,
             y: playerState.position.y,
@@ -34,6 +33,7 @@ export const addGameEventListener = () => {
       if (e.key === 'ArrowLeft') {
         if (playerState.position.x === 0) return;
         playerMove({
+          start: performance.now(),
           position: {
             x: playerState.position.x - 1,
             y: playerState.position.y,
@@ -43,6 +43,7 @@ export const addGameEventListener = () => {
       if (e.key === 'ArrowUp') {
         if (playerState.position.y === 0) return;
         playerMove({
+          start: performance.now(),
           position: {
             x: playerState.position.x,
             y: playerState.position.y - 1,
@@ -52,6 +53,7 @@ export const addGameEventListener = () => {
       if (e.key === 'ArrowDown') {
         if (playerState.position.y === mapState.size - 1) return;
         playerMove({
+          start: performance.now(),
           position: {
             x: playerState.position.x,
             y: playerState.position.y + 1,
