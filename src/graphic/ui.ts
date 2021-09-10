@@ -83,7 +83,7 @@ export const drawScoreTime = ({ game }: { game: typeof gameState }) => {
         0,
         0,
         1,
-        canvas.width / 2 + 160,
+        canvas.width / 2 + 140,
         canvas.height / 2 + 240,
       );
       context.font = getFont(18);
@@ -98,6 +98,26 @@ export const drawScoreTime = ({ game }: { game: typeof gameState }) => {
         0,
         0,
       );
+    });
+  } else {
+    const time = Math.round(gameState.scoreTime);
+    const second = time / 1000;
+    const minute = Math.floor(second / 60);
+    drawLayer1((context, canvas) => {
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        canvas.width / 2 + 140,
+        canvas.height / 2 + 240,
+      );
+      context.font = getFont(18);
+      context.shadowColor = '#000';
+      context.shadowOffsetX = 3;
+      context.shadowOffsetY = 3;
+      context.fillStyle = '#fff';
+      context.fillText(`00:00.00`, 0, 0);
     });
   }
 };

@@ -1,4 +1,5 @@
 import { drawLayer1, layer1Canvas } from '../canvas';
+import { gameState } from '../scene/game';
 import { MapState } from '../states/map';
 import { playerState, PlayerState } from '../states/player';
 import { degreeToRadian, getTimings } from '../utils';
@@ -54,6 +55,26 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
     : layer1Canvas.height / 2 +
       (player.position.y - 1 / 2) * map.tileHeight -
       40;
+  drawLayer1((context) => {
+    // SHADOW
+    context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.globalAlpha = 0.4;
+    if (isAttacking)
+      context.ellipse(
+        4 - 10 * attackProgress,
+        42,
+        35 - 1 * wave,
+        10 - wave,
+        0,
+        0,
+        2 * Math.PI,
+      );
+    else context.ellipse(4, 42, 35 - 1 * wave, 10 - wave, 0, 0, 2 * Math.PI);
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    if (gameState.stage === 1) context.fillStyle = '#000';
+    context.fill();
+  });
   drawLayer1((context) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (player.direction === -1) context.scale(-1, 1);
@@ -111,6 +132,13 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
           -10 - 10 * Math.sin(Math.PI * attackProgress),
           48,
         );
+      } else if (isMoving) {
+        context.quadraticCurveTo(
+          -5 + wave,
+          28 + wave,
+          -10 - 10 * Math.sin(Math.PI * movingProgress),
+          48,
+        );
       } else context.quadraticCurveTo(-5 + wave, 28 + wave, -10, 48);
       context.moveTo(14, 20);
       if (isAttacking) {
@@ -119,6 +147,13 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
           20 + wave + 2 * Math.sin(Math.PI * attackProgress),
           20 + 4 * Math.sin(Math.PI * attackProgress),
           40 - 4 * Math.sin(Math.PI * attackProgress),
+        );
+      } else if (isMoving) {
+        context.quadraticCurveTo(
+          24 + wave + 2 * Math.sin(Math.PI * movingProgress),
+          20 + wave + 2 * Math.sin(Math.PI * movingProgress),
+          20 + 4 * Math.sin(Math.PI * movingProgress),
+          40 - 4 * Math.sin(Math.PI * movingProgress),
         );
       } else context.quadraticCurveTo(24 + wave, 20 + wave, 20, 40);
       context.stroke();

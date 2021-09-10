@@ -58,18 +58,20 @@ export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.ellipse(
       0,
       40 - 2 * Math.sin(time / 240),
-      30 - 1 * Math.sin(time / 240),
+      40 - 1 * Math.sin(time / 240),
       10 - 1 * Math.sin(time / 240),
       0,
       0,
       degreeToRadian(360),
     );
-    context.fillStyle = '#401410';
+    context.fillStyle = '#000';
+    context.globalAlpha = 0.4;
     context.fill();
     context.closePath();
     // BODY
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
+    context.globalAlpha = 1;
     if (isMoving) context.globalAlpha = 0.5;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     if (isTakingDamage) context.fillStyle = '#fa9';
