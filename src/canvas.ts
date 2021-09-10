@@ -1,28 +1,28 @@
-export const gameCanvas: HTMLCanvasElement = document.getElementById(
-  'game',
+export const layer1Canvas: HTMLCanvasElement = document.getElementById(
+  'layer1',
 ) as HTMLCanvasElement;
 
-export const backgroundCanvas = document.getElementById(
-  'background',
+export const layer2Canvas = document.getElementById(
+  'layer2',
 ) as HTMLCanvasElement;
 
-export const uiCanvas: HTMLCanvasElement = document.getElementById(
-  'ui',
+export const layer3Canvas: HTMLCanvasElement = document.getElementById(
+  'layer3',
 ) as HTMLCanvasElement;
 
-export const mapCanvas: HTMLCanvasElement = document.getElementById(
-  'map',
+export const layer4Canvas: HTMLCanvasElement = document.getElementById(
+  'layer4',
 ) as HTMLCanvasElement;
 
 export function resizeCanvas() {
-  gameCanvas.height = window.innerHeight;
-  gameCanvas.width = window.innerWidth;
-  backgroundCanvas.width = window.innerWidth;
-  backgroundCanvas.height = window.innerHeight;
-  uiCanvas.width = window.innerWidth;
-  uiCanvas.height = window.innerHeight;
-  mapCanvas.width = window.innerWidth;
-  mapCanvas.height = window.innerHeight;
+  layer1Canvas.height = window.innerHeight;
+  layer1Canvas.width = window.innerWidth;
+  layer2Canvas.width = window.innerWidth;
+  layer2Canvas.height = window.innerHeight;
+  layer3Canvas.width = window.innerWidth;
+  layer3Canvas.height = window.innerHeight;
+  layer4Canvas.width = window.innerWidth;
+  layer4Canvas.height = window.innerHeight;
 }
 
 function draw(canvas: HTMLCanvasElement) {
@@ -51,27 +51,27 @@ function reset(canvas: HTMLCanvasElement) {
   };
 }
 
-export const drawGame = draw(gameCanvas);
+export const drawLayer1 = draw(layer1Canvas);
 
-export const drawBackground = draw(backgroundCanvas);
+export const drawLayer2 = draw(layer2Canvas);
 
-export const drawUI = draw(uiCanvas);
+export const drawLayer3 = draw(layer3Canvas);
 
-export const drawMap = draw(mapCanvas);
+export const drawLayer4 = draw(layer4Canvas);
 
-export const resetGame = reset(gameCanvas);
+export const resetLayer1 = reset(layer1Canvas);
 
-export const resetBackground = reset(backgroundCanvas);
+export const resetLayer2 = reset(layer2Canvas);
 
-export const resetUI = reset(uiCanvas);
+export const resetLayer3 = reset(layer3Canvas);
 
-export const resetMap = reset(mapCanvas);
+export const resetLayer4 = reset(layer4Canvas);
 
 export const resetAllCanvas = () => {
-  resetGame();
-  resetBackground();
-  resetUI();
-  resetMap();
+  resetLayer1();
+  resetLayer2();
+  resetLayer3();
+  resetLayer4();
 };
 
 function init() {

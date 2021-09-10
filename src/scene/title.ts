@@ -1,5 +1,5 @@
 import { globalState } from '..';
-import { drawBackground, drawGame, drawUI } from '../canvas';
+import { drawLayer1 } from '../canvas';
 import {
   addTitleEventListener,
   removeTitleEventListener,
@@ -19,7 +19,7 @@ export const titleState = {
 };
 
 const drawRoach = (time: number) => {
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // shadow
     context.setTransform(
       1,
@@ -34,7 +34,7 @@ const drawRoach = (time: number) => {
     context.fillStyle = '#222';
     context.fill();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.globalAlpha = 0.3;
     context.fillStyle = '#ffa';
@@ -44,7 +44,7 @@ const drawRoach = (time: number) => {
     context.fill();
     context.closePath();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // body
     context.setTransform(
       1,
@@ -60,7 +60,7 @@ const drawRoach = (time: number) => {
     context.fillStyle = '#6A3D3D';
     context.fill();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // eyes
     context.setTransform(
       1,
@@ -75,7 +75,7 @@ const drawRoach = (time: number) => {
     context.arc(10, -40, 5, 0, degreeToRadian(360));
     context.fill();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // mouth
     context.setTransform(
       1,
@@ -89,7 +89,7 @@ const drawRoach = (time: number) => {
     context.fillStyle = '#000';
     context.fill();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // arms
     context.setTransform(
       1,
@@ -115,7 +115,7 @@ const drawRoach = (time: number) => {
     );
     context.stroke();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // legs
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.moveTo(-20, 70 + 10 * Math.sin(time / 80));
@@ -124,7 +124,7 @@ const drawRoach = (time: number) => {
     context.quadraticCurveTo(40, 80, 40, 100 + 20);
     context.stroke();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // feelers
     context.setTransform(
       1,
@@ -150,7 +150,7 @@ const drawRoach = (time: number) => {
     );
     context.stroke();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // light
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.globalAlpha = 0.3;
@@ -165,7 +165,7 @@ const drawRoach = (time: number) => {
     context.fill();
     context.closePath();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // astroship
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.beginPath();
@@ -211,10 +211,10 @@ const drawRoach = (time: number) => {
 
 export const drawTitle = (time: number) => {
   drawTitleBackground(time);
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     drawRoach(time);
   });
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2 - 160);
     context.textBaseline = 'middle';
     context.textAlign = 'center';
@@ -225,7 +225,7 @@ export const drawTitle = (time: number) => {
     context.shadowColor = '#000';
     context.fillText('ASTROACH', 0, 0);
   });
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2 + 200);
     context.textBaseline = 'middle';
     context.textAlign = 'center';
@@ -260,7 +260,7 @@ export const drawTitle = (time: number) => {
 };
 
 export const drawGuide = (time: number) => {
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.globalAlpha = 0.9;
     context.fillRect(
@@ -277,7 +277,7 @@ export const drawGuide = (time: number) => {
     context.fillText('S key - Attack on left tile', 0, -90);
     context.fillText('D key - Attack on right tile', 0, -60);
   });
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.strokeStyle = '#0F0';
     context.shadowColor = '#FFF';
     context.shadowOffsetX = 8;
@@ -289,7 +289,7 @@ export const drawGuide = (time: number) => {
     context.fillStyle = '#fa2b00';
     context.fillRect(-180, 80, 120, 40);
   });
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2);
     context.fillStyle = '#fff';
     context.font = getFont(16);
@@ -305,7 +305,7 @@ export const drawGuide = (time: number) => {
 };
 
 const drawTitleBackground = (time: number) => {
-  drawBackground((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.beginPath();
     context.fillStyle = '#475644';
     context.fillRect(0, 0, canvas.width, canvas.height);

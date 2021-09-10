@@ -1,5 +1,5 @@
 import { globalState } from '..';
-import { drawBackground, drawGame, drawUI } from '../canvas';
+import { drawLayer1 } from '../canvas';
 import {
   addResultEventListener,
   removeResultEventListener,
@@ -25,13 +25,14 @@ export const drawResult = (time: number) => {
   const gameTime = Math.round(gameState.scoreTime);
   const second = gameTime / 1000;
   const minute = Math.floor(second / 60);
-  drawBackground((context, canvas) => {
+  drawLayer1((context, canvas) => {
+    context.lineWidth = 2;
     context.beginPath();
     context.fillStyle = '#475644';
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.closePath();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // BODY
     context.setTransform(1, 0, 0, 1, canvas.width / 2 - 180, canvas.height / 2);
     context.ellipse(0, 10 * wave, 30, 60, 0, 0, 2 * Math.PI);
@@ -40,7 +41,7 @@ export const drawResult = (time: number) => {
     context.fillStyle = '#6A3D3D';
     context.fill();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // MOUTH
     context.setTransform(
       1,
@@ -56,7 +57,7 @@ export const drawResult = (time: number) => {
     context.fillStyle = '#000';
     context.fill();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // EYES
     context.setTransform(
       1,
@@ -71,7 +72,7 @@ export const drawResult = (time: number) => {
     context.fillStyle = '#000';
     context.fill();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // ARMS
     context.setTransform(
       1,
@@ -87,7 +88,7 @@ export const drawResult = (time: number) => {
     context.quadraticCurveTo(50, 20 - 10 * wave, 65, 10 - 30 * wave);
     context.stroke();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // LEGS
     context.setTransform(
       1,
@@ -103,7 +104,7 @@ export const drawResult = (time: number) => {
     context.quadraticCurveTo(48 + 10 * wave, 40 - 10 * wave, 20, 60);
     context.stroke();
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // FEELERS
     context.setTransform(
       1,
@@ -129,7 +130,7 @@ export const drawResult = (time: number) => {
     );
     context.stroke();
   });
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.textBaseline = 'middle';
     context.textAlign = 'center';
     context.font = getFont();

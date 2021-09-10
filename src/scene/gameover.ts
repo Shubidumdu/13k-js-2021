@@ -1,5 +1,5 @@
 import { globalState } from '..';
-import { drawBackground, drawUI } from '../canvas';
+import { drawLayer1 } from '../canvas';
 import {
   addGameOverEventListener,
   removeGameOverEventListener,
@@ -18,13 +18,13 @@ export const gameOverState = {
 };
 
 export const drawGameOver = (time: number) => {
-  drawBackground((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.beginPath();
     context.fillStyle = '#475644';
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.closePath();
   });
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.textBaseline = 'middle';
     context.textAlign = 'center';
     context.font = getFont();

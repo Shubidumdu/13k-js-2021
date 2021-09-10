@@ -1,6 +1,6 @@
 import { resetAllCanvas } from './canvas';
 import './index.scss';
-import { drawGame } from './scene/game';
+import { drawGame, startGameScene } from './scene/game';
 import { drawGameOver } from './scene/gameover';
 import { drawResult } from './scene/result';
 import { drawTitle, startTitleScene } from './scene/title';
@@ -31,4 +31,4 @@ const loop = (time: number) => {
 
 requestAnimationFrame(loop);
 
-startTitleScene();
+startGameScene();

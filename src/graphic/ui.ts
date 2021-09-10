@@ -1,4 +1,4 @@
-import { drawUI } from '../canvas';
+import { drawLayer1 } from '../canvas';
 import { getFont } from '../font';
 import { gameState } from '../scene/game';
 
@@ -12,42 +12,48 @@ export const drawLifeBar = ({
   player: number;
   enemy: number;
 }) => {
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.setTransform(
       1,
       0,
       0,
       1,
       canvas.width / 2 - 140,
-      canvas.height / 2 - 240,
+      canvas.height / 2 + 240,
     );
     context.font = getFont(18);
+    context.shadowOffsetX = 3;
+    context.shadowOffsetY = 3;
+    context.shadowColor = '#000';
     context.fillStyle = '#fff';
-    context.fillText('ROACH', -100, 18);
+    context.fillText('ROACH', -100, 28);
     context.fillStyle = PLAYER_LIFE_COLOR;
-    context.fillRect(0, 0, 2 * player, 20);
+    context.fillRect(10, 10, 2 * player, 20);
   });
-  drawUI((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.setTransform(
       1,
       0,
       0,
       1,
       canvas.width / 2 - 140,
-      canvas.height / 2 - 240,
+      canvas.height / 2 + 240,
     );
     context.font = getFont(18);
+    context.shadowOffsetX = 3;
+    context.shadowOffsetY = 3;
+    context.shadowColor = '#000';
     context.fillStyle = '#fff';
     context.fillText('ENEMY', -100, 0);
     context.fillStyle = ENEMY_LIFE_COLOR;
-    context.fillRect(0, -20, 2 * enemy, 20);
+    context.fillRect(10, -20, 2 * enemy, 20);
   });
 };
 
 export const drawMessage = ({ game }: { game: typeof gameState }) => {
   if (game.playTime < 3000) {
     const count = Math.ceil((3000 - game.playTime) / 1000);
-    drawUI((context, canvas) => {
+    drawLayer1((context, canvas) => {
       context.setTransform(
         1,
         0,
@@ -71,16 +77,19 @@ export const drawScoreTime = ({ game }: { game: typeof gameState }) => {
     const time = Math.round(gameState.scoreTime);
     const second = time / 1000;
     const minute = Math.floor(second / 60);
-    drawUI((context, canvas) => {
+    drawLayer1((context, canvas) => {
       context.setTransform(
         1,
         0,
         0,
         1,
         canvas.width / 2 + 160,
-        canvas.height / 2 - 240,
+        canvas.height / 2 + 240,
       );
       context.font = getFont(18);
+      context.shadowColor = '#000';
+      context.shadowOffsetX = 3;
+      context.shadowOffsetY = 3;
       context.fillStyle = '#fff';
       context.fillText(
         `${minute.toString().padStart(2, '0')}:${second

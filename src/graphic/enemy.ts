@@ -1,5 +1,5 @@
 import { enemyMove } from '../actions/enemy';
-import { drawGame, gameCanvas } from '../canvas';
+import { drawLayer1, layer1Canvas } from '../canvas';
 import { soundLazerCharge } from '../sounds/effects';
 import { enemyState, EnemyState } from '../states/enemy';
 import { MapState } from '../states/map';
@@ -13,14 +13,14 @@ interface DrawEnemyProps {
   player: PlayerState;
 }
 
-export const drawGameEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
     duration: enemy.move.speed,
   });
   const positionX = isMoving
-    ? gameCanvas.width / 2 +
+    ? layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -29,27 +29,44 @@ export const drawGameEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : gameCanvas.width / 2 +
+    : layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? gameCanvas.height / 2 +
+    ? layer1Canvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
-      2 * Math.sin(time / 240)
-    : gameCanvas.height / 2 +
+      2 * Math.sin(time / 240) -
+      40
+    : layer1Canvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
-      2 * Math.sin(time / 240);
+      2 * Math.sin(time / 240) -
+      40;
   const [isTakingDamage] = getTimings({
     time,
     start: enemy.damage.start,
     duration: enemy.damage.duration,
   });
   if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
+    // SHADOW
+    context.setTransform(1, 0, 0, 1, positionX, positionY);
+    context.beginPath();
+    context.ellipse(
+      0,
+      40 - 2 * Math.sin(time / 240),
+      30 - 1 * Math.sin(time / 240),
+      10 - 1 * Math.sin(time / 240),
+      0,
+      0,
+      degreeToRadian(360),
+    );
+    context.fillStyle = '#401410';
+    context.fill();
+    context.closePath();
     // BODY
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
@@ -72,7 +89,7 @@ export const drawGameEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
 };
 
-export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -89,7 +106,7 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.attack.duration,
   });
   const positionX = isMoving
-    ? gameCanvas.width / 2 +
+    ? layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -98,27 +115,28 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : gameCanvas.width / 2 +
+    : layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
-  const positionY = isMoving
-    ? gameCanvas.height / 2 +
-      (enemy.position.y +
-        (enemy.move.position.y - enemy.position.y) * movingProgress -
-        1 / 2) *
-        map.tileHeight +
-      2 * Math.sin(time / 240)
-    : gameCanvas.height / 2 +
-      (enemy.position.y - 1 / 2) * map.tileHeight +
-      2 * Math.sin(time / 240);
+  const positionY =
+    (isMoving
+      ? layer1Canvas.height / 2 +
+        (enemy.position.y +
+          (enemy.move.position.y - enemy.position.y) * movingProgress -
+          1 / 2) *
+          map.tileHeight +
+        2 * Math.sin(time / 240)
+      : layer1Canvas.height / 2 +
+        (enemy.position.y - 1 / 2) * map.tileHeight +
+        2 * Math.sin(time / 240)) - 40;
   const [isTakingDamage] = getTimings({
     time,
     start: enemy.damage.start,
     duration: enemy.damage.duration,
   });
   if (isAttackCharging || isAttacking) {
-    drawGame((context, canvas) => {
+    drawLayer1((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       if (isAttackCharging) {
@@ -192,7 +210,7 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     });
   }
   if (isAttacking) {
-    drawGame((context, canvas) => {
+    drawLayer1((context, canvas) => {
       context.setTransform(-1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -204,7 +222,7 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
       );
       context.closePath();
     });
-    drawGame((context, canvas) => {
+    drawLayer1((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -216,7 +234,7 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
       );
       context.closePath();
     });
-    drawGame((context, canvas) => {
+    drawLayer1((context, canvas) => {
       context.setTransform(-1, 0, 0, -1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -231,7 +249,7 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     });
   }
   if (isTakingDamage && Math.ceil(time) % 6 === 0) return;
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (isTakingDamage) context.fillStyle = '#f66';
     else context.fillStyle = '#ee0';
@@ -254,7 +272,7 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.closePath();
   });
   if (isAttackCharging) {
-    drawGame((context, canvas) => {
+    drawLayer1((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -271,7 +289,7 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
     });
   }
   if (isAttacking) {
-    drawGame((context, canvas) => {
+    drawLayer1((context, canvas) => {
       context.setTransform(1, 0, 0, 1, positionX, positionY);
       context.beginPath();
       context.fillStyle = '#00f';
@@ -300,7 +318,7 @@ export const drawGameEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
 };
 
-export const drawGameEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -312,7 +330,7 @@ export const drawGameEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.attack.duration,
   });
   const positionX = isMoving
-    ? gameCanvas.width / 2 +
+    ? layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -321,18 +339,18 @@ export const drawGameEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : gameCanvas.width / 2 +
+    : layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? gameCanvas.height / 2 +
+    ? layer1Canvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
       2 * Math.sin(time / 240)
-    : gameCanvas.height / 2 +
+    : layer1Canvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
       2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
@@ -343,15 +361,15 @@ export const drawGameEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
   if (isAttacking && enemyState.attack.position[0].y < enemyState.position.y) {
     const attackPositionX =
-      gameCanvas.width / 2 +
+      layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.attack.position[0].x * map.tileWidth -
         (enemy.attack.position[0].y * map.tileWidth) / 6);
     const attackPositionY =
-      gameCanvas.height / 2 +
+      layer1Canvas.height / 2 +
       (enemy.attack.position[0].y - 1 / 2) +
       map.tileHeight * (enemy.attack.position[0].y + 0.5);
-    drawGame((context) => {
+    drawLayer1((context) => {
       context.beginPath();
       context.fillStyle = '#f00';
       context.filter = 'blur(8px)';
@@ -376,7 +394,7 @@ export const drawGameEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
       context.closePath();
     });
   }
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // BODY
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
@@ -404,15 +422,15 @@ export const drawGameEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
   if (isAttacking && enemyState.attack.position[0].y >= enemyState.position.y) {
     const attackPositionX =
-      gameCanvas.width / 2 +
+      layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.attack.position[0].x * map.tileWidth -
         (enemy.attack.position[0].y * map.tileWidth) / 6);
     const attackPositionY =
-      gameCanvas.height / 2 +
+      layer1Canvas.height / 2 +
       (enemy.attack.position[0].y - 1 / 2) +
       map.tileHeight * (enemy.attack.position[0].y + 0.5);
-    drawGame((context) => {
+    drawLayer1((context) => {
       context.beginPath();
       context.fillStyle = '#f00';
       context.filter = 'blur(8px)';
@@ -439,7 +457,7 @@ export const drawGameEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
 };
 
-export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -456,7 +474,7 @@ export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.attack.predelay,
   });
   const positionX = isMoving
-    ? gameCanvas.width / 2 +
+    ? layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -465,18 +483,18 @@ export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : gameCanvas.width / 2 +
+    : layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? gameCanvas.height / 2 +
+    ? layer1Canvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
       2 * Math.sin(time / 240)
-    : gameCanvas.height / 2 +
+    : layer1Canvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
       2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
@@ -484,7 +502,7 @@ export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     start: enemy.damage.start,
     duration: enemy.damage.duration,
   });
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // BODY
     if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
     context.setTransform(1, 0, 0, 1, positionX, positionY);
@@ -513,7 +531,7 @@ export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
   if (enemyState.attack.type === 0) {
     if (isAttackCharging) {
-      drawGame((context) => {
+      drawLayer1((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
@@ -540,7 +558,7 @@ export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
     if (isAttacking) {
-      drawGame((context) => {
+      drawLayer1((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
@@ -565,7 +583,7 @@ export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
         });
         context.closePath();
       });
-      drawGame((context) => {
+      drawLayer1((context) => {
         context.fillStyle = '#ccfffb';
         enemyState.attack.position.forEach(({ x, y }) => {
           const flow = Math.sin(Math.PI * attackProgress);
@@ -586,7 +604,7 @@ export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     if (isAttacking) {
       enemyState.attack.position.forEach(({ x, y }) => {
         const { x: positionX, y: positionY } = getPosition(x, y);
-        drawGame((context) => {
+        drawLayer1((context) => {
           context.setTransform(
             1,
             0,
@@ -615,7 +633,7 @@ export const drawGameEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
   }
 };
 
-export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
+export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isMoving, movingProgress] = getTimings({
     time,
     start: enemy.move.start + enemy.move.predelay,
@@ -632,7 +650,7 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
     duration: enemy.attack.predelay,
   });
   const positionX = isMoving
-    ? gameCanvas.width / 2 +
+    ? layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         (enemy.position.x +
           (enemy.move.position.x - enemy.position.x) * movingProgress) *
@@ -641,18 +659,18 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
           (enemy.move.position.y - enemy.position.y) * movingProgress) *
           map.tileWidth) /
           6)
-    : gameCanvas.width / 2 +
+    : layer1Canvas.width / 2 +
       (-(map.tileWidth + map.tileHeight) +
         enemy.position.x * map.tileWidth -
         (enemy.position.y * map.tileWidth) / 6);
   const positionY = isMoving
-    ? gameCanvas.height / 2 +
+    ? layer1Canvas.height / 2 +
       (enemy.position.y +
         (enemy.move.position.y - enemy.position.y) * movingProgress -
         1 / 2) *
         map.tileHeight +
       2 * Math.sin(time / 240)
-    : gameCanvas.height / 2 +
+    : layer1Canvas.height / 2 +
       (enemy.position.y - 1 / 2) * map.tileHeight +
       2 * Math.sin(time / 240);
   const [isTakingDamage] = getTimings({
@@ -666,7 +684,7 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       enemyState.position.y,
     );
     if (isAttacking) {
-      drawGame((context, canvas) => {
+      drawLayer1((context, canvas) => {
         context.setTransform(1, 0, 0, 1, positionX, positionY - 40);
         context.beginPath();
         if (enemyState.attack.position[0].x > enemyState.position.x)
@@ -681,7 +699,7 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
   }
-  drawGame((context, canvas) => {
+  drawLayer1((context, canvas) => {
     // BODY
     if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
     context.setTransform(1, 0, 0, 1, positionX, positionY);
@@ -707,7 +725,7 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
   if (enemyState.attack.type === 0) {
     if (isAttackCharging) {
-      drawGame((context, canvas) => {
+      drawLayer1((context, canvas) => {
         const { x: positionX, y: positionY } = getPosition(
           enemyState.position.x,
           enemyState.position.y,
@@ -754,7 +772,7 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
     if (isAttacking) {
-      drawGame((context, canvas) => {
+      drawLayer1((context, canvas) => {
         const { x: positionX, y: positionY } = getPosition(
           enemyState.position.x,
           enemyState.position.y,
@@ -799,7 +817,7 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
         );
         context.closePath();
       });
-      drawGame((context, canvas) => {
+      drawLayer1((context, canvas) => {
         const { x: positionX, y: positionY } = getPosition(
           enemyState.position.x,
           enemyState.position.y,
@@ -818,19 +836,27 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
         else context.scale(1, 2);
         context.beginPath();
         context.fillStyle = '#000';
-        context.fillRect(
-          60,
-          -(80 * Math.sin(Math.PI * attackProgress)) / 2,
-          10000,
-          80 * Math.sin(Math.PI * attackProgress),
-        );
+        if (enemyState.position.x === 0)
+          context.fillRect(
+            100,
+            -(80 * Math.sin(Math.PI * attackProgress)) / 2,
+            10000,
+            80 * Math.sin(Math.PI * attackProgress),
+          );
+        else
+          context.fillRect(
+            60,
+            -(80 * Math.sin(Math.PI * attackProgress)) / 2,
+            10000,
+            80 * Math.sin(Math.PI * attackProgress),
+          );
         context.closePath();
       });
     }
   }
   if (enemyState.attack.type === 2) {
     if (isAttackCharging) {
-      drawGame((context) => {
+      drawLayer1((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();
@@ -850,7 +876,7 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       });
     }
     if (isAttacking) {
-      drawGame((context) => {
+      drawLayer1((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();
@@ -868,7 +894,7 @@ export const drawGameEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
           context.closePath();
         });
       });
-      drawGame((context) => {
+      drawLayer1((context) => {
         enemyState.attack.position.forEach(({ x, y }) => {
           const { x: positionX, y: positionY } = getPosition(x, y);
           context.beginPath();

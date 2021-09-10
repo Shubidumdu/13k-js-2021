@@ -1,4 +1,4 @@
-import { gameCanvas } from './canvas';
+import { layer1Canvas } from './canvas';
 import { enemyState } from './states/enemy';
 import { mapState } from './states/map';
 
@@ -32,11 +32,14 @@ export const getRandomInt = (size: number) => Math.floor(Math.random() * size);
 
 export const getPosition = (x: number, y: number) => {
   const PositionX =
-    gameCanvas.width / 2 +
+    layer1Canvas.width / 2 +
     (-(mapState.tileWidth + mapState.tileHeight) +
       x * mapState.tileWidth -
       (y * mapState.tileWidth) / 6);
   const PositionY =
-    gameCanvas.height / 2 + (y - 1 / 2) + mapState.tileHeight * (y + 0.5);
+    layer1Canvas.height / 2 +
+    (y - 1 / 2) +
+    mapState.tileHeight * (y + 0.5) -
+    40;
   return { x: PositionX, y: PositionY };
 };
