@@ -59,17 +59,31 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
     // SHADOW
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.globalAlpha = 0.4;
-    if (isAttacking)
-      context.ellipse(
-        4 - 10 * attackProgress,
-        42,
-        35 - 1 * wave,
-        10 - wave,
-        0,
-        0,
-        2 * Math.PI,
-      );
-    else context.ellipse(4, 42, 35 - 1 * wave, 10 - wave, 0, 0, 2 * Math.PI);
+    if (playerState.direction === 1) {
+      if (isAttacking)
+        context.ellipse(
+          4 - 10 * attackProgress,
+          42,
+          35 - 1 * wave,
+          10 - wave,
+          0,
+          0,
+          2 * Math.PI,
+        );
+      else context.ellipse(4, 42, 35 - 1 * wave, 10 - wave, 0, 0, 2 * Math.PI);
+    } else {
+      if (isAttacking)
+        context.ellipse(
+          0 + 10 * attackProgress,
+          42,
+          35 - 1 * wave,
+          10 - wave,
+          0,
+          0,
+          2 * Math.PI,
+        );
+      else context.ellipse(0, 42, 35 - 1 * wave, 10 - wave, 0, 0, 2 * Math.PI);
+    }
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
     if (gameState.stage === 1) context.fillStyle = '#000';
