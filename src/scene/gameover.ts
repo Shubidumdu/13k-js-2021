@@ -20,7 +20,12 @@ export const gameOverState = {
 export const drawGameOver = (time: number) => {
   drawLayer1((context, canvas) => {
     context.beginPath();
-    context.fillStyle = '#475644';
+    const lingrad = context.createLinearGradient(0, 0, 0, innerHeight);
+    lingrad.addColorStop(0.2, '#060C0D');
+    lingrad.addColorStop(0.4, '#132126');
+    lingrad.addColorStop(0.8, '#1A3940');
+    lingrad.addColorStop(1, '#4F818C');
+    context.fillStyle = lingrad;
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.closePath();
   });

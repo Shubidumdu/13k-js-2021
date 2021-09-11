@@ -26,9 +26,13 @@ export const drawResult = (time: number) => {
   const second = gameTime / 1000;
   const minute = Math.floor(second / 60);
   drawLayer1((context, canvas) => {
-    context.lineWidth = 2;
     context.beginPath();
-    context.fillStyle = '#475644';
+    const lingrad = context.createLinearGradient(0, 0, 0, innerHeight);
+    lingrad.addColorStop(0.25, '#4C554A');
+    lingrad.addColorStop(0.25, '#FCC479');
+    lingrad.addColorStop(0.75, '#D99B66');
+    lingrad.addColorStop(0.75, '#4C554A');
+    context.fillStyle = lingrad;
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.closePath();
   });

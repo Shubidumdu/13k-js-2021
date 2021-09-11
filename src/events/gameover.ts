@@ -43,8 +43,10 @@ export const addGameOverEventListener = () => {
     }
   };
 
-  window.addEventListener('keydown', gameOverEventHandler);
-  document.addEventListener('touchstart', gameOverEventHandler);
+  setTimeout(() => {
+    window.addEventListener('keydown', gameOverEventHandler);
+    document.addEventListener('touchstart', gameOverEventHandler);
+  }, 600);
 };
 
 export const removeGameOverEventListener = () => {

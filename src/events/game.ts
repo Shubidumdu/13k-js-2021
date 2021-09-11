@@ -52,7 +52,6 @@ const moveDown = () => {
 
 export const addGameEventListener = () => {
   gameEventHandler = (e: KeyboardEvent | MouseEvent) => {
-    console.log(e.target);
     const target = e.target;
     if (gameState.playTime < 3000) return;
     if (

@@ -11,6 +11,14 @@ import { degreeToRadian } from '../utils';
 const SELECTED_TEXT_COLOR = '#D5D471';
 const NORMAL_TEXT_COLOR = '#FFF';
 
+const stars: {
+  x: number;
+  y: number;
+  dx: number;
+  dy: number;
+  radius: number;
+}[] = [];
+
 export const updateTitle = () => {};
 
 export const titleState = {
@@ -307,9 +315,47 @@ export const drawGuide = (time: number) => {
 const drawTitleBackground = (time: number) => {
   drawLayer1((context, canvas) => {
     context.beginPath();
-    context.fillStyle = '#475644';
+    const lingrad = context.createLinearGradient(0, 0, 0, innerHeight);
+    lingrad.addColorStop(0.4, '#161C26');
+    lingrad.addColorStop(0.48, '#594438');
+    lingrad.addColorStop(0.5, '#F2B872');
+    lingrad.addColorStop(0.7, '#D99B66');
+    context.fillStyle = lingrad;
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.closePath();
+  });
+  drawLayer1((context, canvas) => {
+    context.fillStyle = '#fff';
+    if (!stars.length) {
+      for (let i = 0; i < 50; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * (canvas.height / 3);
+        const dx = (Math.random() - 0.5) * 0.5;
+        const dy = (Math.random() - 0.5) * 0;
+        const radius = Math.random() * 2 + 1;
+        stars.push({
+          x,
+          y,
+          dx,
+          dy,
+          radius,
+        });
+      }
+    }
+    stars.forEach(({ x, y, dx, dy, radius }, idx) => {
+      const positionX = x + dx * 2;
+      const positionY = y + dy * 2;
+      if (positionX < 0) stars[idx].dx = -dx;
+      if (positionY < 0) stars[idx].dy = -dy;
+      if (positionX > canvas.width) stars[idx].dx = -dx;
+      if (positionY > canvas.height) stars[idx].dy = -dy;
+      stars[idx].x = positionX;
+      stars[idx].y = positionY;
+      context.beginPath();
+      context.arc(positionX, positionY, radius, 0, degreeToRadian(360));
+      context.fill();
+      context.closePath();
+    });
   });
 };
 
@@ -331,7 +377,6 @@ export const startTitleScene = () => {
 };
 
 export const endTitleScene = () => {
-  titleMusic?.stop();
   if (globalState.music) stopTitleMusic();
   removeTitleEventListener();
 };

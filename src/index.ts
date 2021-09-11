@@ -1,8 +1,8 @@
 import { resetAllCanvas } from './canvas';
 import './index.scss';
 import { drawGame, startGameScene } from './scene/game';
-import { drawGameOver } from './scene/gameover';
-import { drawResult } from './scene/result';
+import { drawGameOver, startGameOverScene } from './scene/gameover';
+import { drawResult, startResultScene } from './scene/result';
 import { drawTitle, startTitleScene } from './scene/title';
 
 // 0 => TITLE
