@@ -14,15 +14,44 @@ export const layer4Canvas: HTMLCanvasElement = document.getElementById(
   'layer4',
 ) as HTMLCanvasElement;
 
+const setViewPort = () => {
+  const viewportMeta = document.querySelector(
+    "meta[name='viewport']",
+  ) as HTMLMetaElement;
+  const controller = document.querySelector('#c') as HTMLDivElement;
+  const width = Math.round(visualViewport.scale * visualViewport.width);
+  const height = Math.round(visualViewport.scale * visualViewport.height);
+  if (width <= 460 || height <= 460) {
+    viewportMeta.setAttribute(
+      'content',
+      'width=device-width, initial-scale=0.5',
+    );
+    controller.style.display = 'block';
+  } else if (width <= 768 || height <= 768) {
+    viewportMeta.setAttribute(
+      'content',
+      'width=device-width, initial-scale=0.725',
+    );
+    controller.style.display = 'block';
+  } else {
+    viewportMeta.setAttribute(
+      'content',
+      'width=device-width, initial-scale=1.0',
+    );
+    controller.style.display = 'none';
+  }
+};
+
 export function resizeCanvas() {
-  layer1Canvas.height = window.innerHeight;
   layer1Canvas.width = window.innerWidth;
+  layer1Canvas.height = window.innerHeight;
   layer2Canvas.width = window.innerWidth;
   layer2Canvas.height = window.innerHeight;
   layer3Canvas.width = window.innerWidth;
   layer3Canvas.height = window.innerHeight;
   layer4Canvas.width = window.innerWidth;
   layer4Canvas.height = window.innerHeight;
+  setViewPort();
 }
 
 function draw(canvas: HTMLCanvasElement) {

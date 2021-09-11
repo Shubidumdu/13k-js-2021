@@ -1,28 +1,36 @@
+// @ts-nocheck
 import { gameState, startGameScene } from '../scene/game';
 import { endGameOverScene, gameOverState } from '../scene/gameover';
 import { startTitleScene } from '../scene/title';
 import { soundCursor } from '../sounds/effects';
-import { enemyState, resetEnemyState } from '../states/enemy';
 
-let gameOverEventHandler: (e: KeyboardEvent) => void;
+let gameOverEventHandler: (e: KeyboardEvent | MouseEvent) => void;
 
 export const addGameOverEventListener = () => {
-  gameOverEventHandler = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowLeft') {
+  gameOverEventHandler = (e: KeyboardEvent | MouseEvent) => {
+    const target = e.target;
+    if (e.key === 'ArrowLeft' || target.id === 'al') {
       if (gameOverState.index === 0) return;
       else {
         gameOverState.index -= 1;
         soundCursor();
       }
     }
-    if (e.key === 'ArrowRight') {
+    if (e.key === 'ArrowRight' || target.id === 'ar') {
       if (gameOverState.index === 1) return;
       else {
         gameOverState.index += 1;
         soundCursor();
       }
     }
-    if (e.key === 'S' || e.key === 's' || e.key === 'd' || e.key === 'D') {
+    if (
+      e.key === 'S' ||
+      e.key === 's' ||
+      e.key === 'd' ||
+      e.key === 'D' ||
+      target.id === 's' ||
+      target.id === 'd'
+    ) {
       if (gameOverState.index === 0) {
         startGameScene();
         endGameOverScene();
@@ -36,8 +44,10 @@ export const addGameOverEventListener = () => {
   };
 
   window.addEventListener('keydown', gameOverEventHandler);
+  document.addEventListener('touchstart', gameOverEventHandler);
 };
 
 export const removeGameOverEventListener = () => {
   window.removeEventListener('keydown', gameOverEventHandler);
+  document.removeEventListener('touchstart', gameOverEventHandler);
 };

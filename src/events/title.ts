@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { globalState } from '..';
 import { startGameScene } from '../scene/game';
 import {
@@ -8,32 +9,49 @@ import {
 } from '../scene/title';
 import { soundCursor } from '../sounds/effects';
 
-let titleEventHandler: (e: KeyboardEvent) => void;
+let titleEventHandler: (e: KeyboardEvent | MouseEvent) => void;
 
 export const addTitleEventListener = () => {
-  titleEventHandler = (e: KeyboardEvent) => {
+  titleEventHandler = (e: KeyboardEvent | MouseEvent) => {
+    e.preventDefault();
+    console.log(e.target);
+    const target = e.target;
     if (titleState.openGuide) {
-      if (e.key === 's' || e.key === 'S' || e.key === 'd' || e.key === 'D') {
+      if (
+        e.key === 's' ||
+        e.key === 'S' ||
+        e.key === 'd' ||
+        e.key === 'D' ||
+        target.id === 'd' ||
+        target.id === 's'
+      ) {
         soundCursor();
         titleState.openGuide = false;
       }
       return;
     }
-    if (e.key === 'ArrowLeft') {
+    if (e.key === 'ArrowLeft' || target.id === 'al') {
       if (titleState.index === 0) return;
       else {
         titleState.index -= 1;
         soundCursor();
       }
     }
-    if (e.key === 'ArrowRight') {
+    if (e.key === 'ArrowRight' || target.id === 'ar') {
       if (titleState.index === 2) return;
       else {
         titleState.index += 1;
         soundCursor();
       }
     }
-    if (e.key === 's' || e.key === 'S' || e.key === 'd' || e.key === 'D') {
+    if (
+      e.key === 's' ||
+      e.key === 'S' ||
+      e.key === 'd' ||
+      e.key === 'D' ||
+      target.id === 'd' ||
+      target.id === 's'
+    ) {
       soundCursor();
       if (titleState.index === 0) {
         startGameScene();
@@ -51,13 +69,13 @@ export const addTitleEventListener = () => {
         titleState.openGuide = true;
       }
     }
-    if (e.key === 'm' || e.key === 'M') {
-    }
   };
 
   window.addEventListener('keydown', titleEventHandler);
+  document.addEventListener('touchstart', titleEventHandler);
 };
 
 export const removeTitleEventListener = () => {
   window.removeEventListener('keydown', titleEventHandler);
+  document.removeEventListener('touchstart', titleEventHandler);
 };
