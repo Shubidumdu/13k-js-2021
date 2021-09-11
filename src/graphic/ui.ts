@@ -1,4 +1,4 @@
-import { drawLayer1 } from '../canvas';
+import { drawLayer4 } from '../canvas';
 import { getFont } from '../font';
 import { gameState } from '../scene/game';
 
@@ -12,7 +12,7 @@ export const drawLifeBar = ({
   player: number;
   enemy: number;
 }) => {
-  drawLayer1((context, canvas) => {
+  drawLayer4((context, canvas) => {
     context.setTransform(
       1,
       0,
@@ -30,7 +30,7 @@ export const drawLifeBar = ({
     context.fillStyle = PLAYER_LIFE_COLOR;
     context.fillRect(10, 10, 2 * player, 20);
   });
-  drawLayer1((context, canvas) => {
+  drawLayer4((context, canvas) => {
     context.setTransform(
       1,
       0,
@@ -53,7 +53,7 @@ export const drawLifeBar = ({
 export const drawMessage = ({ game }: { game: typeof gameState }) => {
   if (game.playTime < 3000) {
     const count = Math.ceil((3000 - game.playTime) / 1000);
-    drawLayer1((context, canvas) => {
+    drawLayer4((context, canvas) => {
       context.setTransform(
         1,
         0,
@@ -77,7 +77,7 @@ export const drawScoreTime = ({ game }: { game: typeof gameState }) => {
     const time = Math.round(gameState.scoreTime);
     const second = time / 1000;
     const minute = Math.floor(second / 60);
-    drawLayer1((context, canvas) => {
+    drawLayer4((context, canvas) => {
       context.setTransform(
         1,
         0,
@@ -103,7 +103,7 @@ export const drawScoreTime = ({ game }: { game: typeof gameState }) => {
     const time = Math.round(gameState.scoreTime);
     const second = time / 1000;
     const minute = Math.floor(second / 60);
-    drawLayer1((context, canvas) => {
+    drawLayer4((context, canvas) => {
       context.setTransform(
         1,
         0,

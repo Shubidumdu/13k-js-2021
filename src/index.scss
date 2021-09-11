@@ -11,18 +11,18 @@ canvas {
   left: 0;
 }
 
-#background {
+#layer1 {
   z-index: 0;
 }
 
-#map {
+#layer2 {
   z-index: 1;
 }
 
-#game {
+#layer3 {
   z-index: 2;
 }
 
-#ui {
+#layer4 {
   z-index: 3;
 }

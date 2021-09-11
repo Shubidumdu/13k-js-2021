@@ -13,7 +13,6 @@ interface PlayerMoveProps {
 }
 
 export const playerMove = ({ start, position }: PlayerMoveProps) => {
-  console.log(start, position);
   playerState.move = {
     ...playerState.move,
     start,

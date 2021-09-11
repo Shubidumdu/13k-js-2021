@@ -49,17 +49,18 @@ export const drawGameOver = (time: number) => {
   });
 };
 
+export let gameoverMusic: AudioBufferSourceNode;
+
 export const startGameOverScene = () => {
   globalState.sceneType = 2;
-  gameState.stage -= 1;
-  resetEnemyState();
-  resetPlayerState();
   if (globalState.music) {
-    gameoverMusicPlay();
+    gameoverMusic = gameoverMusicPlay();
   }
   addGameOverEventListener();
 };
 
 export const endGameOverScene = () => {
+  gameState.stage -= 1;
+  if (globalState.music) gameoverMusic.stop();
   removeGameOverEventListener();
 };

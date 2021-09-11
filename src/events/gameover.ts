@@ -28,9 +28,9 @@ export const addGameOverEventListener = () => {
         endGameOverScene();
       }
       if (gameOverState.index === 1) {
-        gameState.stage = 0;
         startTitleScene();
         endGameOverScene();
+        gameState.stage = 0;
       }
     }
   };

@@ -552,100 +552,51 @@ export const drawGame = (time: number) => {
     player: playerState.life,
     enemy: enemyState.life,
   });
-  if (enemyState.position.y >= playerState.position.y) {
-    drawPlayer({
-      time,
-      player: playerState,
-      map: mapState,
-    });
-    switch (gameState.stage) {
-      case 1:
-        drawEnemy1({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-        break;
-      case 2:
-        drawEnemy2({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-        break;
-      case 3:
-        drawEnemy3({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-        break;
-      case 4:
-        drawEnemy4({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-        break;
-      case 5:
-        drawEnemy5({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-    }
-  } else {
-    switch (gameState.stage) {
-      case 1:
-        drawEnemy1({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-        break;
-      case 2:
-        drawEnemy2({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-        break;
-      case 3:
-        drawEnemy3({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-        break;
-      case 4:
-        drawEnemy4({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-        break;
-      case 5:
-        drawEnemy5({
-          time,
-          enemy: enemyState,
-          map: mapState,
-          player: playerState,
-        });
-    }
-    drawPlayer({
-      time,
-      player: playerState,
-      map: mapState,
-    });
+  drawPlayer({
+    time,
+    player: playerState,
+    map: mapState,
+  });
+  switch (gameState.stage) {
+    case 1:
+      drawEnemy1({
+        time,
+        enemy: enemyState,
+        map: mapState,
+        player: playerState,
+      });
+      break;
+    case 2:
+      drawEnemy2({
+        time,
+        enemy: enemyState,
+        map: mapState,
+        player: playerState,
+      });
+      break;
+    case 3:
+      drawEnemy3({
+        time,
+        enemy: enemyState,
+        map: mapState,
+        player: playerState,
+      });
+      break;
+    case 4:
+      drawEnemy4({
+        time,
+        enemy: enemyState,
+        map: mapState,
+        player: playerState,
+      });
+      break;
+    case 5:
+      drawEnemy5({
+        time,
+        enemy: enemyState,
+        map: mapState,
+        player: playerState,
+      });
   }
   drawMessage({ game: gameState });
   drawScoreTime({ game: gameState });
