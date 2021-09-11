@@ -13,8 +13,7 @@ let titleEventHandler: (e: KeyboardEvent | MouseEvent) => void;
 
 export const addTitleEventListener = () => {
   titleEventHandler = (e: KeyboardEvent | MouseEvent) => {
-    e.preventDefault();
-    console.log(e.target);
+    console.log(e);
     const target = e.target;
     if (titleState.openGuide) {
       if (

@@ -52,6 +52,7 @@ const moveDown = () => {
 
 export const addGameEventListener = () => {
   gameEventHandler = (e: KeyboardEvent | MouseEvent) => {
+    console.log(e.target);
     const target = e.target;
     if (gameState.playTime < 3000) return;
     if (
@@ -82,13 +83,11 @@ export const addGameEventListener = () => {
         moveDown();
       }
     }
-    if (e.key === 'd' || e.key === 'D' || e.key === 's' || e.key === 'S') {
-      if (e.key === 'd' || e.key === 'D' || target.id === 'd') {
-        playerAttack(1);
-      }
-      if (e.key === 's' || e.key === 'S' || target.id === 's') {
-        playerAttack(-1);
-      }
+    if (e.key === 'd' || e.key === 'D' || target.id === 'd') {
+      playerAttack(1);
+    }
+    if (e.key === 's' || e.key === 'S' || target.id === 's') {
+      playerAttack(-1);
     }
   };
 

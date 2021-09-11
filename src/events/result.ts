@@ -2,29 +2,36 @@
 import { globalState } from '..';
 import { gameState, startGameScene } from '../scene/game';
 import { endResultScene, resultState } from '../scene/result';
-import { startTitleScene, titleMusic } from '../scene/title';
+import { startTitleScene } from '../scene/title';
 import { soundCursor } from '../sounds/effects';
-import { battleMusicPlay } from '../sounds/music';
 
 let resultEventHandler: (e: KeyboardEvent | MouseEvent) => void;
 
 export const addResultEventListener = () => {
   resultEventHandler = (e: KeyboardEvent | MouseEvent) => {
-    if (e.key === 'ArrowLeft') {
+    const target = e.target;
+    if (e.key === 'ArrowLeft' || target.id === 'al') {
       if (resultState.index === 0) return;
       else {
         resultState.index -= 1;
         soundCursor();
       }
     }
-    if (e.key === 'ArrowRight') {
+    if (e.key === 'ArrowRight' || target.id === 'ar') {
       if (resultState.index === 1) return;
       else {
         resultState.index += 1;
         soundCursor();
       }
     }
-    if (e.key === 's' || e.key === 'S' || e.key === 'd' || e.key === 'D') {
+    if (
+      e.key === 's' ||
+      e.key === 'S' ||
+      e.key === 'd' ||
+      e.key === 'D' ||
+      target.id === 's' ||
+      target.id === 'd'
+    ) {
       soundCursor();
       if (gameState.stage < 5) {
         if (resultState.index === 0) {
