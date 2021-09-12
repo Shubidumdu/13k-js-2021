@@ -33,7 +33,7 @@ import {
 } from '../graphic/enemy';
 
 export const gameState = {
-  stage: 0,
+  stage: 3,
   countDownSound: [false, false, false],
   startTime: 0,
   scoreTime: 0,
@@ -133,7 +133,7 @@ export const updateGame = (time: number) => {
     ) {
       enemyMove({
         start: time,
-        predelay: 800,
+        predelay: 400,
         speed: 100,
         position: {
           x: playerState.position.x,
@@ -196,18 +196,24 @@ export const updateGame = (time: number) => {
       }
     }
     if (isEnemyMovingEnded && isEnemyAttackEnded) {
+      let x = Math.floor(Math.random() * 4);
+      let y = Math.floor(Math.random() * 4);
+      while (x === enemyState.position.x && y === enemyState.position.y) {
+        x = Math.floor(Math.random() * 4);
+        y = Math.floor(Math.random() * 4);
+      }
       enemyMove({
         start: time,
-        predelay: 500,
+        predelay: 200,
         speed: 100,
         position: {
-          x: Math.floor(Math.random() * 4),
-          y: Math.floor(Math.random() * 4),
+          x,
+          y,
         },
       });
       enemyAttack({
-        start: time + 1200,
-        predelay: 800,
+        start: time + 300,
+        predelay: 400,
         position: [
           { x: enemyState.move.position.x, y: 0 },
           { x: enemyState.move.position.x, y: 1 },
@@ -218,9 +224,9 @@ export const updateGame = (time: number) => {
           { x: 2, y: enemyState.move.position.y },
           { x: 3, y: enemyState.move.position.y },
         ],
-        delay: 0,
+        delay: 100,
         duration: 200,
-        power: 30,
+        power: 20,
         sound: [false, false],
       });
     }
@@ -251,21 +257,31 @@ export const updateGame = (time: number) => {
       enemyState.attack.sound[0] = true;
     }
     if (isEnemyMovingEnded) {
+      let x = Math.floor(Math.random() * 4);
+      let y = Math.floor(Math.random() * 4);
+      while (
+        (x === enemyState.position.x && y === enemyState.position.y) ||
+        (x === enemyState.attack.position[0]?.x &&
+          y === enemyState.attack.position[0]?.y)
+      ) {
+        x = Math.floor(Math.random() * 4);
+        y = Math.floor(Math.random() * 4);
+      }
       enemyMove({
         start: time,
         predelay: 400,
-        speed: 200,
+        speed: 100,
         position: {
-          x: Math.floor(Math.random() * 4),
-          y: Math.floor(Math.random() * 4),
+          x,
+          y,
         },
       });
     }
     if (isEnemyAttackEnded) {
       enemyAttack({
         start: time,
-        predelay: 400,
-        delay: 200,
+        predelay: 300,
+        delay: 0,
         position: [{ x: playerState.position.x, y: playerState.position.y }],
         duration: 400,
         power: 20,
@@ -323,7 +339,13 @@ export const updateGame = (time: number) => {
     if (isEnemyMovingEnded && isEnemyAttackEnded) {
       const random = Math.floor(Math.random() * 2);
       if (random === 0) {
-        const enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
+        let enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
+        while (
+          enemyMovePosition.x === enemyState.position.x &&
+          enemyMovePosition.y === enemyState.position.y
+        ) {
+          enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
+        }
         enemyMove({
           start: time,
           predelay: 200,
@@ -340,8 +362,8 @@ export const updateGame = (time: number) => {
         enemyAttack({
           type: 0,
           start: time + 300,
-          predelay: 1400,
-          delay: 200,
+          predelay: 800,
+          delay: 0,
           position: [0, 1, 2, 3].reduce((prev, val1) => {
             const pos = [0, 1, 2, 3]
               .map((val2) => ({ x: val1, y: val2 }))
@@ -368,7 +390,7 @@ export const updateGame = (time: number) => {
         enemyAttack({
           type: 1,
           start: time + 200,
-          predelay: 600,
+          predelay: 300,
           delay: 100,
           position: [0, 1, 2, 3].map((x) => ({ x, y: getRandomInt(4) })),
           duration: 200,
@@ -468,10 +490,10 @@ export const updateGame = (time: number) => {
               }, []);
             }
           })(),
-          predelay: 700,
+          predelay: 600,
           delay: 100,
           duration: 400,
-          power: 40,
+          power: 20,
           sound: [false, false],
         });
       }
@@ -502,7 +524,7 @@ export const updateGame = (time: number) => {
           predelay: 300,
           delay: 100,
           duration: 200,
-          power: 30,
+          power: 20,
           sound: [false],
         });
       }
@@ -534,10 +556,10 @@ export const updateGame = (time: number) => {
               return [...prev, ...pos];
             }, []);
           })(),
-          predelay: 400,
+          predelay: 600,
           delay: 100,
-          duration: 400,
-          power: 50,
+          duration: 300,
+          power: 20,
           sound: [false, false],
         });
       }

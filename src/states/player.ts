@@ -33,7 +33,7 @@ export let playerState: PlayerState = {
     x: 0,
     y: 0,
   },
-  collisionDamage: 10,
+  collisionDamage: 20,
   direction: 1,
   attack: {
     start: -Infinity,
@@ -63,7 +63,7 @@ export const resetPlayerState = () => {
       x: 0,
       y: 0,
     },
-    collisionDamage: 10,
+    collisionDamage: 20,
     direction: 1,
     attack: {
       start: -Infinity,

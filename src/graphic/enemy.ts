@@ -124,7 +124,7 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isAttacking, attackProgress] = getTimings({
     time,
     start: enemy.attack.start + enemy.attack.predelay,
-    duration: enemy.attack.duration,
+    duration: enemy.attack.duration + enemy.attack.delay,
   });
   const positionX = isMoving
     ? layer1Canvas.width / 2 +
@@ -372,7 +372,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isAttacking, attackProgress] = getTimings({
     time,
     start: enemy.attack.start + enemy.attack.predelay,
-    duration: enemy.attack.duration,
+    duration: enemy.attack.duration + enemy.attack.delay,
   });
   const positionX = isMoving
     ? layer1Canvas.width / 2 +
@@ -758,7 +758,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
   const [isAttacking, attackProgress] = getTimings({
     time,
     start: enemy.attack.start + enemy.attack.predelay,
-    duration: enemy.attack.duration,
+    duration: enemy.attack.duration + enemy.attack.delay,
   });
   const [isAttackCharging, attackChargingProgress] = getTimings({
     time,
