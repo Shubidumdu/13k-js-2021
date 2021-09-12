@@ -5,10 +5,10 @@ import {
   removeTitleEventListener,
 } from '../events/title';
 import { getFont } from '../font';
-import { resultMusicPlay, titleMusicPlay } from '../sounds/music';
+import { titleMusicPlay } from '../sounds/music';
 import { degreeToRadian } from '../utils';
 
-const SELECTED_TEXT_COLOR = '#D5D471';
+const SELECTED_TEXT_COLOR = '#E5FF3F';
 const NORMAL_TEXT_COLOR = '#FFF';
 
 const stars: {

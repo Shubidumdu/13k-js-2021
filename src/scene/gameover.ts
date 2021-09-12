@@ -10,7 +10,7 @@ import { resetEnemyState } from '../states/enemy';
 import { resetPlayerState } from '../states/player';
 import { gameState } from './game';
 
-const SELECTED_TEXT_COLOR = '#D5D471';
+const SELECTED_TEXT_COLOR = '#E5FF3F';
 const NORMAL_TEXT_COLOR = '#FFF';
 
 export const gameOverState = {
