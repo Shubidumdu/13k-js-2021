@@ -566,10 +566,6 @@ export const updateGame = (time: number) => {
 export const drawGame = (time: number) => {
   updateGame(time);
   drawGameMap({ map: gameState.map, enemy: enemyState, time });
-  drawLifeBar({
-    player: playerState.life,
-    enemy: enemyState.life,
-  });
   drawPlayer({
     time,
     player: playerState,
@@ -618,6 +614,10 @@ export const drawGame = (time: number) => {
   }
   drawMessage({ game: gameState });
   drawScoreTime({ game: gameState });
+  drawLifeBar({
+    player: playerState.life,
+    enemy: enemyState.life,
+  });
 };
 
 export let battleMusic: AudioBufferSourceNode;

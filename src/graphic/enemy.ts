@@ -73,12 +73,12 @@ export const drawEnemy1 = ({ map, enemy, time }: DrawEnemyProps) => {
       degreeToRadian(360),
     );
     context.fillStyle = '#000';
-    context.globalAlpha = 0.4;
+    context.globalAlpha = 0.2;
     context.fill();
     context.beginPath();
     context.globalAlpha = 1;
     context.ellipse(0, 12, 45, 28, 0, 0, degreeToRadian(360));
-    if (isMoving) context.globalAlpha = 0.5;
+    if (isMoving) context.globalAlpha = 0.4;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     if (isTakingDamage) context.fillStyle = '#fa9';
     else context.fillStyle = '#fed1ff';
@@ -158,7 +158,6 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
   });
   const drawBody = (context: CanvasRenderingContext2D) => {
     // SHADOW
-    if (isTakingDamage && Math.ceil(time) % 6 === 0) return;
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
     if (enemyState.position.x < playerState.position.x) context.scale(-1, 1);
@@ -171,14 +170,16 @@ export const drawEnemy2 = ({ map, enemy, time }: DrawEnemyProps) => {
       0,
       degreeToRadian(360),
     );
-    context.globalAlpha = 0.4;
+    context.globalAlpha = 0.2;
     context.fillStyle = '#000';
     context.fill();
     context.closePath();
+    if (isTakingDamage && Math.ceil(time) % 8 === 0) return;
     context.beginPath();
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     if (enemyState.position.x < playerState.position.x) context.scale(-1, 1);
-    context.globalAlpha = 1;
+    if (isMoving) context.globalAlpha = 0.4;
+    else context.globalAlpha = 1;
     if (isTakingDamage) context.fillStyle = '#f66';
     else context.fillStyle = '#5cab73';
     context.arc(0, 0, 40, 0, degreeToRadian(360));
@@ -422,7 +423,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
       degreeToRadian(360),
     );
     context.fillStyle = '#000';
-    context.globalAlpha = 0.4;
+    context.globalAlpha = 0.2;
     context.fill();
     context.closePath();
     // BODY
@@ -431,7 +432,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
     if (enemyState.position.x < playerState.position.x) context.scale(-1, 1);
     context.globalAlpha = 1;
     context.beginPath();
-    if (isMoving) context.globalAlpha = 0.5;
+    if (isMoving) context.globalAlpha = 0.4;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     if (isTakingDamage) context.fillStyle = '#ffb5b5';
     else context.fillStyle = '#f33';
@@ -587,7 +588,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
       degreeToRadian(360),
     );
     context.fillStyle = '#000';
-    context.globalAlpha = 0.4;
+    context.globalAlpha = 0.2;
     context.fill();
     context.closePath();
     // BODY
@@ -596,7 +597,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     if (enemyState.position.x < playerState.position.x) context.scale(-1, 1);
     context.globalAlpha = 1;
     context.beginPath();
-    if (isMoving) context.globalAlpha = 0.5;
+    if (isMoving) context.globalAlpha = 0.4;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     if (isTakingDamage) context.fillStyle = '#ff9c9c';
     else context.fillStyle = '#0ff';
@@ -810,7 +811,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       degreeToRadian(360),
     );
     context.fillStyle = '#000';
-    context.globalAlpha = 0.4;
+    context.globalAlpha = 0.2;
     context.fill();
     context.closePath();
     // BODY
@@ -820,7 +821,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.globalAlpha = 1;
     context.beginPath();
     context.filter = 'blur(4px)';
-    if (isMoving) context.globalAlpha = 0.5;
+    if (isMoving) context.globalAlpha = 0.4;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     if (isTakingDamage) context.fillStyle = '#ff6161';
     else context.fillStyle = '#000';
@@ -854,6 +855,8 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
       context.lineTo(0, -20);
       context.lineTo(-140 * Math.sin(attackProgress * Math.PI), 0);
       context.lineTo(0, 20);
+      if (isTakingDamage) context.fillStyle = '#ff6161';
+      else context.fillStyle = '#000';
       context.fill();
       context.closePath();
     }

@@ -163,7 +163,6 @@ export const drawGameMap = ({
         // if enemy will moving on the block
         if (
           isEnemyWaitingMove &&
-          // Math.ceil(time) % 4 === 0 &&
           enemy.move.position.x === x &&
           enemy.move.position.y === y
         ) {

@@ -60,7 +60,7 @@ export const drawPlayer = ({ time, player, map }: DrawPlayerProps) => {
     // SHADOW
     context.setTransform(1, 0, 0, 1, positionX, positionY);
     context.beginPath();
-    context.globalAlpha = 0.4;
+    context.globalAlpha = 0.2;
     if (playerState.direction === 1) {
       if (isAttacking)
         context.ellipse(

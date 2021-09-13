@@ -72,7 +72,7 @@ export const drawResult = (time: number) => {
     if (gameState.stage === 3) context.fillStyle = '#FB3D31';
     if (gameState.stage === 4) context.fillStyle = '#B6DBF2';
     if (gameState.stage === 5) context.fillStyle = '#F2F2F2';
-    context.arc(0, 0, 400, 0, degreeToRadian(360));
+    context.arc(0, 0, 320, 0, degreeToRadian(360));
     context.fill();
     context.closePath();
   });
@@ -206,7 +206,7 @@ export const drawResult = (time: number) => {
       canvas.height / 2 - 20,
     );
     context.fillText(
-      `Rest life : ${playerState.life.toString().padStart(2, '0')}%`,
+      `Life : ${playerState.life.toString().padStart(2, '0')}%`,
       canvas.width / 2 + 100,
       canvas.height / 2 + 40,
     );
