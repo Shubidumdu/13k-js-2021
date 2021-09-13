@@ -26,19 +26,16 @@ const setViewPort = () => {
       'content',
       'width=device-width, initial-scale=0.5, user-scalable=0',
     );
-    controller.style.display = 'block';
   } else if (width <= 768 || height <= 768) {
     viewportMeta.setAttribute(
       'content',
       'width=device-width, initial-scale=0.725, user-scalable=0',
     );
-    controller.style.display = 'block';
   } else {
     viewportMeta.setAttribute(
       'content',
       'width=device-width, initial-scale=1.0, user-scalable=0',
     );
-    controller.style.display = 'none';
   }
 };
 

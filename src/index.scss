@@ -35,9 +35,13 @@ canvas {
 #c {
   z-index: 4;
   width: 100%;
-  display: block;
+  display: none;
   position: absolute;
   bottom: 0;
+
+  @media (pointer: none), (pointer: coarse) {
+    display: block;
+  }
 
   & > #al {
     left: 2rem;
