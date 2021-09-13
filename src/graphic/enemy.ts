@@ -433,7 +433,7 @@ export const drawEnemy3 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.beginPath();
     if (isMoving) context.globalAlpha = 0.5;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
-    if (isTakingDamage) context.fillStyle = '#fa9';
+    if (isTakingDamage) context.fillStyle = '#ffb5b5';
     else context.fillStyle = '#f33';
     context.arc(0, 0, 40, 0, degreeToRadian(360));
     context.moveTo(-25, -20);
@@ -598,7 +598,7 @@ export const drawEnemy4 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.beginPath();
     if (isMoving) context.globalAlpha = 0.5;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
-    if (isTakingDamage) context.fillStyle = '#fa9';
+    if (isTakingDamage) context.fillStyle = '#ff9c9c';
     else context.fillStyle = '#0ff';
     context.arc(0, 0, 30, 0, degreeToRadian(360));
     context.fill();
@@ -822,7 +822,7 @@ export const drawEnemy5 = ({ map, enemy, time }: DrawEnemyProps) => {
     context.filter = 'blur(4px)';
     if (isMoving) context.globalAlpha = 0.5;
     context.arc(0, 0, 40, 0, degreeToRadian(360));
-    if (isTakingDamage) context.fillStyle = '#fa9';
+    if (isTakingDamage) context.fillStyle = '#ff6161';
     else context.fillStyle = '#000';
     context.fill();
     context.closePath();

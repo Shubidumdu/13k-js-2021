@@ -5,8 +5,6 @@ import { drawGameOver, startGameOverScene } from './scene/gameover';
 import { drawResult, startResultScene } from './scene/result';
 import { drawTitle, startTitleScene } from './scene/title';
 
-// 0 => TITLE
-// 1 => ON_GAME
 export const globalState = {
   sceneType: 0,
   music: false,

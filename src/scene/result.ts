@@ -79,6 +79,16 @@ export const drawResult = (time: number) => {
   drawLayer1((context, canvas) => {
     // BODY
     context.setTransform(1, 0, 0, 1, canvas.width / 2 - 160, canvas.height / 2);
+    context.ellipse(0, 1 * wave + 80, 60 - 2 * wave, 20, 0, 0, 2 * Math.PI);
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    context.globalAlpha = 0.3;
+    context.fillStyle = '#000';
+    context.fill();
+  });
+  drawLayer1((context, canvas) => {
+    // BODY
+    context.setTransform(1, 0, 0, 1, canvas.width / 2 - 160, canvas.height / 2);
     context.ellipse(0, 10 * wave, 30, 60, 0, 0, 2 * Math.PI);
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;

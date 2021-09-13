@@ -33,7 +33,7 @@ import {
 } from '../graphic/enemy';
 
 export const gameState = {
-  stage: 3,
+  stage: 0,
   countDownSound: [false, false, false],
   startTime: 0,
   scoreTime: 0,
@@ -133,8 +133,8 @@ export const updateGame = (time: number) => {
     ) {
       enemyMove({
         start: time,
-        predelay: 400,
-        speed: 100,
+        predelay: 500,
+        speed: 200,
         position: {
           x: playerState.position.x,
           y: playerState.position.y,
@@ -204,7 +204,7 @@ export const updateGame = (time: number) => {
       }
       enemyMove({
         start: time,
-        predelay: 200,
+        predelay: 300,
         speed: 100,
         position: {
           x,
@@ -212,7 +212,7 @@ export const updateGame = (time: number) => {
         },
       });
       enemyAttack({
-        start: time + 300,
+        start: time + 400,
         predelay: 400,
         position: [
           { x: enemyState.move.position.x, y: 0 },
@@ -224,7 +224,7 @@ export const updateGame = (time: number) => {
           { x: 2, y: enemyState.move.position.y },
           { x: 3, y: enemyState.move.position.y },
         ],
-        delay: 100,
+        delay: 200,
         duration: 200,
         power: 20,
         sound: [false, false],
@@ -259,18 +259,14 @@ export const updateGame = (time: number) => {
     if (isEnemyMovingEnded) {
       let x = Math.floor(Math.random() * 4);
       let y = Math.floor(Math.random() * 4);
-      while (
-        (x === enemyState.position.x && y === enemyState.position.y) ||
-        (x === enemyState.attack.position[0]?.x &&
-          y === enemyState.attack.position[0]?.y)
-      ) {
+      while (x === enemyState.position.x && y === enemyState.position.y) {
         x = Math.floor(Math.random() * 4);
         y = Math.floor(Math.random() * 4);
       }
       enemyMove({
         start: time,
-        predelay: 400,
-        speed: 100,
+        predelay: 300,
+        speed: 200,
         position: {
           x,
           y,
@@ -339,16 +335,16 @@ export const updateGame = (time: number) => {
     if (isEnemyMovingEnded && isEnemyAttackEnded) {
       const random = Math.floor(Math.random() * 2);
       if (random === 0) {
-        let enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
-        while (
-          enemyMovePosition.x === enemyState.position.x &&
-          enemyMovePosition.y === enemyState.position.y
-        ) {
-          enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
+        const enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
+        while (enemyMovePosition.x === enemyState.move.position.x) {
+          enemyMovePosition.x = getRandomInt(4);
+        }
+        while (enemyMovePosition.y === enemyState.move.position.y) {
+          enemyMovePosition.y = getRandomInt(4);
         }
         enemyMove({
           start: time,
-          predelay: 200,
+          predelay: 300,
           speed: 100,
           position: enemyMovePosition,
         });
@@ -362,7 +358,7 @@ export const updateGame = (time: number) => {
         enemyAttack({
           type: 0,
           start: time + 300,
-          predelay: 800,
+          predelay: 900,
           delay: 0,
           position: [0, 1, 2, 3].reduce((prev, val1) => {
             const pos = [0, 1, 2, 3]
@@ -383,14 +379,14 @@ export const updateGame = (time: number) => {
         const enemyMovePosition = { x: getRandomInt(4), y: getRandomInt(4) };
         enemyMove({
           start: time,
-          predelay: 200,
+          predelay: 300,
           speed: 100,
           position: enemyMovePosition,
         });
         enemyAttack({
           type: 1,
           start: time + 200,
-          predelay: 300,
+          predelay: 400,
           delay: 100,
           position: [0, 1, 2, 3].map((x) => ({ x, y: getRandomInt(4) })),
           duration: 200,
@@ -491,8 +487,8 @@ export const updateGame = (time: number) => {
             }
           })(),
           predelay: 600,
-          delay: 100,
-          duration: 400,
+          delay: 200,
+          duration: 300,
           power: 20,
           sound: [false, false],
         });
@@ -523,7 +519,7 @@ export const updateGame = (time: number) => {
           ],
           predelay: 300,
           delay: 100,
-          duration: 200,
+          duration: 100,
           power: 20,
           sound: [false],
         });
@@ -557,8 +553,8 @@ export const updateGame = (time: number) => {
             }, []);
           })(),
           predelay: 600,
-          delay: 100,
-          duration: 300,
+          delay: 200,
+          duration: 200,
           power: 20,
           sound: [false, false],
         });
